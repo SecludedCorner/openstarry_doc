@@ -35,18 +35,18 @@ In OpenStarry, executing a task is viewed as the arising and ceasing of a life:
 
 ```mermaid
 graph TD
-    subgraph Host [Management Zone (Host Environment)]
+    subgraph Host ["Management Zone (Host Environment)"]
         direction TB
         Orchestrator[Scheduling Layer] --> Container[Container Layer]
         Policy[Security Policy Layer] -.-> Container
         HAL[Hardware Abstraction Layer] --> InputFlow((Perception Flow))
     end
 
-    subgraph Runtime [Running Instance]
+    subgraph Runtime ["Running Instance"]
         direction LR
         InputFlow --> Core
 
-        subgraph Core [Agent Core (Microkernel)]
+        subgraph Core ["Agent Core (Microkernel)"]
             Loop[Execution Loop]
             State[State Machine]
             Interceptor[Anomaly Interceptor]
@@ -54,7 +54,7 @@ graph TD
 
         Core --> |1. Load| Plugins
 
-        subgraph Plugins [Capability Plugins (The 5 Aggregates)]
+        subgraph Plugins ["Capability Plugins (The 5 Aggregates)"]
             Guide[Consciousness: Guide]
             Tool[Volition: Tools]
             LLM[Perception: Provider]

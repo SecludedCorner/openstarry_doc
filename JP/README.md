@@ -35,18 +35,18 @@ OpenStarry では、タスクの実行は一つの生命の起滅として捉え
 
 ```mermaid
 graph TD
-    subgraph Host [🛡️ Management Zone (ホスト環境)]
+    subgraph Host ["🛡️ Management Zone (ホスト環境)"]
         direction TB
         Orchestrator[スケジューリング層] --> Container[コンテナ層]
         Policy[セキュリティポリシー層] -.-> Container
         HAL[ハードウェア抽象化層] --> InputFlow((知覚フロー))
     end
 
-    subgraph Runtime [⚡ 実行インスタンス]
+    subgraph Runtime ["⚡ 実行インスタンス"]
         direction LR
         InputFlow --> Core
 
-        subgraph Core [🧠 Agent Core (マイクロカーネル)]
+        subgraph Core ["🧠 Agent Core (マイクロカーネル)"]
             Loop[実行ループ]
             State[ステートマシン]
             Interceptor[異常インターセプター]
@@ -54,7 +54,7 @@ graph TD
 
         Core --> |1. Load| Plugins
 
-        subgraph Plugins [🔌 能力プラグイン (五蘊)]
+        subgraph Plugins ["🔌 能力プラグイン (五蘊)"]
             Guide[識：Guide]
             Tool[行：Tools]
             LLM[想：Provider]

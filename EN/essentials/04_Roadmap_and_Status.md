@@ -1,126 +1,126 @@
-# OpenStarry: System Overview & Architecture Evolution
+# OpenStarry: System Overview & Architectural Evolution
 
-> *"We don't just build chatbots — we build an operating system for digital species."*
+> *"We don't just build Chatbots; we build an operating system for digital species."*
 
 ## What OpenStarry Includes
 
-A complete, headless AI agent operating system:
+A complete, Headless AI Agent operating system:
 
-| Layer | Components |
-|-------|-----------|
-| **Five Aggregates SDK** | TypeScript interfaces for IUI, IListener, IProvider, ITool, IGuide |
+| Layer | Component |
+|------|------|
+| **Five Aggregates SDK** | TypeScript interfaces: IUI, IListener, IProvider, ITool, IGuide |
 | **Agent Core** | 6-state execution loop, EventBus, context management, session isolation |
-| **Safety System** | 3-level circuit breaker (resource → behavioral → human override) |
-| **Plugin Ecosystem** | Transport (stdio, WebSocket, HTTP+SSE), Provider (Gemini OAuth), Tools (filesystem), Guides (character, skill) |
-| **Session Management** | Per-connection isolation, session resumption, unified TraceId |
+| **Security System** | 3-layer circuit breakers (Resource level → Behavioral level → Human override) |
+| **Plugin Ecosystem** | Transport (stdio, WebSocket, HTTP+SSE), Provider (Gemini OAuth), Tools (File system), Guides (Persona, Skill) |
+| **Session Management** | Per-connection isolation, session recovery, unified TraceId |
 | **Orchestrator Daemon** | `openstarryd` — lifecycle management, process isolation (Docker, WASM), state persistence |
-| **MCP Protocol** | Inter-agent cooperation via JSON-RPC 2.0, tool exposure, recursion guard |
-| **TUI Dashboard** | Real-time agent monitoring, interactive designer, plugin orchestration |
-| **Observability** | Structured JSON logging, trace context propagation, health checks |
+| **MCP Protocol** | Inter-Agent collaboration, based on JSON-RPC 2.0, tool exposure, recursion protection |
+| **TUI Dashboard** | Real-time Agent monitoring, interactive designer, plugin orchestration |
+| **Observability** | Structured JSON logging, Trace context propagation, health checks |
 
-## How It Was Built: Eight Phases of Evolution
+## How It Was Built: Eight Evolutionary Stages
 
-OpenStarry was not built all at once. It evolved through eight deliberate architectural phases, each adding a new layer of capability — like a digital organism developing from embryo to maturity.
+OpenStarry was not built all at once. It evolved through eight carefully planned architectural stages, each adding a new layer of capability—much like a digital organism developing from embryo to maturity.
 
-### Phase 1: Genesis — The Skeleton
+### Stage 1: Genesis — The Skeleton
 
-The monorepo scaffold, TypeScript strict configuration, pnpm workspace protocol, and the Five Aggregates SDK interfaces. At this stage, the agent was just a set of type definitions — pure potential, like DNA before the organism forms.
+Monorepo scaffolding, strict TypeScript settings, pnpm workspace protocol, and the Five Aggregates SDK interfaces. At this stage, the Agent was just a set of type definitions—pure potential, like DNA before an organism takes shape.
 
-**Key deliverable:** 11 workspace packages with clean dependency boundaries.
+**Key Outputs:** 11 workspace packages with clear dependency boundaries.
 
-### Phase 2: Conscious Kernel — The Heartbeat
+### Stage 2: Core Consciousness — The Heartbeat
 
-The execution loop state machine, EventBus, context management, and the safety monitor with circuit breakers. The agent gained its "heartbeat" — a continuous cycle of sense → think → act → learn.
+Execution loop state machine, EventBus, context management, and a safety monitor with circuit breakers. The Agent gained a "heartbeat"—a continuous cycle of sense → think → act → learn.
 
-**Key deliverables:**
+**Key Outputs:**
 - 6-state execution loop (WAITING → ASSEMBLING → AWAITING_LLM → PROCESSING → EXECUTING_TOOLS → SAFETY_LOCKOUT)
 - Token budget (100k), loop cap (50 iterations), repetitive failure detection (SHA-256 fingerprinting)
-- Async FIFO event queue decoupling producers from consumer
-- Sliding window context management with system prompt anchoring
+- Asynchronous FIFO event queue, decoupling producers and consumers
+- Sliding window context management with System Prompt anchoring
 
-### Phase 3: Body & Senses — The First Organs
+### Stage 3: Body & Senses — The First Organs
 
-The plugin infrastructure: Plugin Loader with automatic hook registration, Tool Registry with Zod→JSON Schema conversion, Provider Registry, UI Registry, Listener Registry, Guide Registry. The empty Core could now receive organs.
+Plugin infrastructure: Plugin Loader with auto-hook registration, Tool Registry with Zod-to-JSON Schema conversion, Provider Registry, UI Registry, Listener Registry, and Guide Registry. The empty Core could now receive organs.
 
-**Key deliverable:** A universal plugin loading system where `install one npm package = gain complete domain capability`.
+**Key Outputs:** A universal plugin loading system: "install one npm package = acquire full domain capabilities."
 
-### Phase 4: First Breath — Alive
+### Stage 4: The First Breath — It's Alive
 
-The CLI runner (`apps/runner`), the stdio plugin (terminal I/O), the Gemini OAuth provider (brain), filesystem tools (hands), and character init guide (soul). For the first time, an OpenStarry agent could perceive, think, act, and speak.
+CLI Runner (`apps/runner`), stdio plugin (terminal I/O), Gemini OAuth Provider (the brain), filesystem tools (the hands), and persona initialization Guide (the soul). For the first time, an OpenStarry Agent could perceive, think, act, and speak.
 
-**Key deliverables:**
-- End-to-end agent lifecycle: boot → load plugins → listen → respond → shutdown
+**Key Outputs:**
+- End-to-end Agent lifecycle: startup → load plugins → listen → respond → shutdown
 - OAuth 2.0 + PKCE authentication with AES-256-GCM machine-bound token encryption
 - Path-sandboxed filesystem tools with Zod validation
 - Pain mechanism: errors as feedback, not crashes
 
-### Phase 5: Multi-Channel — Many Bodies
+### Stage 5: Multi-channel — Multiple Bodies
 
-Transport plugins for WebSocket and HTTP. The same agent could now be reached via terminal, WebSocket, or HTTP API simultaneously. Session isolation gave each connection its own conversation state.
+Transport plugins for WebSocket and HTTP. The same Agent can now be accessed simultaneously via terminal, WebSocket, or HTTP API. Session isolation provides independent conversation states for every connection.
 
-**Key deliverables:**
-- WebSocket: bidirectional communication, ping/pong health checks, session resumption
+**Key Outputs:**
+- WebSocket: Bi-directional communication, ping/pong health checks, session recovery
 - HTTP: REST endpoints + Server-Sent Events for real-time streaming
-- Transport Bridge: routes events from Core to all registered UIs with error isolation
-- Per-connection session management with backward-compatible default session
+- Transport Bridge: Routes events from the Core to all registered UIs with error isolation
+- Per-connection session management, backward-compatible with default sessions
 
-### Phase 6: Fractal Society — Agent Cooperation
+### Stage 6: Fractal Society — Agent Collaboration
 
-MCP (Model Context Protocol) integration. Agents can expose tools to other agents, call other agents' tools, and form dynamic teams.
+MCP (Model Context Protocol) integration. Agents can expose tools to other Agents, call tools of other Agents, and form dynamic teams.
 
-**Key deliverables:**
-- MCP Server: any agent can expose its tools via JSON-RPC 2.0
-- MCP Client: any agent can call other agents' tools
-- Tool whitelisting: `expose_tools` / `private_tools` configuration
-- Recursion guard: TraceId + depth counter (max 5 layers) prevents infinite loops
-- DevTools: debugging interface for inspecting agent internals
-- Fractal composition: teams of agents expose the same interface as individual agents
+**Key Outputs:**
+- MCP Server: Any Agent can expose its tools via JSON-RPC 2.0
+- MCP Client: Any Agent can invoke tools from other Agents
+- Tool Whitelisting: `expose_tools` / `private_tools` configuration
+- Recursion Protection: TraceId + depth counter (max 5) to prevent infinite loops
+- DevTools: Debugging interface for inspecting Agent internal state
+- Fractal Composition: Agent teams expose the same interface as individual Agents
 
-### Phase 7: Daemon — Persistent Life
+### Stage 7: Daemon — Persistent Life
 
-The Orchestrator Daemon (`openstarryd`). Agents become true OS-level processes with persistent lifecycle management.
+Orchestrator Daemon (`openstarryd`). Agents become true OS-level processes with persistent lifecycle management.
 
-**Key deliverables:**
+**Key Outputs:**
 - Agent lifecycle management: spawn, monitor, restart, terminate
-- State persistence and recovery: agents survive restarts, memory carries forward
+- State persistence and recovery: Agents survive restarts, memory is passed forward
 - Process isolation: Docker containers, WASM sandboxes
-- Hardware Abstraction Layer (HAL): camera, sensors, actuators — agents in the physical world
-- Auto-start registry: agents launch at system boot
+- Hardware Abstraction Layer (HAL): Cameras, sensors, actuators—Agents enter the physical world
+- Auto-boot registration: Agents start on system boot
 
-### Phase 8: OS Evolution — The Operating System
+### Stage 8: OS Evolution — The Operating System
 
-The TUI Dashboard and interactive agent designer. The full vision realized: an operating system for digital life.
+TUI dashboard and interactive Agent designer. The realization of the full vision: an operating system for digital life.
 
-**Key deliverables:**
-- **TUI Dashboard** (`openstarry`): real-time monitoring of all running agents — CPU, memory, thoughts/sec, status
-- **Interactive Designer** (`openstarry design`): assemble an agent's Five Aggregates visually — choose brain, senses, tools, soul
-- **Workflow Engine** (`openstarry run workflow.yaml`): chain agents into multi-step workflows with dynamic handoff
-- **Plugin Sync** (`openstarry plugin sync`): manage and update the capability library
-- **Agent Registration** (`openstarry register`): register agents for daemon management
+**Key Outputs:**
+- **TUI Dashboard** (`openstarry`): Real-time monitoring of all running Agents—CPU, RAM, thoughts/sec, status
+- **Interactive Designer** (`openstarry design`): Visually assemble the Agent's Five Aggregates—choose brain, senses, tools, soul
+- **Workflow Engine** (`openstarry run workflow.yaml`): Chain Agents into multi-step workflows with dynamic handoffs
+- **Plugin Sync** (`openstarry plugin sync`): Manage and update the capability library
+- **Agent Registration** (`openstarry register`): Register Agents with the Daemon for management
 
 ## Technical Specifications
 
-Seven technical specs define the system's contracts:
+Seven technical specifications define the system's contracts:
 
-| Spec | Scope | Key Detail |
-|------|-------|------------|
-| **01: Command Registry** | Plugin CLI command registration | Dynamic discovery, `registry.json` as source of truth |
-| **02: Event Bus Protocol** | Standard event envelope | UUID, timestamp, traceId, source, sessionId, priority |
+| Spec | Scope | Key Details |
+|------|------|---------|
+| **01: Command Registry** | Plugin CLI command registration | Dynamic discovery, `registry.json` as the single source of truth |
+| **02: Event Bus Protocol** | Standard event packets | UUID, timestamp, traceId, source, sessionId, priority |
 | **03: Plugin Interfaces** | Five Aggregates SDK | IUI, IListener, IProvider, ITool, IGuide + IPluginContext |
 | **04: Context Management** | Hierarchical memory | Immediate (5-10 turns, locked) → Short-term (sliding window) → Long-term (RAG) |
-| **05: Security Protocol** | Multi-layer defense | Filesystem sandbox, command whitelist, resource quotas (50 ticks, 100k tokens, 30s timeout) |
-| **06: MCP Protocol** | Inter-agent communication | JSON-RPC 2.0, tool exposure whitelist, recursion guard (max 5 layers) |
+| **05: Security Protocol** | Multi-layer defense | Filesystem sandbox, command whitelisting, resource quotas (50 ticks, 100k tokens, 30s timeout) |
+| **06: MCP Protocol** | Inter-Agent communication | JSON-RPC 2.0, tool exposure whitelist, recursion protection (max 5 levels) |
 | **07: Management Zone** | Daemon architecture | Process/Docker/WASM isolation, HAL for IoT, YAML orchestration rules |
 
 ## Pluggable Memory Strategies
 
-Different agents need different memory. OpenStarry's context management is a plugin, not hardcoded:
+Different Agents require different memory styles. OpenStarry context management is a plugin, not hardcoded:
 
-| Strategy | How It Works | Best For |
-|----------|-------------|----------|
-| **Sliding Window** (default) | FIFO — keep N most recent turns, discard oldest | Simple Q&A, short tasks |
-| **Dynamic Summarization** | Compress old turns into natural language summary using lightweight LLM | Long-term companions, complex projects |
-| **Key State Extraction** | Extract structured JSON state from dialogue, discard prose | Form-filling bots, booking agents |
+| Strategy | Operation | Best Use Case |
+|------|---------|-----------|
+| **Sliding Window** (Default) | FIFO — Keep last N turns, discard oldest | Simple Q&A, short-term tasks |
+| **Dynamic Summary** | Uses lightweight LLM to compress old history into natural language summaries | Long-term companionship, complex projects |
+| **State Extraction** | Extracts structured JSON state from dialogue, discards narrative text | Form-filling bots, booking Agents |
 
 ```json
 {
@@ -132,25 +132,25 @@ Different agents need different memory. OpenStarry's context management is a plu
 }
 ```
 
-> *"Core stays lightweight. Complex memory logic is delegated to specialist strategy modules."*
+> *"The Core remains lightweight; complex memory management logic is offloaded to specialized strategy modules."*
 
 ## Agent Configuration
 
-A complete agent is defined declaratively through its Five Aggregates:
+A complete Agent is defined declaratively via its Five Aggregates:
 
 ```jsonc
 {
   "identity": { "id": "dev-bot-01", "name": "Resilient Developer" },
   "plugins": [
-    // Brain: cognitive engine
+    // [Perception] Brain: Cognitive engine
     { "name": "@openstarry-plugin/provider-gemini" },
-    // Hands: filesystem operations
+    // [Volition] Hands: Filesystem operations
     { "name": "@openstarry-plugin/standard-function-fs" },
-    // Senses: terminal input
+    // [Sensation] Senses: Terminal input
     { "name": "@openstarry-plugin/standard-function-stdio" },
-    // Network body: WebSocket transport
+    // [Sensation+Form] Network Body: WebSocket transport
     { "name": "@openstarry-plugin/transport-websocket" },
-    // Soul: persona and pain mechanism
+    // [Consciousness] Soul: Persona & pain mechanism
     { "name": "@openstarry-plugin/guide-character-init",
       "config": { "characterFile": "./personas/developer.md" } }
   ],
@@ -160,16 +160,16 @@ A complete agent is defined declaratively through its Five Aggregates:
 }
 ```
 
-## By The Numbers
+## Data at a Glance
 
 | Metric | Value |
-|--------|-------|
-| Workspace packages | 11 |
-| Plugin packages | 7+ |
-| Architecture docs | 27 |
-| Deep-dive articles | 14 |
-| Technical specs | 7 |
-| Implementation plans | 9+ |
-| Execution loop states | 6 |
-| Event types | 25+ |
-| Lines of documentation | 10,000+ |
+|------|------|
+| Workspace Packages | 11 |
+| Plugin Packages | 7+ |
+| Architecture Docs | 27 |
+| Deep Dive Articles | 14 |
+| Technical Specs | 7 |
+| Implementation Plans | 9+ |
+| Execution Loop States | 6 |
+| Event Types | 25+ |
+| Lines of Documentation | 10,000+ |

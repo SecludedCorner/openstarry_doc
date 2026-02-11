@@ -1,34 +1,34 @@
 # OpenStarry Plugin Ecosystem
 
-> *"A plugin is not a type — it is an aggregate of capabilities."*
+> *"A plugin is not a type; it is an aggregation of capabilities."*
 
 ## Everything is a Plugin
 
-In OpenStarry, the Core is empty. Every capability — seeing, hearing, thinking, acting, knowing — comes from plugins. This is not a design choice; it's a philosophy enforced by automated purity tests. The compiled Core binary contains zero plugin code.
+In OpenStarry, the Core is empty. Every capability—seeing, hearing, thinking, acting, and knowing—comes from plugins. This is not a design choice, but a philosophy enforced by automated purity tests. The compiled Core binary contains zero plugin code.
 
-Just as Linux abstracts hardware as files through a Virtual File System, OpenStarry abstracts agent capabilities as plugins through the Five Aggregates interfaces. Install one npm package → gain complete domain capability.
+Just as Linux abstracts hardware into files via the Virtual File System (VFS), OpenStarry abstracts Agent capabilities into plugins via the Five Aggregates interfaces. Install an npm package → acquire full domain capabilities.
 
-## The Seven Plugins
+## Seven Plugins
 
-### Consciousness — The Soul Layer
+### Consciousness (識蘊) — The Soul Layer
 
 **guide-character-init** — The Soul Definer
 
-The most important plugin: without it, the agent is an amnesiac. This plugin injects personality through system prompts.
+The most critical plugin: without it, the Agent is an amnesiac. This plugin injects personality via the System Prompt.
 
 ```typescript
 // Inline persona
 { prompt: "You are a meticulous code reviewer who speaks in haiku." }
 
-// Or load from file — YAML, Markdown, anything
+// Or load from file — YAML, Markdown, any format
 { characterFile: "./personas/expert-coder.md" }
 ```
 
-Supports inline prompts, YAML frontmatter files, or pure Markdown character sheets. Uses `ctx.workingDirectory` for path resolution, so the same agent can have different personas in different project directories.
+Supports inline prompts, YAML Frontmatter files, or pure Markdown role settings. It uses `ctx.workingDirectory` for path resolution, so the same Agent can possess different personas in different project folders.
 
 **standard-function-skill** — The Skill Loader
 
-Turns Markdown files into agent capabilities. Each `.md` skill file has YAML frontmatter (id, version, dependencies, model preferences) and a Markdown body that becomes the system prompt. This enables **declarative agent behavior** — define what an agent knows by writing documents, not code.
+Transforms Markdown files into Agent capabilities. Each `.md` skill file has YAML Frontmatter (id, version, dependencies, model preferences) and a Markdown body that becomes the System Prompt. This enables **declarative Agent behavior**—defining Agent knowledge by writing documentation rather than code.
 
 ```yaml
 ---
@@ -46,22 +46,22 @@ parameters:
 You are a security auditor. Analyze code for OWASP Top 10 vulnerabilities...
 ```
 
-### Perception — The Brain
+### Perception (想蘊) — The Brain
 
 **provider-gemini-oauth** — The Cognitive Engine
 
-Not just an API wrapper — a production-grade LLM integration:
+Not just an API wrapper, but a production-grade LLM integration:
 
-- **OAuth 2.0 with PKCE**: Secure browser-based authentication flow, no API keys in config files
-- **Machine-Bound Encryption**: Tokens encrypted with AES-256-GCM, key derived from `hostname + username + salt` via PBKDF2. Tokens stolen from one machine are useless on another
-- **Auto Project Provisioning**: Automatic Google Cloud Project setup for FREE tier usage
-- **SSE Streaming**: Real-time token-by-token response streaming
-- **Function Calling**: Native tool/function declaration for Gemini's structured output
-- **Multi-Model**: Supports Gemini 2.0 Flash, 1.5 Pro, and 1.5 Flash
-- **Slash Commands**: `/provider login gemini`, `/provider logout gemini`, `/provider status`
-- **Legacy Migration**: Auto-detects and re-encrypts unencrypted legacy tokens
+- **OAuth 2.0 + PKCE**: Secure browser-based authentication; no API Keys needed in configuration files.
+- **Machine-bound Encryption**: Tokens are encrypted with AES-256-GCM, with keys derived via PBKDF2 from `hostname + username + salt`. A token stolen from one machine won't work on another.
+- **Auto Project Provisioning**: Automatically creates a Google Cloud Project to utilize the free tier.
+- **SSE Streaming**: Real-time token-by-token response streaming.
+- **Function Calling**: Native tool/function declarations interfacing with Gemini's structured output.
+- **Multi-model Support**: Supports Gemini 2.0 Flash, 1.5 Pro, and 1.5 Flash.
+- **Slash Commands**: `/provider login gemini`, `/provider logout gemini`, `/provider status`.
+- **Legacy Migration**: Automatically detects and re-encrypts unencrypted legacy tokens.
 
-The Provider interface is deliberately minimal — any LLM backend that can stream chat completions fits:
+The Provider interface is intentionally kept lean—any LLM backend capable of streaming chat completions can be adapted:
 
 ```typescript
 export interface IProvider {
@@ -72,51 +72,51 @@ export interface IProvider {
 }
 ```
 
-### Volition — The Hands
+### Volition (行蘊) — The Hands
 
-**standard-function-fs** — Five Filesystem Tools
+**standard-function-fs** — Five File System Tools
 
-| Tool | What It Does | Safety |
-|------|-------------|--------|
-| `fs.read` | Read file contents (configurable encoding) | Path validation against `allowedPaths` |
-| `fs.write` | Write/create file | Path validation, prevents escape |
-| `fs.list` | List directory (supports recursive) | Sandboxed to workspace |
-| `fs.mkdir` | Create directory with parents | Within allowed scope only |
-| `fs.delete` | Delete file or directory (recursive) | Strict boundary enforcement |
+| Tool | Function | Safety |
+|------|------|--------|
+| `fs.read` | Read file content (configurable encoding) | Path validation via `allowedPaths` |
+| `fs.write` | Write/create files | Path validation to prevent escape |
+| `fs.list` | List directories (recursive support) | Restricted to workspace scope |
+| `fs.mkdir` | Create directories (including parents) | Only within permitted boundaries |
+| `fs.delete` | Delete files or directories (recursive) | Strict boundary enforcement |
 
-Every path is validated through the Security Layer before execution. Attempt to read `/etc/passwd`? The agent gets a `SecurityError` — which becomes a pain signal feeding back into its context for self-correction.
+Every path is validated by the security layer before execution. Trying to read `/etc/passwd`? The Agent receives a `SecurityError`—which becomes a pain signal fed back into its context for self-correction.
 
 ```typescript
-// Tool parameters validated with Zod at runtime
+// Tool parameters are validated at runtime via Zod
 parameters: z.object({
   path: z.string().describe("File path to read"),
   encoding: z.string().optional().describe("File encoding (default: utf-8)"),
 })
 ```
 
-### Sensation + Form — The Sensory-Motor Layer
+### Sensation + Form (受蘊 + 色蘊) — The Sensorimotor Layer
 
 **standard-function-stdio** — The Terminal Body
 
-A "sensory pair" plugin: one package provides both input (Listener) and output (UI).
+A "sensory pairing" plugin: one package provides both input (Listener) and output (UI).
 
-The **Listener** reads from stdin via readline, converts EOF to `/quit`, and pushes standardized input events:
+**Listener** reads stdin via readline, transforms EOF into `/quit`, and pushes standardized input events:
 ```typescript
 pushInput({ source: "cli", inputType: "user_input", data: line })
 ```
 
-The **UI** renders with ANSI color codes for visual clarity:
-- `\x1b[36m` Cyan — input prompt ("You: ")
-- `\x1b[32m` Green — agent responses (streaming, character by character)
-- `\x1b[33m` Yellow — tool calls (what the agent is doing)
-- `\x1b[31m` Red — errors and safety lockouts
-- `\x1b[35m` Magenta — system messages
+**UI** uses ANSI color codes for visual presentation:
+- `\x1b[36m` Cyan — Input prompt ("You: ")
+- `\x1b[32m` Green — Agent response (streaming, character-by-character)
+- `\x1b[33m` Yellow — Tool calls (what the Agent is doing)
+- `\x1b[31m` Red — Errors and safety lockouts
+- `\x1b[35m` Magenta — System messages
 
-Handles 17+ event types including `AGENT_STARTED` (welcome banner), `STREAM_TEXT_DELTA` (live typing), `TOOL_CALL_START/RESULT/ERROR` (tool lifecycle), and `SAFETY_LOCKOUT` (emergency alerts).
+Handles over 17 event types, including `AGENT_STARTED` (welcome message), `STREAM_TEXT_DELTA` (real-time typing effect), `TOOL_CALL_START/RESULT/ERROR` (tool lifecycle), and `SAFETY_LOCKOUT` (emergency alerts).
 
 **transport-websocket** — The Network Body
 
-Full bidirectional communication with production-grade features:
+Full-duplex communication with production-grade features:
 
 ```
 Client → Server:
@@ -126,29 +126,29 @@ Server → Client:
 { "type": "agent_event", "event": { "type": "stream:text_delta", ... } }
 ```
 
-- **Session Isolation**: Each WebSocket connection auto-creates its own session. Events are routed by `sessionId` — client A never sees client B's conversation
-- **Session Resumption**: Disconnect and reconnect with the same `sessionId` to continue where you left off
-- **Health Monitoring**: Configurable ping/pong intervals (default 30s). After N missed pongs (default 2), the connection is terminated as stale
-- **Directed Routing**: Events routed by `replyTo`, `sessionId`, or broadcast to all
+- **Session Isolation**: Each WebSocket connection automatically establishes an independent Session. Events are routed by `sessionId`—User A never sees User B's conversation.
+- **Session Recovery**: Reconnect with the same `sessionId` after disconnection to resume where you left off.
+- **Health Monitoring**: Configurable ping/pong intervals (default 30s). After N consecutive failed pongs (default 2), the connection is deemed stale and terminated.
+- **Targeted Routing**: Events are routed by `replyTo`, `sessionId`, or broadcast to all connections.
 
 **transport-http** — The Web Body
 
-REST + SSE for web integration:
+REST + SSE for Web integration:
 
 | Method | Endpoint | Purpose |
-|--------|----------|---------|
+|------|------|------|
 | POST | `/api/input` | Submit user input → `{status, requestId}` |
 | GET | `/api/status` | Agent health check → `{status, pendingRequests}` |
-| GET | `/api/response?requestId=xxx` | Poll response → `{events, complete}` |
-| GET | `/api/events[?sessionId=xxx]` | SSE stream → Real-time event stream |
+| GET | `/api/response?requestId=xxx` | Poll for responses → `{events, complete}` |
+| GET | `/api/events[?sessionId=xxx]` | SSE Stream → Real-time event flow |
 
-Session binding, CORS support, configurable buffer size (default 100 events), response timeout (default 5 minutes), and heartbeat health checks for stale SSE connection detection.
+Supports Session binding, CORS support, configurable buffer sizes (default 100 events), response timeouts (default 5 mins), and heartbeat health checks for detecting stale SSE connections.
 
 ## Plugin Architecture
 
-### The Factory Pattern
+### Factory Pattern
 
-Every plugin is a function that returns a manifest (who am I?) and a factory (what can I do?):
+Each plugin is a function returning a manifest (Who am I?) and a factory (What can I do?):
 
 ```typescript
 export function createXxxPlugin(): IPlugin {
@@ -159,9 +159,9 @@ export function createXxxPlugin(): IPlugin {
       description: "What this plugin does"
     },
     async factory(ctx: IPluginContext) {
-      // ctx gives you everything:
-      // - ctx.bus: Event bus for pub/sub
-      // - ctx.config: User configuration
+      // ctx provides everything you need:
+      // - ctx.bus: Event Bus for pub/sub
+      // - ctx.config: User settings
       // - ctx.logger: Structured logging
       // - ctx.sessions: Session manager
       // - ctx.pushInput(): Send events to Core
@@ -169,13 +169,13 @@ export function createXxxPlugin(): IPlugin {
       // - ctx.agentId: Who am I?
 
       return {
-        listeners: [],   // Sensation — how it hears
-        ui: [],          // Form — how it appears
-        providers: [],   // Perception — how it thinks
-        tools: [],       // Volition — how it acts
-        guides: [],      // Consciousness — who it is
+        listeners: [],   // Sensation — How to hear
+        ui: [],          // Form — How to present
+        providers: [],   // Perception — How to think
+        tools: [],       // Volition — How to act
+        guides: [],      // Consciousness — Who am I
         commands: [],    // Slash commands
-        dispose: async () => { /* cleanup on shutdown */ }
+        dispose: async () => { /* Cleanup on shutdown */ }
       };
     }
   };
@@ -184,25 +184,25 @@ export function createXxxPlugin(): IPlugin {
 
 ### Plugin Composition Patterns
 
-A plugin is not confined to one aggregate. Like a living organ that serves multiple functions, a plugin can combine capabilities:
+A plugin is not limited to a single aggregate. Just as a living organ can serve multiple functions, plugins can combine different capabilities:
 
-| Pattern | Example | Components | Analogy |
-|---------|---------|------------|---------|
-| Pure Guide | guide-character-init | `IGuide` only | A soul without a body |
-| Pure Provider | provider-gemini-oauth | `IProvider` + commands | A brain in a jar |
+| Pattern | Example | Composition | Analogy |
+|------|------|------|------|
+| Pure Guide | guide-character-init | `IGuide` only | Soul without a body |
+| Pure Provider | provider-gemini-oauth | `IProvider` + commands | Brain in a vat |
 | Pure Tool | standard-function-fs | `ITool` × 5 | Hands without a brain |
-| Sensory Pair | standard-function-stdio | `IListener` + `IUI` | Eyes + mouth |
-| Transport Pair | transport-websocket | `IListener` + `IUI` + dispose | Ears + voice + farewell |
+| Sensory Pairing | standard-function-stdio | `IListener` + `IUI` | Eyes + Mouth |
+| Transport Pairing | transport-websocket | `IListener` + `IUI` + dispose | Ears + Voice + Farewell |
 
-### The pushInput Contract
+### pushInput Contract
 
-Plugins never call Core APIs directly. All plugin→Core communication goes through one gateway: `ctx.pushInput()`. This is the sensory nerve — plugins sense the world and push standardized events into the Core's event queue. The Core pulls events and processes them in its execution loop.
+Plugins never call Core APIs directly. All plugin-to-Core communication passes through a single gateway: `ctx.pushInput()`. This is the sensory nerve—the plugin perceives the world and pushes standardized events into the Core's event queue. The Core retrieves events from the queue and processes them in its execution loop.
 
-This one-way contract means plugins can be loaded, unloaded, and replaced without touching Core internals.
+This unidirectional contract means plugins can be loaded, unloaded, and replaced without ever touching the Core's internals.
 
 ### Lifecycle Management
 
-Every plugin can implement `dispose()` for graceful shutdown — close HTTP servers, terminate WebSocket connections, destroy sessions, flush buffers. The Plugin Loader calls `dispose()` on all loaded plugins when the agent shuts down, in reverse order of loading.
+Every plugin can implement `dispose()` for graceful shutdown—closing HTTP servers, terminating WebSocket connections, destroying Sessions, clearing buffers. The Plugin Loader calls `dispose()` on all loaded plugins in the reverse order of loading when the Agent shuts down.
 
 ```typescript
 // Plugin Loader handles registration automatically
@@ -215,35 +215,35 @@ if (hooks.ui)        for (const u of hooks.ui) uiRegistry.register(u);
 if (hooks.guides)    for (const g of hooks.guides) guideRegistry.register(g);
 ```
 
-## The USB Plug-and-Play Scenario
+## USB Plug-and-Play Scenario
 
-One of OpenStarry's most compelling demonstrations of portability: **an agent on a USB stick**.
+One of OpenStarry's most compelling portability demonstrations: **Agent on a USB stick**.
 
-Imagine plugging in a USB drive with this structure:
+Imagine inserting a USB stick with this structure:
 ```
 E:/ (USB Root)
 ├── configs/
-│   └── agent.json     # "I am USB Photo Backup. I can read Pictures/ and write to E:/backup_data/"
+│   └── agent.json     # "I am a USB Photo Backup assistant. I read Pictures/ and write to E:/backup_data/"
 ├── plugins/
 │   └── backup-utils/  # Specialized incremental backup algorithm
 ├── logs/
 └── backup_data/
 ```
 
-The host system detects the USB, reads the manifest, asks the user for permission, spawns the agent with **strict path boundaries** (`fs_allow_paths: ["C:/Users/Public/Pictures", "E:/backup_data"]`, `network_allow_hosts: []`), and the agent runs its backup task. When done, it reports completion and the USB is safely ejectable.
+The host system detects the USB, reads the manifest, asks for user authorization, and spawns the Agent with **strict path boundaries** (`fs_allow_paths: ["C:/Users/Public/Pictures", "E:/backup_data"]`, `network_allow_hosts: []`). The Agent then executes the backup task. Upon completion, it reports results, and the USB can be safely ejected.
 
-The agent's soul (its prompt and plugins) lives entirely on the USB. Its body (the Core runtime) lives on the host. Plug it into a different computer — same soul, different body. This is the Five Aggregates in action.
+The Agent's soul (its Prompt and plugins) resides entirely on the USB. Its body (Core execution environment) resides on the host. Plug it into another computer—same soul, different body. This is the Five Aggregates in practice.
 
 ## Building Your Own Plugin
 
-1. Create a package depending on `@openstarry/sdk`
-2. Export a `createXxxPlugin()` factory function
-3. Ask yourself: **which aggregates does my plugin provide?**
+1. Create a package dependent on `@openstarry/sdk`.
+2. Export a `createXxxPlugin()` factory function.
+3. Ask yourself: **Which aggregates does my plugin provide?**
    - Does it show something? → `IUI`
    - Does it hear something? → `IListener`
    - Does it think? → `IProvider`
-   - Does it act? → `ITool`
+   - Does it perform actions? → `ITool`
    - Does it know who it is? → `IGuide`
-4. Use `ctx.pushInput()` for plugin→Core communication
-5. Implement `dispose()` for cleanup
-6. Ship it as an npm package: `@openstarry-plugin/your-plugin`
+4. Use `ctx.pushInput()` for plugin-to-Core communication.
+5. Implement `dispose()` for resource cleanup.
+6. Publish as an npm package: `@openstarry-plugin/your-plugin`.

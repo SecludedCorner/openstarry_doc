@@ -35,18 +35,18 @@ OpenStarry 採用三層遞進的架構設計，模擬生物與其生存環境的
 
 ```mermaid
 graph TD
-    subgraph Host [🛡️ Management Zone (Host Environment)]
+    subgraph Host ["🛡️ Management Zone (Host Environment)"]
         direction TB
         Orchestrator[調度層] --> Container[容器層]
         Policy[安全策略層] -.-> Container
         HAL[硬體抽象層] --> InputFlow((感知流))
     end
 
-    subgraph Runtime [⚡ Running Instance]
+    subgraph Runtime ["⚡ Running Instance"]
         direction LR
         InputFlow --> Core
         
-        subgraph Core [🧠 Agent Core (Microkernel)]
+        subgraph Core ["🧠 Agent Core (Microkernel)"]
             Loop[執行迴圈]
             State[狀態機]
             Interceptor[異常攔截]
@@ -54,7 +54,7 @@ graph TD
 
         Core --> |1. Load| Plugins
         
-        subgraph Plugins [🔌 Capability Plugins (The 5 Aggregates)]
+        subgraph Plugins ["🔌 Capability Plugins (The 5 Aggregates)"]
             Guide[識：Guide]
             Tool[行：Tools]
             LLM[想：Provider]

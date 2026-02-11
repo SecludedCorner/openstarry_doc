@@ -1,171 +1,173 @@
 # How OpenStarry Differs from Other Frameworks
 
-> *"The agent simulates human cognition — not traditional Request-Response programming."*
+> *"The operational mechanism of an Agent is modeled after human cognitive processes rather than a traditional Request-Response program."*
 
 ## A Different Category
 
-The AI agent ecosystem has many frameworks: LangChain, AutoGen, CrewAI, Semantic Kernel, and others. Each has strengths. OpenStarry is not trying to be a better version of any of them. It occupies a fundamentally different niche — **an operating system for digital life**, not a toolkit for building chatbots.
+The AI Agent ecosystem is full of frameworks: LangChain, AutoGen, CrewAI, Semantic Kernel, etc. Each has its strengths. OpenStarry is not trying to be a "better" version of any of them. it occupies a fundamentally different space—an **operating system for digital species**, rather than a toolkit for building chatbots.
 
 ## Seven Key Differences
 
 ### 1. Agents as OS Processes, Not Scripts
 
-**Typical frameworks**: Agents are functions. They wake, execute, return a result, and die. State is lost between invocations. Memory is limited to the current session. Every restart is a fresh start.
+**Typical Frameworks**: Agents are functions. They wake up, execute, return a result, and die. State is lost between calls. Memory is limited to the current session. Every restart is a blank slate.
 
-**OpenStarry**: Agents are persistent digital organisms managed by a daemon (`openstarryd`), like processes managed by `systemd`. They have lifecycles:
+**OpenStarry**: Agents are persistent digital organisms managed by a Daemon (`openstarryd`), much like processes managed by `systemd`. They have a lifecycle:
 
 ```
-Origination → Scheduling → Arising → Operation → Cessation
+Origination (緣起) → Scheduling (調度) → Arising (生起) → Operation (運行) → Cessation (寂滅)
 ```
 
-They can sleep, wake, be monitored, restarted, and inspected while running. Memory persists across sessions. State survives restarts. The agent has a PID, resource limits, and a heartbeat.
+They can sleep, wake up, be monitored, restart, and be inspected at runtime. Memory persists across sessions. State survives restarts. Agents have PIDs, resource limits, and heartbeats.
 
 ### 2. Philosophy-Driven Architecture (Five Aggregates)
 
-**Typical frameworks**: Plugin systems organized by technical category — tools, chains, memory, retrievers, agents. Practical, but the categories are arbitrary and often overlap.
+**Typical Frameworks**: Plugin systems are organized by technical categories—tools, chains, memory, retrievers, agents. Functional, but classifications are often arbitrary and overlapping.
 
-**OpenStarry**: Every plugin maps to one of five philosophical dimensions:
+**OpenStarry**: Every plugin corresponds to one of five philosophical dimensions:
 
-| Aggregate | Plugin Type | The Question It Answers |
-|-----------|------------|------------------------|
-| Form | UI | How does the agent appear? |
-| Sensation | Listener | What can the agent perceive? |
-| Perception | Provider | How does the agent think? |
-| Volition | Tool | What can the agent do? |
-| Consciousness | Guide | Who is the agent? |
+| Aggregate | Plugin Type | Question it Answers |
+|----|---------|------------|
+| Form (色) | UI | How does the Agent manifest? |
+| Sensation (受) | Listener | What can the Agent perceive? |
+| Perception (想) | Provider | How does the Agent think? |
+| Volition (行) | Tool | What can the Agent do? |
+| Consciousness (識) | Guide | Who is the Agent? |
 
-This isn't decoration. It provides **architectural completeness** — if you cover all five aggregates, you cover everything an agent needs. You can't accidentally forget a dimension. The mapping has been tested for 2,500 years.
+This is not decorative. It provides **architectural completeness**—if you cover all five aggregates, you cover everything an Agent needs. It's impossible to accidentally miss a dimension. This mapping has been tested for over 2,500 years.
 
-One plugin can provide multiple aggregates (a WebSocket plugin provides both Listener and UI). The system remains clean because the interfaces are orthogonal.
+A single plugin can provide multiple aggregates (e.g., a WebSocket plugin provides both a Listener and a UI). The system remains clean because interfaces are orthogonal.
 
 ### 3. Absolute Microkernel Purity
 
-**Typical frameworks**: The core usually includes default tools, built-in memory strategies, hardcoded LLM integrations, or default UI. Removing them breaks things.
+**Typical Frameworks**: The core often includes default tools, built-in memory strategies, hardcoded LLM integrations, or a default UI. Removing them is difficult.
 
-**OpenStarry**: The compiled Core binary contains **zero plugin code**. This is not a guideline — it's an automated test that runs in every build:
+**OpenStarry**: The compiled Core binary contains **zero plugin code**. This is not just a guideline—it is an automated test enforced on every build:
 
 ```bash
-pnpm test:purity  # Scans Core for any plugin imports → must find ZERO
+pnpm test:purity  # Scans Core for any plugin imports → must be zero
 ```
 
-Without plugins, the Core does nothing. It's an empty execution loop — a heartbeat with no body. This extreme purity means:
-- The Core has minimal attack surface (no I/O code = no I/O vulnerabilities)
-- The same Core runs on CLI, web, WebSocket, IoT — without modification
-- Architecture cannot be accidentally contaminated
+Without plugins, the Core does nothing. It is an empty execution loop—a heartbeat without a body. This extreme purity means:
+- The Core's attack surface is minimal (no I/O code = no I/O vulnerabilities).
+- The same Core runs on CLI, Web, WebSocket, or IoT—without modification.
+- The architecture cannot be accidentally contaminated.
 
-> *"No built-in code means no built-in bugs."*
+> *"No built-in code, no built-in bugs."*
 
-### 4. Headless Design — Portable Souls
+### 4. Headless Design — Portable Soul
 
-**Typical frameworks**: Usually coupled to a specific interface — a chat UI, a notebook, an API server. Changing the frontend means changing the core.
+**Typical Frameworks**: Usually coupled to specific interfaces—chat UI, Notebook, API server. Changing the frontend means changing the core.
 
-**OpenStarry**: The Core is headless. It doesn't know what UI it's wearing, what protocol it's listening on, or what device it's running on.
+**OpenStarry**: The Core is Headless. It doesn't know which UI it's wearing, what protocol it's listening on, or which device it's running on.
 
-The same agent can simultaneously:
+The same Agent can simultaneously:
 - Respond in a terminal (stdio plugin)
 - Accept WebSocket connections (transport-websocket plugin)
-- Serve HTTP APIs with SSE streaming (transport-http plugin)
+- Provide an HTTP API with SSE streaming (transport-http plugin)
 
-All three bodies share the same brain, same tools, same soul. Events from any listener enter the same event queue. Responses route back through the Transport Bridge to all registered UIs.
+Three bodies sharing the same brain, same tools, same soul. Events from any Listener enter the same event queue. Responses are routed back to all registered UIs via the Transport Bridge.
 
-The most dramatic demonstration: **an agent on a USB stick**. The agent's soul (prompts + custom plugins) lives on a USB drive. Plug it into any computer running OpenStarry, and the agent awakens — using the host's Core runtime but its own identity and capabilities. Plug it into a different computer: same soul, different body.
+The most dramatic demonstration: **Agent on a USB stick**. The Agent's soul (Prompt + custom plugins) lives on the USB drive. Plug it into any computer running OpenStarry, and the Agent wakes up—using the host's Core environment but retaining its own identity and capabilities. Plug it into another computer: same soul, different body.
 
 ### 5. Pain-Driven Self-Correction
 
-**Typical frameworks**: Errors raise exceptions, trigger blind retries, or terminate execution. The agent doesn't "know" it failed — the framework handles the error above the agent's awareness.
+**Typical Frameworks**: Errors raise exceptions, trigger blind retries, or terminate execution. The Agent doesn't "know" it failed—the framework handles errors above the Agent's consciousness.
 
-**OpenStarry**: Errors become **pain signals** — injected directly into the agent's context as tool results:
+**OpenStarry**: Errors become **pain signals**—injected directly into the Agent's context as tool results:
 
 ```
-Error occurs → SafetyMonitor captures it → Guide plugin interprets severity
-→ Pain alert injected into context → LLM "feels" the failure → Self-corrects
+Error occurs → SafetyMonitor captures → Guide plugin interprets severity
+→ Pain alert injected into context → LLM "feels" failure → Self-correction
 ```
 
-Three severity levels: Low Pain → Medium Pain → Critical Pain
+Three severity levels: 💧 Low Pain → ⚡ Medium Pain → 🔥🔥🔥 Critical Pain
 
-A **frustration counter** escalates response when pain is ignored:
-- 3 identical failures → system injects "STOP and analyze why"
-- 5 consecutive errors → forced pause
-- 80% error rate in 10 operations → emergency halt
+A **Frustration Counter** escalates response when pain is ignored:
+- 3 identical failures → System injects "STOP and analyze why."
+- 5 consecutive errors → Forced halt.
+- 80% error rate in 10 operations → Emergency abort.
 
-This mirrors biological pain: minor → annoying → debilitating → unconsciousness.
+This corresponds to biological pain: mild → annoying → incapacitating → loss of consciousness.
 
-The key insight: **Core provides facts, Guide provides meaning.** The Core says "EPERM at /etc/passwd." The Guide says "This causes critical pain. You're hitting a permission wall. Stop and reconsider." Different Guide plugins can interpret the same error differently — security agents react with caution, learning agents react with curiosity.
+Key insight: **Core provides facts, Guide provides meaning.** Core says "EPERM at /etc/passwd." Guide says "This causes severe pain. You are hitting a permission wall. Stop and reconsider." Different Guide plugins can interpret the same error differently—a safety-oriented Agent responds with caution, a learning Agent with curiosity.
 
 ### 6. Fractal Multi-Agent Composition
 
-**Typical frameworks**: Multi-agent systems have fixed topologies — supervisor-worker, round-robin, debate. Adding layers requires architectural changes.
+**Typical Frameworks**: Multi-agent systems have fixed topologies—supervisor-worker, cyclic, debate. Adding layers requires architectural changes.
 
-**OpenStarry**: Self-similar structure. A single agent and a team of agents expose **the identical MCP interface**:
+**OpenStarry**: Self-similar structure. A single Agent and an Agent team expose the **exact same MCP interface**:
 
 ```
 Simple Agent:
   Input → LLM → Tool Calls → Output
 
-Complex Agent (team):
+Composite Agent (Team):
   Input → Coordinator Agent → [Sub-Agent A (research), Sub-Agent B (coding)] → Output
 
 Both expose: tools/list, tools/call via JSON-RPC 2.0
 ```
 
-A caller can't tell if it's talking to a single agent or a team of 50. This enables infinite-layer composition without architectural change — teams of teams of teams, each appearing as a simple peer.
+A caller cannot tell if it's talking to a single Agent or a 50-person team. This enables infinite levels of nesting without architectural changes—teams of teams of teams, each appearing as a simple peer node.
 
-Recursion guard (TraceId + depth counter, max 5 layers) prevents infinite loops.
+Recursion protection (TraceId + depth counter, max 5) prevents infinite loops.
 
-> *"An agent can be a simple tool… or a complex team… externally, they expose the same interface."*
+> *"An Agent can be just a simple tool... but it can also be a complex team... Externally, they expose the same interface."*
 
-### 7. Control-Theoretic Foundation
+### 7. Control Theory Foundations
 
-**Typical frameworks**: Execution models are imperative (step 1, step 2, step 3) or chain-based (LangChain's chain metaphor). No formal model of stability or convergence.
+**Typical Frameworks**: Execution models are imperative (Step 1, Step 2, Step 3) or chain-based (LangChain's chain metaphor). No formal model for stability or convergence.
 
-**OpenStarry**: The agent is explicitly modeled as a **feedback control system** — the same math used in autopilots and industrial robotics:
+**OpenStarry**: The Agent is explicitly modeled as a **Feedback Control System**—the same mathematics used for self-driving cars and industrial robotics:
 
 | Control Theory | Agent Architecture |
-|---------------|-------------------|
-| Reference input | User's goal (System Prompt + message) |
-| Controller | LLM (minimizes goal-state error) |
-| Control variable | Tool calls |
-| Plant | External world |
-| Sensor | Tool results |
-| Error signal | Gap between goal and reality |
+|---------|-----------|
+| Reference Input | User Goal (System Prompt + Message) |
+| Controller | LLM (Minimizes Goal-State error) |
+| Control Input | Tool Calls |
+| Plant | External World |
+| Sensor | Tool Results |
+| Error Signal | Discrepancy between Goal and Reality |
 
-This provides formal reasoning about three stability problems:
-- **Oscillation** (undo/redo loops) → solved by context history (integral term)
-- **Divergence** (goal drift) → solved by System Prompt anchoring (never pruned)
-- **Steady-state error** (premature completion) → solved by verification steps (derivative term)
+This provides formal reasoning for three stability issues:
+- **Oscillation** (undo/redo loops) → solved by context history (Integral term).
+- **Divergence** (goal drift) → solved by System Prompt anchoring (Never trimmed).
+- **Steady-state Error** (premature completion) → solved by verification steps (Derivative term).
 
 > **"Intelligence is not just about having a powerful LLM. It's about the quality of the feedback loop."**
 
 ## Comparison Table
 
 | Aspect | LangChain / CrewAI / AutoGen | OpenStarry |
-|--------|------------------------------|------------|
-| **Agent model** | Script / function call | OS process / digital organism |
-| **Architecture basis** | Technical categories | Buddhist Five Aggregates (2,500 years tested) |
-| **Core purity** | Includes defaults (tools, memory, LLM) | Zero built-in capabilities (verified by `test:purity`) |
-| **UI coupling** | Coupled to specific interface | Headless — UI is a swappable plugin |
-| **Error handling** | Exception / blind retry | Pain mechanism with severity levels + frustration counter |
-| **Multi-agent** | Fixed topology | Fractal composition via MCP (infinite layers) |
-| **Theoretical model** | Imperative / chain | Control-theoretic feedback loop (PID-inspired) |
-| **Lifecycle** | Run → terminate | Persistent with daemon management (sleep/wake/restart) |
-| **Memory** | Framework-specific, hardcoded | Pluggable strategies (sliding window / summarization / extraction) |
-| **Security** | Varies | 3-level circuit breaker + filesystem sandbox + path validation |
-| **Portability** | Framework-dependent | Portable souls — same agent on CLI, web, USB, IoT |
-| **Safety thresholds** | Configurable retries | Concrete: 50 tick limit, 100k tokens, 30s timeout, 3-strike fingerprint |
+|------|------------------------------|------------|
+| **Agent Model** | Script / Function Call | OS Process / Digital Organism |
+| **Arch Base** | Technical categories | Buddhist Five Aggregates (2,500yr verified) |
+| **Core Purity** | Includes defaults (tools, memory, LLM) | Zero built-in capabilities (verified by `test:purity`) |
+| **UI Coupling** | Coupled to specific interface | Headless — UI is a swappable plugin |
+| **Error Handling** | Exception / Blind retry | Pain mechanism with severity + frustration counter |
+| **Multi-Agent** | Fixed topology | Fractal composition via MCP (infinite levels) |
+| **Theoretical Model** | Imperative / Chain | Control Theory feedback loop (PID-inspired) |
+| **Lifecycle** | Execution → Termination | Persistent with Daemon management (sleep/wake/restart) |
+| **Memory** | Framework-specific, hardcoded | Pluggable strategies (Sliding window / Summary / Extraction) |
+| **Security** | Varies | 3-layer breakers + Filesystem sandbox + Path validation |
+| **Portability** | Framework dependent | Portable soul — same Agent on CLI, Web, USB, IoT |
+| **Safety Thresholds** | Configurable retries | Concrete metrics: 50 tick cap, 100k tokens, 30s timeout, 3-strike fingerprinting |
 
 ## What OpenStarry is NOT
 
-- **Not a LangChain replacement** — Different abstraction level. LangChain chains LLM calls; OpenStarry creates living digital organisms
-- **Not a chatbot builder** — It's an agent operating system with daemon management and lifecycle persistence
-- **Not production-ready yet** — v0.2.0-beta, actively developing, honest about what's done and what's planned
-- **Not trying to do everything** — Core is deliberately empty; the ecosystem fills the gaps through plugins
-- **Not just theory** — 118+ tests, working CLI, WebSocket, and HTTP transports, real code shipping
+- **Not a LangChain replacement** — different level of abstraction. LangChain chains LLM calls; OpenStarry creates living digital organisms.
+- **Not a chatbot builder** — it is an Agent OS with Daemon management and lifecycle persistence.
+- **Not yet Production-Ready** — v0.2.0-beta, under active development with transparency on what is finished vs. planned.
+- **Not trying to do everything** — Core is intentionally empty; the ecosystem fills the gaps via plugins.
+- **Not just theory** — 118+ tests, working CLI, WebSocket, and HTTP transports; real, shipping code.
 
-## Who Should Care
+## Who Should Pay Attention
 
-- **AI agent researchers** — Novel architecture grounded in philosophy + control theory, with formal reasoning about stability
-- **Framework developers** — Extreme microkernel purity as a design study; automated architectural enforcement
-- **Full-stack developers** — Headless design means build any frontend; factory pattern means build any plugin
-- **Multi-agent builders** — Fractal MCP composition for scalable agent teams without topology constraints
-- **Philosophy enthusiasts** — Genuine East-West synthesis, not surface-level naming
-- **Open source contributors** — Complete SOP with quality gates, frozen interfaces, and parallel-safe development
+- **AI Agent Researchers** — Novel architecture based on philosophy + control theory with formal reasoning for stability.
+- **Framework Developers** — Extreme microkernel purity as a design study; automated architectural guarding.
+- **Full-stack Developers** — Headless design means you can build any frontend; factory pattern means you can build any plugin.
+- **Multi-Agent Builders** — Fractal MCP composition for scalable Agent teams without topological constraints.
+- **Philosophy Enthusiasts** — True East-meets-West integration, not just superficial naming.
+- **Open Source Contributors** — Full SOP with quality gates, frozen interfaces, and parallel-safe development.
+
+> *"We don't just build Chatbots; we build an operating system for digital species."*
