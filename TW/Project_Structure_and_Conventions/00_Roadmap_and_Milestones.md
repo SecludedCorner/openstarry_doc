@@ -10,12 +10,31 @@
 |------|------|------|
 | v0.1.0-alpha | MVP 基礎架構 (Plan01-04) | ✅ 完成 |
 | v0.2.0-beta | 多通道傳輸 — WebSocket + HTTP (Plan05) | ✅ 完成 |
-| v0.2.1-beta | Session 隔離 + SSE + TraceId (Plan05.1, 05.2, 05.5) | 📋 規劃中 |
-| v0.2.2-beta | E2E 測試腳手架 (Plan05.4) | 📋 規劃中 |
-| v0.3.0-beta | MCP 協議整合 (Plan06 + DevTools) | 📋 規劃中 |
+| v0.2.1-beta | Session 隔離 + SSE + Health Check (Plan05.1, 05.2, 05.5-①) | ✅ 完成 (Cycle 1, 2026-02-10) |
+| v0.2.2-beta | Metrics/Logging + Error Handling (Plan05.5-②③) | ✅ 完成 (Cycle 2, 2026-02-11) |
+| v0.3.0-beta | MCP 協議整合 (Plan06) | ✅ 完成 (Cycle 3, 2026-02-11) |
 | v0.3.5-beta | 管理層基礎建設 (Management Zone Infra) | 📋 規劃中 |
-| v0.4.0-beta | 持久化與狀態恢復 (Plan07) | 📋 規劃中 |
-| v0.5.0-beta | TUI Dashboard + 插件協調層 (Plan08-09) | 📋 規劃中 |
+| v0.4.0-beta | Runtime Sandbox MVP (Plan07) | ✅ 完成 (Cycle 5, 2026-02-11) |
+| v0.4.1-beta | Sandbox Restart + Worker Pool (Plan07.1) | ✅ 完成 (Cycle 6, 2026-02-11) |
+| v0.4.2-beta | Import Analysis + PKI Verification (Plan07.2) | ✅ 完成 (Cycle 7, 2026-02-11) |
+| v0.4.3-beta | Audit Logging + Module._load (Plan07.3) | ✅ 完成 (Cycle 8, 2026-02-11) |
+| v0.5.0-beta | TUI Dashboard MVP (Plan08) | ✅ 完成 (Cycle 9, 2026-02-11) |
+| v0.6.0-beta | DevTools Plugin + E2E Testing (Plan11) | ✅ 完成 (Cycle 12, 2026-02-12) |
+| v0.7.0-beta | DevTools Debugging + E2E Framework | ✅ 完成 (Cycle 12, 2026-02-12) |
+| v0.8.0-beta | Daemon Mode MVP (Plan12) | ✅ 完成 (Cycle 13, 2026-02-12) |
+| v0.9.0-beta | Seamless Attach (Plan13) | ✅ 完成 (Cycle 14, 2026-02-12) |
+| v0.10.0-beta | MCP Resources + OAuth 2.1 (Plan06-P3) | ✅ 完成 (Cycle 15, 2026-02-12) |
+| v0.11.0-beta | Multi-client Attach & Session Management (Plan14) | ✅ 完成 (Cycle 16, 2026-02-12) |
+| v0.12.0-beta | MCP Sampling & Advanced Protocol Extensions (Plan06-P4) | ✅ 完成 (Cycle 17, 2026-02-12) |
+| v0.13.0-beta | SDK Context Extensions & Provider Integration (Plan15) | ✅ 完成 (Cycle 18, 2026-02-12) |
+| v0.14.0-beta | Security Hardening & Quality Polish (Plan16) | ✅ 完成 (Cycle 19, 2026-02-12) |
+| v0.15.0-beta | Plugin Developer Experience (Plan17) | ✅ 完成 (Cycle 20, 2026-02-12) — 970 tests |
+| v0.16.0-beta | Plugin Sync & System Plugin Directory (Plan18) | ✅ 完成 (Cycle 21, 2026-02-12) — 1009 tests |
+| v0.17.0-beta | Plugin Dependency Wiring & Cross-Plugin Services (Plan19) | ✅ 完成 (Cycle 22, 2026-02-12) — 1067 tests |
+| v0.18.0-beta | Workflow Engine MVP (Plan20) | ✅ 完成 (Cycle 23, 2026-02-12) — 1104 tests |
+| v0.19.0-beta | Web-based Remote Attach (Plan21) | ✅ 完成 (Cycle 24, 2026-02-12) — 1132 tests |
+| v0.20.0-beta | Plugin Marketplace MVP (Plan22) | ✅ 完成 (Cycle 25, 2026-02-13) — 1330 tests |
+| v0.20.1-beta | Windows 跨平台修復 + Attach UX 改善 (Hotfix) | ✅ 完成 (Cycle 25-26, 2026-02-13~14) — 1339 tests |
 
 ---
 
@@ -59,10 +78,10 @@
 **目標：** 構建完整的五蘊插件基礎設施與標準庫，建立安全邊界。
 **狀態：** 🟡 進行中 (In Progress) — 核心插件已完成，進階功能待實作
 
-- [ ] **3.1 核心加載協議 (Loading Protocol)**
+- [x] **3.1 核心加載協議 (Loading Protocol)**
     - [x] 實作 `PluginLoader`，支持**工廠模式 (Factory Pattern)** 初始化。 *(Plan01)*
-    - [ ] 實作 `IPluginContext`：包含 Logger, Config, 以及**跨插件服務注入 (dependencies 欄位)**。
-    - [ ] **實作迴路編織邏輯 (Dependency Wiring):** 根據 `20` 號文件，在加載時自動對接 OODA 迴路。
+    - [x] 實作 `IPluginContext`：包含 Logger, Config, 以及**跨插件服務注入 (dependencies 欄位)**。 *(Plan19)*
+    - [x] **實作迴路編織邏輯 (Dependency Wiring):** 根據 `20` 號文件，在加載時自動對接 OODA 迴路。 *(Plan19 — topologicalSort, cycle detection, AgentCore.serviceRegistry)*
     - [x] **實作指令註冊表 (CommandRegistry):** 支援 CLI `run-tool` 與 Chat `/slash` 指令的映射與執行邏輯。 *(Plan01)*
     - [x] **實作動態插件載入 (Dynamic Loading):** CLI 支援 `agent.json` 的 `plugins[].path` 欄位，透過 `import()` 動態載入第三方插件。 *(Plan02 Phase A3)*
     - [x] 實作 `agent.json` 的運行時驗證器（Zod schema 驗證）。 *(v0.1.5 - Plan03 補強完成)*
@@ -139,40 +158,210 @@
 ---
 
 ## 🔐 階段 4.6：實作週期一 (v0.2.1-beta)
-**目標：** 解決多用戶隱私問題，優化傳輸效率，建立全鏈路追蹤。
-**狀態：** 📋 規劃中
+**目標：** 解決多用戶隱私問題，優化傳輸效率，建立連線健康檢查。
+**狀態：** 🟢 已完成 (Cycle 1, 2026-02-10) — 118 tests, QA PASS, Architect PASS WITH NOTES
 
-### Plan05.1: Session 隔離與訊息路由 🔴 最高優先級
-- [ ] Listener 標記 `sessionId`
-- [ ] Core 透傳 `sessionId` 到輸出事件
-- [ ] UI 依據 `sessionId` 過濾推送
-- [ ] 驗收：WebSocket 用戶 A 看不到用戶 B 的對話
+### Plan05.1: Session 隔離與訊息路由 ✅
+- [x] ISession / ISessionManager 介面 (SDK) + SessionManager 實作 (Core)
+- [x] InputEvent.sessionId 欄位 (可選，向下相容)
+- [x] IPluginContext.sessions 暴露 ISessionManager 給插件
+- [x] Default session (`__default__`) 自動建立，無法銷毀
+- [x] WebSocket session-aware routing (per-session 廣播)
+- [x] 17 個新增測試覆蓋 session isolation 場景
 
-### Plan05.2: HTTP SSE 支援 🟢 高優先級
-- [ ] 新增 `GET /api/stream` 端點
-- [ ] 使用 Server-Sent Events 取代輪詢
-- [ ] 支援 EventSource 客戶端
+### Plan05.2: HTTP SSE 支援 ✅
+- [x] 新增 `GET /api/events` SSE 端點
+- [x] EventSource 相容格式 (text/event-stream)
+- [x] Session-scoped 事件過濾
+- [x] SSE heartbeat 定時發送
+- [x] 與現有 HTTP webhook listener 共存
+- [x] 11 個新增測試覆蓋 SSE 場景
 
-### Plan05.5: 統一 TraceId 🔵 低優先級 (提前實作)
-- [ ] Core 提供統一 `TraceId` 產生器
-- [ ] 所有事件與日誌自動附加
+### Plan05.5-①: 連線健康檢查 ✅
+- [x] WebSocket protocol ping/pong (server-initiated)
+- [x] missedPongs 計數，超過 staleThreshold 斷開
+- [x] HTTP SSE heartbeat 定時檢查
+- [x] HealthCheckConfig 可配置 (enabled, intervalMs, staleThreshold)
+- [x] 6 個新增測試覆蓋 health check 場景
+
+> **🏆 里程碑：v0.2.1-beta**
+> *   ✅ 多客戶端 session 隔離 (WebSocket + HTTP)
+> *   ✅ HTTP SSE 即時串流
+> *   ✅ 連線健康檢查 (ping/pong + heartbeat)
+> *   ✅ 118 tests, 11 packages, snapshot saved
+
+---
 
 ## 🧪 階段 4.7：實作週期二 (v0.2.2-beta)
-**目標：** 建立自動化驗證能力與測試腳手架。
-**狀態：** 📋 規劃中
+**目標：** 建立可觀測性基礎建設與標準化錯誤處理。
+**狀態：** 🟢 已完成 (Cycle 2, 2026-02-11) — 165 tests, QA PASS, Architect PASS WITH NOTES
 
-### Plan05.4: E2E 測試腳手架 🟡 中優先級
+### Plan05.5-②: Metrics / Logging 基礎建設 ✅
+- [x] MetricsCollector (Core): increment / gauge / getSnapshot / reset
+- [x] Logger.time() 方法 (performance.now() 計時)
+- [x] METRICS_SNAPSHOT 事件類型
+- [x] /metrics slash command (AgentCore)
+- [x] Transport 插件 console.log → createLogger 遷移
+- [x] 19 個新增測試
+
+### Plan05.5-③: 標準化錯誤處理 ✅
+- [x] ErrorCode const (12 個錯誤碼)
+- [x] TransportError / SessionError / ConfigError 類別
+- [x] ES2022 Error cause chain 支援
+- [x] 既有 2-arg 建構子向下相容
+- [x] 16 個新增測試
+
+> **🏆 里程碑：v0.2.2-beta**
+> *   ✅ MetricsCollector 可觀測性基礎
+> *   ✅ 標準化錯誤層級 (ErrorCode + cause chain)
+> *   ✅ Transport 插件結構化日誌
+> *   ✅ 165 tests, 11 packages, snapshot saved
+
+---
+
+## 🔗 階段 4.8：MCP 協議整合 (v0.3.0-beta)
+**目標：** 實現 OpenStarry Agent 與外部 MCP Server 的標準化互聯。
+**狀態：** 🟢 已完成 (Cycle 3, 2026-02-11) — 86 tests, Architect PASS WITH NOTES
+
+### Plan06: MCP Client Plugin ✅
+- [x] `@openstarry-plugin/mcp-client` 主要實作
+  - [x] 通用 MCP 傳輸層抽象 (stdio, SSE)
+  - [x] StdioClientTransport 實作 (cross-platform: Windows/Unix)
+  - [x] SSEClientTransport 實作
+  - [x] RPC 通訊層 (JSONRPCClient)
+- [x] MCP Tool Bridge
+  - [x] `mcp:` namespace 機制
+  - [x] `tools/list` → OpenStarry Tool Registry 映射
+  - [x] `tools/call` 執行與結果回傳
+- [x] MCP Prompt Bridge
+  - [x] Slash command (`/mcp-prompt-name`) 映射
+  - [x] `prompts/list` 清單
+  - [x] `prompts/get` 取得完整 prompt 內容
+- [x] `@openstarry-plugin/mcp-server` 伺服器實作
+  - [x] StdioServerTransport 實作
+  - [x] MCP Server Protocol 處理 (initialize, tools/list, tools/call, prompts/*)
+  - [x] JSON-RPC 回複機制
+  - [x] 配套完整錯誤處理
+- [x] `@openstarry-plugin/mcp-common` 共用型別
+  - [x] MCP Protocol 介面定義
+  - [x] Transport 抽象
+  - [x] RPC 通訊型別
+- [x] 86 項單元測試
+  - [x] MCP Client: 53 tests
+  - [x] MCP Server: 33 tests
+
+> **🏆 里程碑：v0.3.0-beta**
+> *   ✅ MCP Client Plugin 完整實作
+> *   ✅ MCP Server Plugin 完整實作
+> *   ✅ Stdio 與 SSE 傳輸支援
+> *   ✅ Tool 與 Prompt Bridge 互聯
+> *   ✅ 86 tests, 3 新增 packages, snapshot saved
+
+---
+
+## 🔒 階段 4.9：Runtime Sandbox (v0.4.0-beta ~ v0.4.3-beta)
+**目標：** 實現完整的運行時沙箱機制，確保插件安全隔離與控制。
+**狀態：** 🟢 已完成 (Cycles 5-8, 2026-02-11) — 442 tests total, QA PASS, Architect PASS WITH NOTES
+
+### Plan07: Runtime Sandbox MVP (Cycle 5) ✅
+**目標：** 建立 Worker 執行緒隔離與基礎簽名驗證機制。
+- [x] SandboxManager 與 Worker 執行緒管理
+  - [x] 單一 Worker 初始化與運行
+  - [x] RPC 通訊機制 (cross-thread MessagePort)
+  - [x] Timeout 與 Memory Limit 強制執行
+- [x] 簽名驗證機制
+  - [x] SHA-256 套件級驗證
+  - [x] Manifest 簽名檢查
+  - [x] 驗證失敗的明確錯誤報告
+- [x] 82 項新增測試
+
+> **里程碑：v0.4.0-beta**
+> *   ✅ Worker 執行緒隔離實作
+> *   ✅ SHA-256 簽名驗證
+> *   ✅ Memory + CPU timeout 控制
+
+### Plan07.1: Worker Lifecycle + Pool (Cycle 6) ✅
+**目標：** 實現 Worker 重啟策略、心跳監控與連接池管理。
+- [x] Worker 重啟機制
+  - [x] 指數退避重啟策略 (exponential backoff: 100, 200, 400, 800ms → cap)
+  - [x] 自動復原故障 Worker
+- [x] 心跳監控 (Heartbeat)
+  - [x] 定期心跳檢查
+  - [x] Stall 偵測與自動隔離
+  - [x] Missing heartbeat 計數器
+- [x] Worker Pool 管理
+  - [x] 預先生成 Worker (pool sizing)
+  - [x] 自動回收與重用
+  - [x] Plugin reset via protocol message
+- [x] 110 項新增測試
+
+> **里程碑：v0.4.1-beta**
+> *   ✅ 指數退避重啟策略
+> *   ✅ 心跳監控與自動恢復
+> *   ✅ Worker Pool 連接池機制
+
+### Plan07.2: Import Analysis + PKI (Cycle 7) ✅
+**目標：** 實現靜態分析防護與 Ed25519 PKI 驗證。
+- [x] 靜態導入分析器 (AST-based)
+  - [x] 遞迴式 require/import 掃描
+  - [x] 白名單 (allowed) / 黑名單 (blocked) 模組檢查
+  - [x] 違規時拒絕載入 (严格模式)
+- [x] Ed25519 PKI 簽名驗證
+  - [x] 公鑰配置機制
+  - [x] Ed25519 簽名檢驗
+  - [x] 多個簽名者支援
+- [x] SandboxConfig 介面
+  - [x] allowed / blocked modules 清單
+  - [x] publicKeys 配置
+  - [x] Runtime policy (strict/warn/off)
+- [x] Worker Pool interface (initialize/acquire/release/shutdown)
+- [x] 135 項新增測試
+
+> **里程碑：v0.4.2-beta**
+> *   ✅ 靜態導入分析防護
+> *   ✅ Ed25519 PKI 驗證機制
+> *   ✅ 模組黑白名單控制
+
+### Plan07.3: Audit Logging + Final Hardening (Cycle 8) ✅
+**目標：** 實現審計日誌與 Module._load 攔截，完成沙箱硬化。
+- [x] AuditLogger 機制
+  - [x] 緩衝式 JSONL 寫入
+  - [x] 非同步日誌記錄
+  - [x] 密鑰隱匿 (password/token/key/auth/credential)
+- [x] Module._load 攔截
+  - [x] 運行時模組加載控制
+  - [x] Strict / Warn / Off 三種模式
+  - [x] 呼叫堆疊追蹤
+- [x] RPC 審計整合
+  - [x] 工具執行日誌
+  - [x] 錯誤追蹤
+  - [x] 性能指標
+- [x] 日誌輪轉與清理
+- [x] 115 項新增測試
+
+> **里程碑：v0.4.3-beta**
+> *   ✅ 完整審計日誌機制
+> *   ✅ Module._load 運行時控制
+> *   ✅ 密鑰隱匿與安全硬化
+> *   ✅ 442 tests (Plan07 全線), snapshot saved
+
+---
+
+## 📋 待實作項目 (Deferred Plan05.x)
+
+### Plan05.3: DevTools 調試介面 ⬜
+> 延後至 Plan06 (MCP) 之後實作。
+
+### Plan05.4: E2E 測試腳手架 ⬜
 - [ ] `createTestAgent()` 工具函數
 - [ ] 支援 MockLLM 插件
 - [ ] 降低社群貢獻門檻
-
-> **⚠️ 注意：Plan05.3 DevTools 延後至 Plan06 (MCP) 之後實作。**
 
 ---
 
 ## 🏰 階段五：守護進程 (Phase 5: The Orchestrator Daemon) — Plan07
 **目標：** 實現進程級管理與持久化。
-**狀態：** 📋 規劃中 (v0.4.0-beta)
+**狀態：** 🟢 已完成 (v0.4.3-beta, Cycles 5-8, 2026-02-11)
 
 - [ ] **5.1 守護進程核心 (Daemon)**
     - [ ] 建立 `apps/daemon`，管理多個 Agent 實例的生命週期。
@@ -192,17 +381,30 @@
 
 ## 🕸️ 階段六：分形社會 (Phase 6: Fractal Society) — Plan06
 **目標：** 實現代理人協作與 MCP 協議。
-**狀態：** 📋 規劃中 (v0.3.0-beta)
-**前置條件：** Plan05.1 Session 隔離完成 ✓
+**狀態：** 🟢 已完成 (v0.3.0-beta → v0.10.0-beta, Cycle 3 → Cycle 15, 2026-02-11 → 2026-02-12)
+**前置條件：** Plan05.1 Session 隔離完成 ✅ (v0.2.1-beta, 2026-02-10)
 
 > **進入檢查清單：**
-> - ☐ Plan05.1 Session 隔離已實作
-> - ☐ 多客戶端場景驗證通過
-> - ☐ 訊息不會跨 Session 洩漏
+> - ✅ Plan05.1 Session 隔離已實作 (Cycle 1)
+> - ✅ 多客戶端場景驗證通過 (118 tests)
+> - ✅ 訊息不會跨 Session 洩漏 (session-aware routing 驗證)
 
-- [ ] **6.1 MCP 深度整合 (Plan06)**
-    - [ ] 實作 `packages/mcp-protocol`，讓 Agent 具備標準化互聯能力。
-    - [ ] 支援多外部客戶端同時連接
+- [x] **6.1 MCP 深度整合 (Plan06-P1: Tools)**
+    - [x] 實作 `@openstarry-plugin/mcp-client`，讓 Agent 具備標準化互聯能力。
+    - [x] 實作 `@openstarry-plugin/mcp-server`，支援多外部客戶端同時連接
+    - [x] 86 項單元測試驗證完成 (v0.3.0-beta, Cycle 3)
+- [x] **6.1a MCP Prompts 整合 (Plan06-P2: Prompts)**
+    - [x] MCP Prompts RFC 0005 Section 5.2 實作完成
+    - [x] `/mcp-prompt-name` Slash 命令支援
+    - [x] 動態提示清單與內容檢索
+    - [x] 42 項新測試 (v0.9.0-beta 之前, Cycle 9+)
+- [x] **6.1b MCP Resources 整合 (Plan06-P3: Resources)**
+    - [x] MCP Resources RFC 0005 Section 5.5 實作完成
+    - [x] listResources / readResource RPC 處理
+    - [x] OAuth 2.1 token 管理 (PKCE, auto-refresh, TTL)
+    - [x] AES-256-GCM 加密 + PBKDF2 (100k iterations)
+    - [x] `/mcp-resources` / `/mcp-server-resources` Slash 命令
+    - [x] 45 項新測試 (v0.10.0-beta, Cycle 15)
 - [ ] **6.2 DevTools 調試介面 (Plan05.3)**
     - [ ] 靜態 HTML 調試介面 `openstarry-devtools`
     - [ ] 左側：對話氣泡視圖
@@ -227,44 +429,182 @@
 
 ## 🖥️ 階段八：終端機演進 (Phase 8: CLI & TUI Evolution) — Plan08 / Plan09
 **目標：** 實現「操作系統級」的終端機體驗，達成 User Scenario Guide 的願景。
-**狀態：** 📋 規劃中 (v0.5.0-beta)
+**狀態：** 🟡 進行中 (v0.5.0-beta Plan08 完成，Plan09 待實作)
 
-- [ ] **8.1 運行時儀表板 (Runtime Dashboard)**
-    - [ ] 實作 `openstarry` 的 TUI 介面 (使用 Ink 或 Blessed)。
-    - [ ] 整合 Daemon 狀態監控、資源圖表與即時日誌串流。
+### Plan08: TUI Dashboard MVP (v0.5.0-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 9, 2026-02-11) — 524 tests (+82 new), 43 test files, QA PASS, Architect PASS_WITH_NOTES
+
+- [x] **8.1 運行時儀表板 (Runtime Dashboard)**
+    - [x] 實作 `@openstarry-plugin/tui-dashboard` (使用 Ink v5 + React 18)
+    - [x] 整合事件監控、狀態顯示、訊息串流
+    - [x] 支援訊息分類、工具呼叫追蹤、錯誤計數
+    - [x] 鍵盤快捷鍵 (q = 離開, Tab = 切換事件日誌)
+
+### Plan12: Daemon Mode MVP (v0.8.0-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 13, 2026-02-12) — 714 tests (+44 new), 18 packages, QA PASS, Architect PASS (1 rework)
+
+- [x] **後台進程管理 (Daemon Process Management)**
+    - [x] CLI 命令：`daemon start`, `daemon stop`, `daemon ps`
+    - [x] 進程生成與分離 (detached process, unref)
+    - [x] PID 檔案管理 (`~/.openstarry/agents/{agent-id}.pid`)
+    - [x] 優雅關閉 (SIGTERM/SIGINT 級聯)
+- [x] **IPC 層 (JSON-RPC over Unix Domain Socket)**
+    - [x] Socket 通訊：`~/.openstarry/agents/{agent-id}.sock`
+    - [x] JSON-RPC 2.0 協議
+    - [x] 健康檢查 RPC：`agent.health` → `{ok, uptime, version}`
+- [x] **Daemon 插件** (`@openstarry-plugin/daemon`)
+    - [x] IPC 伺服器整合
+    - [x] 健康檢查提供者 (IProvider)
+    - [x] 進程生命週期管理
+- [x] **測試涵蓋**: 44 個新測試 (進程管理、IPC 通訊、健康檢查)
+
+> **🏆 里程碑：v0.8.0-beta**
+> *   ✅ Daemon 後台進程實作
+> *   ✅ IPC 通訊基礎設施
+> *   ✅ 714 tests, 18 packages, snapshot saved
+
+### Plan13: Seamless Attach (v0.9.0-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 14, 2026-02-12) — 747 tests (+33 new), 18 packages, QA PASS, Architect PASS (1 rework)
+
+- [x] **IPC 協議擴展**
+    - [x] `agent.attach(agentId)` → 連接終端客戶端，返回 sessionId
+    - [x] `agent.input(sessionId, message)` → 從附加客戶端發送用戶輸入
+    - [x] `agent.detach(sessionId)` → 優雅關閉終端會話（daemon 繼續運行）
+    - [x] 事件轉發：Core.bus → IPC 橋接，sessionId 過濾
+- [x] **CLI 命令** (`openstarry attach [agent-id]`)
+    - [x] 列出運行中的 daemon
+    - [x] 自動啟動 daemon（若 agent.json 存在但 daemon 未運行）
+    - [x] 終端 I/O 代理：stdin → agent.input RPC，daemon 事件 → stdout/stderr
+    - [x] 優雅 Ctrl+C 處理（detach，不 kill daemon）
+- [x] **事件轉發器** (`event-forwarder.ts`)
+    - [x] 會話過濾的事件遞送
+    - [x] 支持 LLM 回應、工具執行、錯誤與指標事件
+    - [x] JSON 序列化（含時間戳）
+    - [x] 大小限制 (64KB 訊息，1MB 事件)
+- [x] **安全性與驗證**
+    - [x] sessionId 格式驗證 (UUID v4)
+    - [x] inputType 白名單 (user, system)
+    - [x] Agent 健康檢查（attach 前驗證 daemon 活力）
+    - [x] 資料大小強制執行
+- [x] **測試涵蓋**: 33 個新測試 (attach 命令、IPC 處理器、事件轉發、I/O 代理)
+
+> **🏆 里程碑：v0.9.0-beta**
+> *   ✅ 無縫連線至運行中的 daemon
+> *   ✅ 互動式終端對話 (attach/input/detach)
+> *   ✅ 自動啟動與事件轉發
+> *   ✅ 747 tests, 18 packages, snapshot saved
+
+### Plan20: Workflow Engine MVP (v0.18.0-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 23, 2026-02-12) — 1104 tests (+37 new), QA PASS, Architect PASS
+
+- [x] **工作流引擎插件** (`@openstarry-plugin/workflow-engine`)
+  - [x] YAML 宣告式多步驟工作流程編排 (Zod 驗證)
+  - [x] 4 個步驟執行器：tool, service, llm, command
+  - [x] Mustache 樣板插值 (`{{ }}` 語法)
+  - [x] LLM 串流整合 (直接 IProvider AsyncIterable API)
+  - [x] EventBus 觀測 (step:start/end, workflow:start/end/error)
+  - [x] LRU 快取 (記憶體內，最多 100 個條目)
+- [x] **測試涵蓋**: 37 個新測試 (8 檔案)
+
+> **🏆 里程碑：v0.18.0-beta**
+> *   ✅ Workflow Engine MVP 完成
+> *   ✅ SDK/Core 零變更 (微核心純度保持)
+> *   ✅ 1104 tests, snapshot saved
+
+### Plan21: Web-based Remote Attach (v0.19.0-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 24, 2026-02-12) — 1132 tests, QA CONDITIONAL PASS
+
+- [x] **3 個新/修改插件**
+  - [x] `@openstarry-plugin/http-static` (新) — 靜態 HTTP 檔案伺服器 (路徑跨越防護、MIME 處理)
+  - [x] `@openstarry-plugin/web-ui` (新) — 瀏覽器代理介面 (HTML 配置注入、會話恢復)
+  - [x] `@openstarry-plugin/transport-websocket` (修改) — 認證/CORS/代理 IP 解析
+- [x] **測試涵蓋**: 147 個新測試 (6 檔案)
+
+> **🏆 里程碑：v0.19.0-beta**
+> *   ✅ Web-based Remote Attach 完成
+> *   ✅ WebSocket Token 認證 + CORS
+> *   ✅ 1132 tests, snapshot saved
+
+### Plan22: Plugin Marketplace MVP (v0.20.0-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 25, 2026-02-13) — 1330 tests, QA PASS
+
+- [x] **外掛目錄與安裝器**
+  - [x] 外掛目錄 (`plugin-catalog.json`)：15 個官方外掛清單
+  - [x] 外掛鎖檔 (`~/.openstarry/plugins/lock.json`)：追蹤已安裝外掛
+  - [x] 安裝器：workspace 優先解析 + npm 後備
+  - [x] 短名稱支援 (e.g. `standard-function-fs` → `@openstarry-plugin/standard-function-fs`)
+  - [x] 批量安裝 (`plugin install --all`)
+- [x] **5 個新 CLI 命令**: plugin install/uninstall/list/search/info
+- [x] **測試涵蓋**: 198 個新測試 (77 marketplace + 基礎設施)
+
+> **🏆 里程碑：v0.20.0-beta**
+> *   ✅ Plugin Marketplace MVP 完成
+> *   ✅ 1330 tests, snapshot saved
+
+### Hotfix: Windows 跨平台修復 + Attach UX (v0.20.1-beta) ✅
+**狀態：** 🟢 已完成 (Cycle 25 hotfix + Cycle 26, 2026-02-13~14) — 1339 tests
+
+- [x] **Windows 跨平台修復** (Cycle 25 hotfix)
+  - [x] 路徑處理：`path.sep`、`basename()`、`pathToFileURL()` 取代硬編碼 Unix 路徑
+  - [x] Daemon IPC：`platform.ts` — Windows named pipe / Linux Unix socket
+  - [x] 平台守衛：SIGHUP、chmod、mkdirSync、unlinkSync 在 Windows 上跳過
+  - [x] 外掛安裝器：`cp()` dereference 後備 + `rm()` maxRetries
+- [x] **Attach UX 改善** (Cycle 26)
+  - [x] Attach 連線後自動顯示 provider 登入狀態 (`/provider status`)
+  - [x] 歡迎訊息加 `/help` 提示
+- [x] **Token 持久化修復** (Cycle 26)
+  - [x] `provider-gemini-oauth` 的 `dispose()` 不再誤刪 token 檔案
+  - [x] 新增 `cleanup()` 方法，僅清理 callback server 資源
+
+> **🏆 里程碑：v0.20.1-beta**
+> *   ✅ 全平台（Windows/Linux）穩定運行
+> *   ✅ Attach 自動顯示 provider 狀態
+> *   ✅ OAuth token 跨重啟持久化
+> *   ✅ 1339 tests, 117 test files, snapshot saved
+
+---
+
+### Plan09: Interactive Designer (待實作) ⬜
 - [ ] **8.2 互動式設計器 (Interactive Designer)**
     - [ ] 實作 `openstarry design` 的上下文感知選單。
     - [ ] 建立「五蘊配置」的引導式 Wizard (Inquirer.js)。
-- [ ] **8.3 無縫連線機制 (Seamless Attach)**
-    - [ ] 實作 `openstarry attach` 的 Socket 連線邏輯。
-    - [ ] 支援從 TUI 儀表板直接跳轉至 Agent 對話視窗 (按 'a' 鍵)。
 
 ---
 
 ## 📊 計畫依賴關係圖
 
 ```
-                    ┌─────────────────────────────────────────┐
-                    │           已完成 (v0.2.0-beta)           │
-                    │  Plan01 → Plan02 → Plan03 → Plan04 → Plan05  │
-                    └─────────────────────┬───────────────────┘
+                    ┌──────────────────────────────────────────────────┐
+                    │           已完成 (v0.20.1-beta)                   │
+                    │  Plan01 → Plan02 → Plan03 → Plan04 → Plan05    │
+                    │  → Plan06-P1/P2/P3/P4 (MCP Tools/Prompts/Res)  │
+                    │  → Plan07-07.3 (Sandbox Hardening)             │
+                    │  → Cycle1-8: Sessions, MCP, Sandbox Hardening  │
+                    │  → Cycle9: Plan08 TUI Dashboard                │
+                    │  → Cycle10-11: Plan09-10 Interactive TUI + CLI │
+                    │  → Cycle12: Plan11 DevTools + E2E Framework    │
+                    │  → Cycle13: Plan12 Daemon Mode MVP             │
+                    │  → Cycle14: Plan13 Seamless Attach             │
+                    │  → Cycle15: Plan06-P3 Resources + OAuth 2.1    │
+                    │  → Cycle16: Plan14 Multi-client Attach & Mgmt  │
+                    │  → Cycle17: Plan06-P4 Sampling & Extensions    │
+                    │  → Cycle18: Plan15 SDK Context Extensions      │
+                    │  → Cycle19: Plan16 Security Hardening          │
+                    │  → Cycle20: Plan17 Plugin Developer Experience │
+                    │  → Cycle21: Plan18 Plugin Sync                 │
+                    │  → Cycle22: Plan19 Dependency Wiring           │
+                    │  → Cycle23: Plan20 Workflow Engine MVP          │
+                    │  → Cycle24: Plan21 Web Remote Attach           │
+                    │  → Cycle25: Plan22 Plugin Marketplace          │
+                    │  → Cycle26: Hotfix (Windows + Attach UX)       │
+                    └─────────────────────┬───────────────────────────┘
                                           │
-              ┌───────────────────────────┼────────────────────────────────┐
-              │                           │                                │
-              ▼                           ▼                                ▼
-        ┌──────────┐              ┌──────────────┐                  ┌──────────┐
-        │實作週期一 │              │實作週期二     │                  │ Plan06   │
-        │v0.2.1-beta│              │v0.2.2-beta   │                  │ MCP 整合  │
-        │(Sess+SSE+ │              │(E2E 測試)     │                  │ (+DevTools)│
-        │ TraceId)  │              └──────────────┘                  └────┬─────┘
-        └────┬─────┘                                                      │
-             │                                                            │
-             │ (前置條件)                                                   │
-             ▼                                                            ▼
-        ┌──────────┐                                                ┌──────────┐
-        │ Plan06   │────────────────────────────────────────────────▶│ Plan07   │
-        │ MCP 整合 │                                                │ 持久化    │
-        └──────────┘                                                └──────────┘
+                                          ▼
+                                    ┌──────────┐
+                                    │ Plan09   │
+                                    │ Designer │
+                                    │ (待排程)  │
+                                    └──────────┘
 ```
 
 ---

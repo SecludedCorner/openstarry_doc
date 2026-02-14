@@ -15,7 +15,7 @@
     ```json
     {
       "channel": "whatsapp",
-      "user_id": "whatsapp:+15550100000",
+      "user_id": "whatsapp:+14155238886",
       "user_info": { "name": "John Doe", "is_admin": false },
       "conversation_id": "conv_123",
       "content": "幫我預定一個會議室"

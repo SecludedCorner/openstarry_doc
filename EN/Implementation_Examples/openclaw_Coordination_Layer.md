@@ -15,7 +15,7 @@ The coordination layer requires an internal **Router Component**.
     ```json
     {
       "channel": "whatsapp",
-      "user_id": "whatsapp:+15550100000",
+      "user_id": "whatsapp:+14155238886",
       "user_info": { "name": "John Doe", "is_admin": false },
       "conversation_id": "conv_123",
       "content": "Help me book a meeting room."
