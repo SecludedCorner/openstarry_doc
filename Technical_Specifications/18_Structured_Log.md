@@ -51,20 +51,7 @@ audit-sink flush（300）及 HMAC clear（400）之前完全排空。
 
 ## 與 Plan47 snapshot-hmac 日誌之關係
 
-Plan47 `snapshot-hmac.ts` 未倚賴結構化日誌模組。
-
-> **[2026-06-11 修復稽核更正]** 原文宣稱「Plan48 將 writer 引入 runner
-> bootstrap、plugin-install flow 及 SIGTERM cascade」**與當時事實不符**：
-> Plan48 交付後，structured-log / audit-sink 模組在任何 production 路徑
-> 均無 import（僅 unit test 覆蓋）。實際接線於 v0.58.0-alpha 完成
-> （`apps/runner/src/observability.ts`，由 start 指令啟用）：
-> - structured-log：`OPENSTARRY_LOG_PATH` 設定時記錄 runner:started /
->   plugin:loaded / runner:shutdown 生命週期 JSONL（opt-in，預設關閉）
-> - audit-sink：`OPENSTARRY_AUDIT=1` 時訂閱 `capability_denied`
->   （生產者 = Plan46 tool-filter-proxy）並落盤 audit-trail.jsonl
-> - 關機 flush 經共用 registry（structured-log order 200 → audit-sink 300）
-> - plugin-install flow 接線**未實作**（保留為未來工作）
-> - hmac-cleanup（C48-M3）**仍為 library-only**，見該模組 README 誠實標記
-
+Plan47 `snapshot-hmac.ts` 未倚賴結構化日誌模組；Plan48 將 writer
+引入 runner bootstrap、plugin-install flow 及 SIGTERM cascade。
 既有 callers（例：checkpoint 指令）仍以 `console.*` 做 human-facing
 CLI 輸出，不強制轉用 structured log。

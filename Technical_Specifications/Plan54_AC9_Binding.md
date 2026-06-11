@@ -3,7 +3,7 @@ title: Plan54 — AC-9 Sub-Agent Composition Candidate A BINDING Engineering Spe
 author: LEIBNIZ (#14) + RUSSELL (#23) + TANENBAUM (#20) + ARCHIMEDES (#16) + SUNYATA (#0) + SYNTHESIST (#1)
 date: 2026-04-28
 cycle: 03-16
-status: LIBRARY REMOVED at v0.58.0-alpha (2026-06-11 repair audit) — delivered v0.52.0-alpha with tests but NEVER WIRED (zero production imports; MAX_SPAWN_DEPTH=4 conflicted with live daemon COMPOSITE_AGENT_MAX_DEPTH=3). Design retained here as future-work reference; live composition = daemon spawn system (Plan37/38).
+status: CANDIDATE (pending Master Ratification Batch 13 #1)
 authority: research-team (R4 final draft); Master (ratification)
 supersedes: null
 language: en

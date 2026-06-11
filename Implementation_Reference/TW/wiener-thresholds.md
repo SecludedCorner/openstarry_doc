@@ -1,14 +1,8 @@
 # WIENER L2 + L3 閾值 — HYPOTHESIS 狀態 與 重新校準排程
 
-> **[2026-06-11 修復稽核 — v0.58.0-alpha] 模組已移除。** `apps/runner/src/wiener/thresholds.ts`
-> 已刪除：它整個生命週期累計 0 個 import，因為其預定的 consumer（spc-monitor）是獨立套件，
-> 物理上無法 import runner 內部模組。`wiener_threshold_hit` 事件契約的擁有權歸其發射者
-> `openstarry_plugin/spc-monitor`。以下 HYPOTHESIS 狀態與 Rule #72 N≥10 重新校準條件
-> 仍為有效的歷史／前瞻參考（專案結束前 N gate 從未達到）。
-
 **狀態**：Plan49 C49-M5a / C49-M5c / C49-M5g — 準備性交付。
 **生效版本**：v0.49.0-alpha（2026-04-24）。
-**模組**：`apps/runner/src/wiener/thresholds.ts`（已於 v0.58.0-alpha 移除，見上方橫幅）。
+**模組**：`apps/runner/src/wiener/thresholds.ts`。
 
 ## 1. 範圍
 

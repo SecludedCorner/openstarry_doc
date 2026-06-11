@@ -4,9 +4,7 @@
 
 > Cycle 02-3 R3 Debate 3 共識 + Cycle 02 Klesha DI 框架 + Cycle 02-2 A-1 我執修正 + Cycle 02-4 VasanaEngine 外部化
 >
-> **實作狀態**: ✅ Library 已實作 (Plan26, 2026-02-28) — `core/src/vijnana/klesha.ts`: Moha + Drishti + Mana + Sneha + KleshaModulatedDispatcher + VitakkaWatchdog。DC-12 延後項目 (FC-27/28/29) 以 ExtensionPoint 留白。
->
-> **[2026-06-11 修復稽核更正＋接線]** 原「已實作」宣稱對 runtime 行為**不成立**：自 Plan28 起 `agent-core.ts` 的 `getKleshaSignals` 寫死為中性零值，四煩惱感知器從未收到 live 信號，增益排程在運行系統中為惰性（KleshaModulatedDispatcher 僅 test 實例化）。**v0.58.0-alpha 完成真接線**：`createKleshaSignalFn`（agent-core，可單測）對每次 deliberation 取樣 vedana aggregate 進入有界歷史、由 `tool:executing` 事件累積 actionHistory，四感知器（消費 Plan32 W4 的 `resolvedKleshaFilterConfig`，該 config 此前計算後無人使用）對 live context 運行。無歷史時感知器輸出各自中性基線＝Tenet #7 三級關鍵性 Optional-degraded 行為。KleshaModulatedDispatcher 的 gear-threshold 調制接線仍為未來工作。
+> **實作狀態**: ✅ 已實作 (Plan26, 2026-02-28) — `core/src/vijnana/klesha.ts`: Moha + Drishti + Mana + Sneha + KleshaModulatedDispatcher + VitakkaWatchdog。DC-12 延後項目 (FC-27/28/29) 以 ExtensionPoint 留白。
 
 ---
 

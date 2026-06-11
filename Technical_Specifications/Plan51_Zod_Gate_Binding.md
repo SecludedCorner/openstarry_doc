@@ -3,7 +3,7 @@ title: Plan51 — Zod Gate × 4-of-5 Modules Candidate (cycle 03-16 First-Shippi
 author: TANENBAUM (#20) + SUSSMAN (#22) + KERNEL (#10) + MESH (#4) + HERACLITUS (#15) + GUARDIAN (#11) + ARCHIMEDES (#16) + SYNTHESIST (#1)
 date: 2026-04-27
 cycle: 03-15
-status: LIBRARY REMOVED at v0.58.0-alpha (2026-06-11 repair audit) — all 4 runner zod-gate modules (429 LOC) plus the transport-websocket local gate (105 LOC) were delivered with tests but NEVER ENFORCED at any runtime boundary (zero production imports). Validation-gate design retained here as future-work reference.
+status: CANDIDATE (pending Master Ratification Batch 12 #2)
 authority: research-team (R4 final draft); Master (ratification); Dev (cycle 03-16 implementation)
 supersedes: null (first Plan51 ratification)
 language: en

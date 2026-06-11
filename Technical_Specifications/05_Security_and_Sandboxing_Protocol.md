@@ -1,13 +1,3 @@
-> ⚠️ **[2026-06-11 QUARANTINE NOTICE — v0.58.0-alpha repair audit]**
-> **This document describes a PRE-IMPLEMENTATION design that was NEVER BUILT.**
-> A 17-claim fidelity audit (2026-06-11) found the interfaces/protocols specified in
-> Technical_Specifications 01-07 contradict the shipped system (e.g. `IOpenStarryPlugin`
-> / `ILLMProvider` / JSONSchema7 tools / UUID event envelopes — zero hits in source).
-> **Do NOT implement against this document.** The authoritative contracts are the SDK
-> type files (`packages/sdk/src/`) — `IPlugin{manifest,factory}`, `PluginHooks`,
-> Zod-typed `ITool`, `IProvider.chat(): AsyncIterable<ProviderStreamEvent>`, the
-> ~90-constant `AgentEventType` vocabulary — and the ~300-file test suite.
-> Retained unmodified below as a design-history artifact.
 # 05. 安全與沙盒協議技術規範 (Security & Sandboxing Protocol)
 
 本文件定義了 OpenStarry 的多層防禦體系。作為一個擁有執行能力的 Agent 系統，安全性是不可妥協的基石。
