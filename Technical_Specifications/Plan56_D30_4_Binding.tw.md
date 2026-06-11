@@ -3,7 +3,7 @@ title: Plan56 — D-30-4 多重意志系統 綁定規範（繁中）
 author: ASANGA + NAGARJUNA + LEIBNIZ + RUSSELL + TANENBAUM + ARCHIMEDES + Master directive 2026-04-29
 date: 2026-04-30
 cycle: 03-18 (ratified) → 03-19 (canonical doc backfilled by coordinator)
-status: 程式庫已移除於 v0.58.0-alpha（2026-06-11 修復稽核）— v0.53.0-alpha 交付且有測試，但從未接入執行迴圈（0 個 production import）。多重意志設計保留作未來工作參考；現役意志層 = core loop 的單一 IVolition 路徑。
+status: BINDING
 authority: Master ratified（Cycle 03-18 Batch 15 Item #1；APPROVED Option A 22/1 super-majority + Master doctrinal annotation 2026-04-29）
 supersedes: Plan56_D30_4_Binding.md（EN sibling；本檔為 TW 翻譯版 per Rule #78 BINDING-tier reflexive）
 cross_refs:

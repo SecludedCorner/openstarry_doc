@@ -1,6 +1,6 @@
 # 插件一覽
 
-OpenStarry 插件工作區於 v0.58.0-alpha 共有 **43 個插件目錄**（計數於 2026-06-11 更正；下表為精選清單，非完整列表——完整集合見 `openstarry_plugin/`）。
+OpenStarry 目前提供 **15 個官方插件**，按功能分類如下。
 
 > 插件倉庫位於 `openstarry_plugin/`，與核心框架同層目錄，透過 `pnpm-workspace.yaml` 統一管理。
 

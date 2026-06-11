@@ -3,7 +3,7 @@ title: Plan52 — pushInput Candidate B Binding Engineering Spec
 author: TANENBAUM (#20 microkernel) + KERNEL (#10 OS) + GUARDIAN (#11 security) + ARCHIMEDES (#16 engineering) + SUNYATA (#0 chair) + SYNTHESIST (#1 aggregator)
 date: 2026-04-25
 cycle: 03-14
-status: BINDING + SHIPPED (v0.50.0-alpha, cycle 03-14; ratification confirmed via TW sibling parity record cycle 03-20, but EN write-back was never performed — header corrected 2026-06-11 repair audit)
+status: CANDIDATE (pending Master Ratification Batch 11 #6)
 authority: research-team (R4 final draft); Master (ratification)
 supersedes:
   - research record/cycle03-12/deliver/O4_Plan50_pushInput_R4_engineering_spec.md (cycle 03-12 spec; pushInput renumbered Plan50 → Plan52 per cycle 03-14 R3 D-§1-01 Option B)
@@ -22,8 +22,6 @@ binding_until: Master Ratification Batch 11 close
 ## 1. Status
 
 **CANDIDATE** at cycle 03-14 R4 close. Upgrades to **BINDING (Plan-level engineering spec)** if Master ratifies Batch 11 Item #6. Plan52 is the **first Phase 6 functional implementation** of the pushInput source-authentication architecture.
-
-> **[2026-06-11 repair audit]** Code shipped in v0.50.0-alpha (cycle 03-14) and later plans cite Plan52 as the shipped baseline; the CANDIDATE→BINDING status upgrade was never written back to this document. Status corrected to **SHIPPED**.
 
 **Architecture preservation**: the architecture (Candidate B + B' deferred + CP-1/2/3/4 + CR-SCK + CR-PARETO) is preserved verbatim from the cycle 03-12 R4 spec, which Plan52 supersedes for **plan-numbering only**. Editorial-only renumbering is permitted per Master 通則 ("符合十大宣言與規則就可以直接做了"; numbering is operational labelling, not Tenet/MR/ZT/structural).
 

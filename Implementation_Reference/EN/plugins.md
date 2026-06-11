@@ -1,6 +1,6 @@
 # Plugin Overview
 
-OpenStarry's plugin workspace contains **43 plugin directories** as of v0.58.0-alpha (count corrected 2026-06-11; the tables below are a curated selection, not exhaustive — see `openstarry_plugin/` for the full set).
+OpenStarry currently provides **15 official plugins**, categorized as follows.
 
 > The plugin repository is at `openstarry_plugin/`, a sibling directory to the core framework, managed together via `pnpm-workspace.yaml`.
 

@@ -4,11 +4,7 @@
 
 > Cycle 02-3 R3 Debate 3 共識 + Cycle 02 Klesha DI 框架 + Cycle 02-2 A-1 我執修正 + Cycle 02-4 VasanaEngine 外部化
 >
-> **實作狀態**: ✅ Library 已實作 (Plan26, 2026-02-28) — `core/src/vijnana/klesha.ts`: Moha + Drishti + Mana + Sneha + KleshaModulatedDispatcher + VitakkaWatchdog。DC-12 延後項目 (FC-27/28/29) 以 ExtensionPoint 留白。
->
-> **[2026-06-11 修復稽核更正＋接線]** 原「已實作」宣稱對 runtime 行為**不成立**：自 Plan28 起 `agent-core.ts` 的 `getKleshaSignals` 寫死為中性零值，四煩惱感知器從未收到 live 信號，增益排程在運行系統中為惰性（KleshaModulatedDispatcher 僅 test 實例化）。**v0.58.0-alpha 完成真接線**：`createKleshaSignalFn`（agent-core，可單測）對每次 deliberation 取樣 vedana aggregate 進入有界歷史、由 `tool:executing` 事件累積 actionHistory，四感知器（消費 Plan32 W4 的 `resolvedKleshaFilterConfig`，該 config 此前計算後無人使用）對 live context 運行。無歷史時感知器輸出各自中性基線＝Tenet #7 三級關鍵性 Optional-degraded 行為。
->
-> **[TENET-2026-06-11 — Doc 37 閉環完成（v0.59.0-alpha）]** KleshaModulatedDispatcher 的 θ(t) 調制已接入 gear 仲裁路徑：`IAgentConfig.kleshaModulation`（**opt-in by presence**，缺席＝靜態閾值、行為與舊版逐位元相同）→ agent-core 建構 dispatcher → `createKleshaThresholdFn` 接入 `createManoAggregator` 第 3 參數 `baseThresholdFn`（該掛鉤自 Plan29 起一直被傳 `undefined`）→ 每次 `route()` 取樣共享 kleshaSignalFn → `computeThreshold` → θ(t) 參與 strict `confidence > threshold` 判定。每次調制發出 `klesha:modulation` 事件（bundle＋θ）。N=2 閉環實證：`mano-aggregator-klesha.test.ts` 對同一 arbiter（confidence 0.55）路由兩次——中性 vedana 史 θ≈0.57 拒絕（gear 2）、持續 sukha 後 θ≈0.45 接受（gear 1）——**agent 的感受實際改變了它自己的調度決策**。範例 config：`configs/klesha-modulated-agent.json`（煙霧驗證通過）。誠實註記：dispatcher 的 `perceiveAll()` 在 runtime 仍未使用（會重複步進有狀態濾波器；只有純函數 `computeThreshold` 半邊被接線，信號來自唯一共享的 kleshaSignalFn）；解析優先序＝明確 kleshaModulation 欄位 ＞ resolved mano 值（baseThreshold/thresholdFloor/thresholdCeiling）繼承 ＞ SDK 預設權重；Sneha 地板 0.10 使啟用且閒置的 agent 運行於 θ≈base−0.015（執著不歸零＝本文件原語義）——此即 opt-in 設計的原因。相鄰未接線缺口（本輪範圍外，已立 follow-up）：`createManoAggregator` 第 4 參數 vedanaFn 同樣為 undefined，VedanaEmergency thresholdBoost 路徑（Plan28 R1）在 runtime 同為惰性。
+> **實作狀態**: ✅ 已實作 (Plan26, 2026-02-28) — `core/src/vijnana/klesha.ts`: Moha + Drishti + Mana + Sneha + KleshaModulatedDispatcher + VitakkaWatchdog。DC-12 延後項目 (FC-27/28/29) 以 ExtensionPoint 留白。
 
 ---
 
