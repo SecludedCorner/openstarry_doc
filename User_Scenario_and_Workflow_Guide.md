@@ -1,5 +1,9 @@
 # OpenStarry 用戶情境與操作工作流指南 (User Scenario and Workflow Guide)
 
+> ⚠️ **[2026-06-11 隔離標記 — v0.58.0-alpha 修復稽核] 本文件是「願景情境」，不是現狀操作手冊。**
+> 文中呈現的部分體驗（如含 THOUGHTS/SEC 欄位的 TUI 儀表板、`openstarry` 全域指令、部分 attach/detach 流程）為設計願景，未對應 v0.58.0-alpha 的實際行為，且原文未標注哪些已實作、哪些是想像——這正是本標記要修正的問題。
+> **實際可走通的冷啟動流程請看 [GETTING_STARTED.md](./GETTING_STARTED.md)**（2026-06-11 重寫，逐指令驗證過）。實際 CLI 入口為 `node apps/runner/dist/bin.js`，旗標為 `--config`。
+
 本文件將帶您深入體驗 OpenStarry 的核心操作情境，從系統啟動、設計 Agent 到實際對話互動，以及如何將 Agent 納入系統的自動化管理流程。
 
 ---
