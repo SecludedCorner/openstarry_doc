@@ -1,4 +1,4 @@
-<!-- Status: IN_PROGRESS -->
+<!-- Status: COMPLETE (delivered v0.45.0-alpha 2026-04-15; W3 deferred to Plan46 per Master-ratified LOC gate; header corrected 2026-06-11 repair audit) -->
 <!-- Layer: 1-Engineering -->
 <!-- Applies to: v0.45.0-alpha -->
 <!-- Source: Architecture_Spec published 2026-04-15, cycle 20260415_cycle03-9 -->
