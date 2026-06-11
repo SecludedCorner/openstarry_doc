@@ -4,7 +4,7 @@ title_en_sibling: Plan51 — Zod Gate × 4-of-5 Modules Candidate (cycle 03-16 F
 author: SCRIBE + LINNAEUS (TW translation backfill cycle 03-20)
 date: 2026-05-02
 cycle: 03-20 (TW backfill per D-§5 ratified + Batch 17 #4 APPROVED)
-status: BINDING (TW sibling parity per Rule #78 §78.5 BINDING-tier reflexive)
+status: 程式庫已移除於 v0.58.0-alpha（2026-06-11 修復稽核）— runner 4 個 zod-gate 模組（429 LOC）與 transport-websocket 本地 gate（105 LOC）交付且有測試，但從未在任何 runtime 邊界執法（0 個 production import）。驗證閘設計保留作未來工作參考。
 authority: research-team R4 deliver (cycle 03-20)
 supersedes: none
 cross_refs:
