@@ -1,3 +1,13 @@
+> ⚠️ **[2026-06-11 QUARANTINE NOTICE — v0.58.0-alpha repair audit]**
+> **This document describes a PRE-IMPLEMENTATION design that was NEVER BUILT.**
+> A 17-claim fidelity audit (2026-06-11) found the interfaces/protocols specified in
+> Technical_Specifications 01-07 contradict the shipped system (e.g. `IOpenStarryPlugin`
+> / `ILLMProvider` / JSONSchema7 tools / UUID event envelopes — zero hits in source).
+> **Do NOT implement against this document.** The authoritative contracts are the SDK
+> type files (`packages/sdk/src/`) — `IPlugin{manifest,factory}`, `PluginHooks`,
+> Zod-typed `ITool`, `IProvider.chat(): AsyncIterable<ProviderStreamEvent>`, the
+> ~90-constant `AgentEventType` vocabulary — and the ~300-file test suite.
+> Retained unmodified below as a design-history artifact.
 # 02. 事件匯流排協議規格 (Event Bus & Schema Protocol)
 
 本文件定義了 OpenStarry 內部與邊緣組件通訊的標準事件格式。所有從傳輸插件 (Transport) 流向核心 (Core) 的數據，以及核心產生的反饋，都必須遵守此協議。
