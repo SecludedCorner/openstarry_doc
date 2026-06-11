@@ -3,7 +3,7 @@ title: Plan56 — D-30-4 Multi-IVolition Binding Specification
 author: ASANGA + NAGARJUNA + LEIBNIZ + RUSSELL + TANENBAUM + ARCHIMEDES + Master directive 2026-04-29
 date: 2026-04-30
 cycle: 03-18 (ratified) → 03-19 (canonical doc backfilled by coordinator)
-status: BINDING
+status: LIBRARY REMOVED at v0.58.0-alpha (2026-06-11 repair audit) — delivered v0.53.0-alpha with tests but NEVER WIRED into the execution loop (zero production imports). Multi-volition dispatch design retained here as future-work reference; live volition = single-IVolition path in core loop.
 authority: Master ratified (Cycle 03-18 Batch 15 Item #1; APPROVED Option A 22/1 super-majority + Master doctrinal annotation 2026-04-29)
 supersedes: research record/cycle03-18/deliver/O1_D30_4_Plan56_implementation_final.md (R-team R4 source; this canonical doc is the binding extract)
 cross_refs:

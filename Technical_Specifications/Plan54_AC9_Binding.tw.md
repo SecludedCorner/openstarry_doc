@@ -3,7 +3,7 @@ title: Plan54 — AC-9 子代理組合 Candidate A BINDING 工程規範
 author: LEIBNIZ (#14) + RUSSELL (#23) + TANENBAUM (#20) + ARCHIMEDES (#16) + SUNYATA (#0) + SYNTHESIST (#1)
 date: 2026-04-28
 cycle: 03-16
-status: CANDIDATE (pending Master Ratification Batch 13 #1)
+status: 程式庫已移除於 v0.58.0-alpha（2026-06-11 修復稽核）— v0.52.0-alpha 交付且有測試，但從未接線（0 個 production import；MAX_SPAWN_DEPTH=4 與現役 daemon COMPOSITE_AGENT_MAX_DEPTH=3 衝突）。本設計保留作未來工作參考；現役組合實作 = daemon spawn 系統（Plan37/38）。
 authority: research-team (R4 final draft); Master (ratification)
 supersedes: null
 language: tw
