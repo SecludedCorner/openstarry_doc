@@ -1,12 +1,14 @@
-<!-- Status: CURRENT -->
+<!-- Status: CONCEPTUAL (was incorrectly stamped CURRENT until 2026-06-11) -->
 <!-- Layer: 1-Engineering -->
-<!-- Applies to: v0.34.0-alpha -->
-<!-- Last verified: 2026-03-16 -->
+<!-- Applies to: v0.34.0-alpha era concepts; API references corrected 2026-06-11 -->
+<!-- Last verified: 2026-06-11 (repair audit) -->
 
 # 21. 深度解析：插件介面與五蘊的關係 (Plugin Interface & Aggregates Deep Dive)
 
-> **技術規格提示 (Technical Specification Note):**
-> 本文件側重於架構哲學與概念解釋。關於 `IPlugin`, `ITool`, `IAgentGuide` 等介面的嚴格 TypeScript 定義與最新 API 規範，請以 **[03_Plugin_Interface_Definitions.md](../Technical_Specifications/03_Plugin_Interface_Definitions.md)** 為準。
+> **⚠️ 技術規格提示更正 (2026-06-11 修復稽核):**
+> 本文件原引導讀者以 Technical_Specifications/03 為「嚴格 TypeScript 定義與最新 API 規範」——**該指引是錯的**：Tech Spec 03 描述的是從未建造的前期設計（`IOpenStarryPlugin.initialize/shutdown` 等在 source 中 0 hits），已於 2026-06-11 隔離標記。
+> **正確的權威 API 規範是 SDK 型別檔**（`packages/sdk/src/types/plugin.ts` 等）：真實契約為 `IPlugin { manifest, factory(ctx): Promise<PluginHooks> }`（工廠模式，無 initialize/shutdown 生命週期；清理用 `PluginHooks.dispose`）、Zod-typed `ITool`、`IProvider.chat(): AsyncIterable<ProviderStreamEvent>`。
+> 本文件的**架構哲學與概念解釋**（容器 vs 內容物、五蘊歸屬）仍然有效；涉及具體介面簽名處請一律以 SDK 為準。
 
 本文件旨在釐清 `IPlugin` (插件容器)、`IPluginContext` (交互環境) 與 `ITool/IListener` (五蘊成分) 三者之間的架構關係。
 

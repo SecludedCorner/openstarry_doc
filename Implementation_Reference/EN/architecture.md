@@ -6,11 +6,15 @@ All plugin capabilities in OpenStarry map to five core interfaces:
 
 | Aggregate | Interface | Role |
 |-----------|-----------|------|
-| Form (色) | IUI | User interface (output) |
-| Sensation (受) | IListener | Event listeners (input) |
+| Form (色) | IUI + IListener | Body & sense-gates: output surface AND input listeners (both `@skandha rupa` per SDK) |
+| Sensation (受) | IVedanaSensor | Tri-valence feedback (苦/樂/捨) on運行狀態 — Plan26 |
 | Perception (想) | IProvider | LLM service providers |
 | Formation (行) | ITool | Executable tools |
-| Consciousness (識) | IGuide | System prompts / guidance |
+| Consciousness (識) | IGuide | System prompts / guidance (Ego Framework) |
+
+> Mapping corrected 2026-06-11: this table previously assigned IListener to
+> Sensation (受), contradicting both the canonical README and the SDK's
+> `@skandha rupa` annotation on `listener.ts`. The SDK source is authoritative.
 
 ## Microkernel Design
 
