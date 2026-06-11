@@ -6,11 +6,14 @@ OpenStarry 的所有插件功能映射到五個核心介面：
 
 | 蘊 | 介面 | 角色 |
 |----|------|------|
-| 色 | IUI | 使用者介面（輸出） |
-| 受 | IListener | 事件監聽（輸入） |
+| 色 | IUI ＋ IListener | 形體與感官根門：輸出介面與輸入監聽（SDK 中兩者皆標注 `@skandha rupa`） |
+| 受 | IVedanaSensor | 三受回饋（苦/樂/捨）— Plan26 |
 | 想 | IProvider | LLM 服務提供者 |
 | 行 | ITool | 可執行工具 |
-| 識 | IGuide | 系統提示詞/引導 |
+| 識 | IGuide | 系統提示詞/引導（我執框架） |
+
+> 映射於 2026-06-11 更正：原表把 IListener 歸入受蘊，與 canonical README 及
+> SDK `listener.ts` 的 `@skandha rupa` 標注矛盾。以 SDK source 為權威。
 
 ## 微核心設計
 

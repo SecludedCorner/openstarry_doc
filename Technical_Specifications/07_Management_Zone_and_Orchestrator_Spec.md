@@ -1,3 +1,13 @@
+> ⚠️ **[2026-06-11 QUARANTINE NOTICE — v0.58.0-alpha repair audit]**
+> **This document describes a PRE-IMPLEMENTATION design that was NEVER BUILT.**
+> A 17-claim fidelity audit (2026-06-11) found the interfaces/protocols specified in
+> Technical_Specifications 01-07 contradict the shipped system (e.g. `IOpenStarryPlugin`
+> / `ILLMProvider` / JSONSchema7 tools / UUID event envelopes — zero hits in source).
+> **Do NOT implement against this document.** The authoritative contracts are the SDK
+> type files (`packages/sdk/src/`) — `IPlugin{manifest,factory}`, `PluginHooks`,
+> Zod-typed `ITool`, `IProvider.chat(): AsyncIterable<ProviderStreamEvent>`, the
+> ~90-constant `AgentEventType` vocabulary — and the ~300-file test suite.
+> Retained unmodified below as a design-history artifact.
 # 07. 管理層與編排器技術規範 (Management Zone & Orchestrator Spec)
 
 本文件定義了 OpenStarry 系統中「管理層 (Management Zone)」的技術實作標準。管理層負責 Agent 的生命週期管理、資源隔離與跨 Agent 調度。
