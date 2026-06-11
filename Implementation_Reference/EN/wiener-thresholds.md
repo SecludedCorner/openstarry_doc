@@ -1,8 +1,15 @@
 # WIENER L2 + L3 Thresholds — HYPOTHESIS status & re-calibration schedule
 
+> **[2026-06-11 repair audit — v0.58.0-alpha] MODULE REMOVED.** `apps/runner/src/wiener/thresholds.ts`
+> was deleted: it accumulated zero imports over its entire life because its intended consumer
+> (spc-monitor) is a separate package that cannot import runner internals. The `wiener_threshold_hit`
+> event contract is owned by its emitter, `openstarry_plugin/spc-monitor`. The HYPOTHESIS status and
+> Rule #72 N≥10 re-calibration conditions below remain valid as historical/forward reference
+> (N gate was never reached before project end).
+
 **Status**: Plan49 C49-M5a / C49-M5c / C49-M5g — preparation delivery.
 **Effective from**: v0.49.0-alpha (2026-04-24).
-**Module**: `apps/runner/src/wiener/thresholds.ts`.
+**Module**: `apps/runner/src/wiener/thresholds.ts` (removed v0.58.0-alpha — see banner).
 
 ## 1. Scope
 
