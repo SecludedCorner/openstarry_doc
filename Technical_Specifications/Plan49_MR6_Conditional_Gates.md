@@ -1,5 +1,15 @@
 # Plan49 — MR-6 Conditional Gates, Scope Knowledge for Dev
 
+> **[2026-06-11 repair audit — v0.58.0-alpha]** The C49-M5a "centralized" threshold module
+> `apps/runner/src/wiener/thresholds.ts` (79 LOC) has been **REMOVED**. Root cause: the
+> centralization design was architecturally impossible — its intended consumer (spc-monitor)
+> is a separate package that physically cannot import runner-internal modules, so it carried
+> its own tier mapping and emitted `wiener_threshold_hit` as a local literal from day one.
+> The module accumulated zero imports across its entire life. Ownership of the
+> `wiener_threshold_hit` event contract now rests with its emitter (openstarry_plugin/spc-monitor).
+> The Rule #72 N≥10 re-calibration gate (N=4/10 at delivery, projected ~cycle 03-19) was never
+> reached before project end; L2/L3 values remain HYPOTHESIS status in spc-monitor.
+
 > **Front-matter**
 > - **Cycle**: 03-13
 > - **Date**: 2026-04-24
