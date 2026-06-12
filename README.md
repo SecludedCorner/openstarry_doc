@@ -105,6 +105,8 @@ OpenStarry 的強大在於其聲明式的配置。以下是一個具備「痛覺
 ## 🌟 十大核心宣言 (The Ten Tenets)
 
 > 📒 各宣言的誠實兌現狀態（已證明／已證至 N=2／明確不宣稱）見 **[十大宣言兌現帳本 (TENETS_FULFILLMENT.md)](./TENETS_FULFILLMENT.md)**（v0.59.0-alpha，每項主張附證據指標）。
+>
+> ✉️ 本專案作為 Agent OS 時間膠囊的完整自述——微內核與五蘊的理據、決策如何被否決出來、誠實過程數據（87.5% spec-vs-merged gap／96% closure 灌水）與未竟清單——見 **[致未來的信 (LETTER_TO_THE_FUTURE.md)](./LETTER_TO_THE_FUTURE.md)**。
 
 ### 1. 代理人即操作系統進程 (Agent as OS Process)
 Agent 不是一次性的腳本，而是具備持久生命週期、可被守護進程 (Daemon) 管理、監控、重啟的數位實體。它有自己的 PID，有自己的狀態，就像一個活著的進程。

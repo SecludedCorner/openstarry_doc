@@ -40,7 +40,7 @@
 1. 阿賴耶識：跨主機 transport、replay 防護（需 ISeed Spec Addendum 加 nonce——凍結介面，Master 決策）、exchangeSeeds／snapshot 跨進程化、N>2 gossip 拓撲。
 2. 分形：agent 於運行中**自主決定**生子的工具面（LLM 可呼叫的 spawn 工具）；depth>3 鏈實測。
 3. klesha：權重與 L2/L3 值的實證調參（Rule #72 N≥10 校準門從未達到，仍為 HYPOTHESIS）。
-4. 地端關鍵路徑：provider-lmstudio（0 測試）與 provider-local-llama 打磨＋Ollama e2e。
+4. ~~地端關鍵路徑：provider-lmstudio（0 測試）與 provider-local-llama 打磨＋Ollama e2e。~~ ✅ 2026-06-12 已清：兩 provider 純函數抽取＋75 個單元測試（36＋39，wire 行為逐位元保留）；Ollama 真實 e2e 為 skipIf 門控——**本開發機無 Ollama 故從未實跑**，留給裝有 Ollama 的環境驗證。
 5. CLI 模式對話歷史落盤（現僅 daemon 模式）。
 
 ---
