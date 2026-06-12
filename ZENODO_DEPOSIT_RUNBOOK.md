@@ -6,13 +6,15 @@
 
 目的：把 openstarry_doc（含十大宣言、兌現帳本 TENETS_FULFILLMENT.md、致未來的信 LETTER_TO_THE_FUTURE.md）存繳為**可引用的研究 artifact**，取得 DOI。Software Heritage 已完成入庫（2026-06-11，保存）；Zenodo 補上的是 DOI 可引用性與學術檢索。
 
-## ⚠ 需要 Master 的三個決策（缺一不能存繳）
+## 決策狀態（2026-06-12 更新）
 
-| # | 決策 | 說明 | 建議 |
-|---|---|---|---|
-| 1 | **作者署名** | Zenodo creators 欄位必填真實署名（個人名或團隊名）。目前 repo 無 author 欄位，GitHub 帳號為 SecludedCorner。 | Master 決定：本名／筆名／"SecludedCorner Project" |
-| 2 | **License** | 三個 repo 目前**皆無 LICENSE 檔**＝法律上保留所有權利。Zenodo 必填 license。 | 文件庫建議 CC-BY-4.0（可引用、保留署名）；若要保留商業屏障可選 CC-BY-NC-4.0。代碼 repo 的 license 可另議、不影響本次存繳 |
-| 3 | **Zenodo 帳號操作** | 登入、確認 metadata、按下 Publish——DOI 一經發出不可撤回。 | Master 親手執行下方步驟 |
+| # | 決策 | 狀態 |
+|---|---|---|
+| 1 | **作者署名** | ✅ 已定（2026-06-12）：Yulin Yang（楊佑麟），affiliation = SecludedCorner |
+| 2 | **License** | ✅ 已定（2026-06-12）：文件庫 CC-BY-4.0；代碼兩 repo Apache-2.0。三個 LICENSE 檔皆已入庫 |
+| 3 | **Zenodo 帳號操作** | 🔴 **唯一剩餘步驟**：登入、確認 metadata、按下 Publish——DOI 一經發出不可撤回。Master 親手執行下方步驟 |
+
+> `.zenodo.json` 與 `CITATION.cff` 已按上述決策**實際寫入 repo root**（非草稿）——下方範本僅供歷史對照，操作時無需再貼。
 
 ## 已備好的 metadata（決策確定後直接貼用）
 

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this documentation corpus, please cite it as below."
+title: "OpenStarry: An Agent OS Reference Architecture — Documentation Corpus, Tenets Fulfillment Ledger, and Letter to the Future"
+type: dataset
+authors:
+  - family-names: "Yang"
+    given-names: "Yulin"
+    alias: "楊佑麟"
+    affiliation: "SecludedCorner"
+license: CC-BY-4.0
+repository: "https://github.com/SecludedCorner/openstarry_doc"
+url: "https://github.com/SecludedCorner/openstarry_doc"
+keywords:
+  - AI agents
+  - agent operating system
+  - microkernel
+  - plugin architecture
+  - reference architecture
+  - Five Aggregates
+  - honest process data
+# doi: Zenodo 發出 DOI 後回填此欄

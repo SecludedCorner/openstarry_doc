@@ -1,0 +1,14 @@
+{
+  "title": "OpenStarry: An Agent OS Reference Architecture — Documentation Corpus, Tenets Fulfillment Ledger, and Letter to the Future",
+  "description": "Documentation corpus of OpenStarry, a headless plugin-microkernel AI agent framework built on the Five Aggregates ontology. Includes: the Ten Tenets (canonical), the Tenets Fulfillment Ledger (per-tenet honest evidence against a running implementation, v0.59.x-alpha: 8 fully proven, #6 bounded at N=2, #10 proven to depth=3), the Letter to the Future (charter + honest process data: 87.5% spec-vs-merged gap, 96% closure inflation measured by internal audit), architecture decision records with rejected alternatives, and the microkernel purification rationale. Companion code repositories: https://github.com/SecludedCorner/openstarry and https://github.com/SecludedCorner/openstarry_plugin",
+  "upload_type": "publication",
+  "publication_type": "report",
+  "creators": [{ "name": "Yang, Yulin", "affiliation": "SecludedCorner" }],
+  "license": "cc-by-4.0",
+  "keywords": ["AI agents", "agent operating system", "microkernel", "plugin architecture", "reference architecture", "Five Aggregates", "software documentation", "honest process data"],
+  "related_identifiers": [
+    { "relation": "isSupplementTo", "identifier": "https://github.com/SecludedCorner/openstarry_doc" },
+    { "relation": "references", "identifier": "https://github.com/SecludedCorner/openstarry" },
+    { "relation": "references", "identifier": "https://github.com/SecludedCorner/openstarry_plugin" }
+  ]
+}
