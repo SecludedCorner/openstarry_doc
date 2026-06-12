@@ -1,6 +1,6 @@
 <!-- Status: CURRENT -->
-<!-- Applies to: v0.59.1-alpha -->
-<!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day) -->
+<!-- Applies to: v0.59.2-alpha -->
+<!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day); on-prem provider hardening pass 2026-06-12 (v0.59.2) -->
 
 # 十大宣言兌現帳本 (The Ten Tenets — Fulfillment Ledger)
 
@@ -45,4 +45,4 @@
 
 ---
 
-*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11。最終驗證快照：292 test files / 3083 passed / 0 failed / 3 skipped；microkernel purity PASS。最終帳：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3（機制同構，歸納可信）。*
+*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12。最新驗證快照：294 test files / 3155 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3（機制同構，歸納可信）。*
