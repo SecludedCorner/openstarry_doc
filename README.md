@@ -2,6 +2,8 @@
 
 # OpenStarry: The Agent Operating System
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20698129.svg)](https://doi.org/10.5281/zenodo.20698129) ｜ License: CC-BY-4.0
+
 **OpenStarry** 是一個重新定義智能代理人 (AI Agent) 構建方式的核心架構。它參考了現代操作系統的設計哲學，融合東方「五蘊」思想，旨在打造一個高度模組化、安全、且具備擬人化生命特徵的代理人協調層。
 
 我們不只構建 Chatbot，我們構建的是**數位物種的操作系統**。
@@ -373,4 +375,7 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 
 對應代碼版本：**v0.59.3-alpha** ｜ 測試：**296 files / 3163 passed / 0 failed / 4 skipped** ｜ 微內核純度檢查：PASS（`scripts/check-purity.sh` 機器強制）。
 
-授權：本文件庫 **CC-BY-4.0**（[LICENSE](./LICENSE)；引用方式見 [CITATION.cff](./CITATION.cff)）；代碼 repo Apache-2.0。
+授權：本文件庫 **CC-BY-4.0**（[LICENSE](./LICENSE)）；代碼 repo Apache-2.0。
+
+**引用 (Cite)** — DOI [10.5281/zenodo.20698129](https://doi.org/10.5281/zenodo.20698129)（機讀格式見 [CITATION.cff](./CITATION.cff)）：
+> Yang, Y. (2026). *OpenStarry: An Agent OS Reference Architecture — Documentation Corpus, Tenets Fulfillment Ledger, and Letter to the Future* (v0.59.3-alpha). Zenodo. https://doi.org/10.5281/zenodo.20698129

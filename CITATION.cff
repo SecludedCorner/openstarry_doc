@@ -8,6 +8,9 @@ authors:
     alias: "楊佑麟"
     affiliation: "SecludedCorner"
 license: CC-BY-4.0
+version: v0.59.3-alpha
+doi: 10.5281/zenodo.20698129
+date-released: 2026-06-15
 repository: "https://github.com/SecludedCorner/openstarry_doc"
 url: "https://github.com/SecludedCorner/openstarry_doc"
 keywords:
@@ -18,4 +21,14 @@ keywords:
   - reference architecture
   - Five Aggregates
   - honest process data
-# doi: Zenodo 發出 DOI 後回填此欄
+preferred-citation:
+  type: dataset
+  title: "OpenStarry: An Agent OS Reference Architecture — Documentation Corpus, Tenets Fulfillment Ledger, and Letter to the Future"
+  authors:
+    - family-names: "Yang"
+      given-names: "Yulin"
+      alias: "楊佑麟"
+      affiliation: "SecludedCorner"
+  year: 2026
+  doi: 10.5281/zenodo.20698129
+  url: "https://doi.org/10.5281/zenodo.20698129"

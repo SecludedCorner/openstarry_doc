@@ -12,7 +12,15 @@
 |---|---|---|
 | 1 | **作者署名** | ✅ 已定（2026-06-12）：Yulin Yang（楊佑麟），affiliation = SecludedCorner |
 | 2 | **License** | ✅ 已定（2026-06-12）：文件庫 CC-BY-4.0；代碼兩 repo Apache-2.0。三個 LICENSE 檔皆已入庫 |
-| 3 | **Zenodo 帳號操作** | 🔴 **唯一剩餘步驟**：登入、確認 metadata、按下 Publish——DOI 一經發出不可撤回。Master 親手執行下方步驟 |
+| 3 | **Zenodo 帳號操作** | ✅ 完成（2026-06-15）：Master 啟用 GitHub webhook（openstarry_doc）→ coordinator 建 Release v0.59.3-alpha 觸發 → Zenodo 自動讀 `.zenodo.json` 鑄 DOI |
+
+## ✅ 已存繳
+
+- **DOI**：[10.5281/zenodo.20698129](https://doi.org/10.5281/zenodo.20698129)（v0.59.3-alpha 版本 DOI）
+- 已回填 `CITATION.cff`（`doi:` + `preferred-citation`）與 README（DOI badge + 引用區）。
+- 路徑＝Path A（GitHub 整合）：webhook 已常開，**日後每發一個 openstarry_doc 的 GitHub Release，Zenodo 會自動存新版本**並更新「all-versions」concept DOI。
+- 引用：Yang, Y. (2026). *OpenStarry: An Agent OS Reference Architecture — Documentation Corpus…* (v0.59.3-alpha). Zenodo. https://doi.org/10.5281/zenodo.20698129
+- （選用）Zenodo 記錄頁另有一個「Cite all versions」的 concept DOI（永遠指向最新版）；若要把 badge 換成它，到記錄頁複製該 DOI 即可，不影響現有版本 DOI。
 
 > `.zenodo.json` 與 `CITATION.cff` 已按上述決策**實際寫入 repo root**（非草稿）——下方範本僅供歷史對照，操作時無需再貼。
 
