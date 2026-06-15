@@ -77,7 +77,7 @@ IPC 訊息
 
 ### 3.1 介面定義
 
-**檔案**: `agent_dev/openstarry/packages/core/src/registry/registry-event-bus.ts` (新增)
+**檔案**: `apps/channel/src/registry-event-bus.ts`
 
 ```typescript
 /**
@@ -177,7 +177,7 @@ export interface RegistrySnapshotEvent {
 
 ### 4.1 IPC 連線建立
 
-**檔案**: `agent_dev/openstarry/packages/core/src/registry/registry-bridge.ts` (新增)
+**檔案**: `apps/channel/src/registry-bridge.ts`
 
 當 Daemon 使用 `child_process.fork()` 啟動子 Agent：
 
@@ -508,8 +508,8 @@ process.send({
 
 | 檔案 | 行數 | 內容 |
 |------|-----|------|
-| `core/src/registry/registry-event-bus.ts` | 85 | IRegistryEventBus 介面 + 事件類型 |
-| `core/src/registry/registry-bridge.ts` | 165 | Daemon/Child IPC 邏輯 |
+| `apps/channel/src/registry-event-bus.ts` | 85 | IRegistryEventBus 介面 + 事件類型 |
+| `apps/channel/src/registry-bridge.ts` | 165 | Daemon/Child IPC 邏輯 |
 
 **總計**: ~250 LOC (P1 優先級)
 

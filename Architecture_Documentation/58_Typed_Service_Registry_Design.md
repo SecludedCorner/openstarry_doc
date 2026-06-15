@@ -1,6 +1,8 @@
 # Architecture Documentation #68: Typed Service Registry Design
 
-**Status**: Approved (D5-Q2, 5-0 unanimous)
+> **✅ 已實作（2026-06-15 verify）**：本提案已落地，不再是開放提案。`IServiceRegistry` 定義於 SDK `packages/sdk/src/types/service.ts`（＋`SERVICE_KEYS`）；core 有 `serviceRegistry`（`service-registry.test.ts` / `typed-registry-consumer.test.ts` 實測）；distributed-alaya 已遷移、消除 `as any`（`distributed-alaya/src/index.ts` 以 `ctx.services.register` 註冊、消費端用 `SERVICE_KEYS.DISTRIBUTED_ALAYA`）。下文 §1/§5 的「Current Pattern（v0.39, `as any`）」為**提案當時的問題描述**，保留作設計理據；現況以本註記為準。
+
+**Status**: Approved (D5-Q2, 5-0 unanimous) — **IMPLEMENTED**
 **Priority**: HIGH (P1 for Plan41, deferred from Plan40 via D4-4)
 **LOC Estimate**: ~105 LOC (SDK ~25 + Core ~50 + Migration ~30)
 **Cycle**: 03-4

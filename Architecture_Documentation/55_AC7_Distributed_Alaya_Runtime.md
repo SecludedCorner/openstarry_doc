@@ -269,7 +269,7 @@ function resolveConflict(local: ISeed, remote: ISeed): ISeed {
 
 ### 6.1 BijaStore 實作
 
-**檔案**: `agent_dev/openstarry/packages/plugin-distributed-alaya/src/bija-store.ts:120`
+**檔案**: `openstarry_plugin/distributed-alaya/src/bija-store.ts`（`BijaStoreImpl`）
 
 - 記憶體存儲 (Map<seedId, ISeed>)
 - 向量時鐘追蹤
@@ -278,15 +278,15 @@ function resolveConflict(local: ISeed, remote: ISeed): ISeed {
 
 ### 6.2 SeedSignatureService 實作
 
-**檔案**: `agent_dev/openstarry/packages/plugin-distributed-alaya/src/seed-signature-service.ts:65`
+**檔案**: `openstarry_plugin/distributed-alaya/src/seed-signature.ts`（`SeedSignatureServiceImpl`）
 
 - HMAC-SHA256 签名 (使用 crypto 模組)
 - Agent 本地密鑰管理
 - 簽名快取 (可選最佳化)
 
-### 6.3 DistributedAlayaRuntime 實作
+### 6.3 DistributedAlaya 實作
 
-**檔案**: `agent_dev/openstarry/packages/plugin-distributed-alaya/src/distributed-alaya-runtime.ts:380`
+**檔案**: `openstarry_plugin/distributed-alaya/src/distributed-alaya-impl.ts`（`DistributedAlayaImpl`）
 
 - IDistributedAlaya 完整實現 (~750 LOC，含評論和日誌)
 - plant/query/update/remove/exchangeSeeds 生命週期
