@@ -1,5 +1,5 @@
 <!-- Status: CURRENT -->
-<!-- Written: 2026-06-12, v0.59.2-alpha; replay-nonce addendum 2026-06-15, v0.59.3-alpha -->
+<!-- Written: 2026-06-12, v0.59.2-alpha; replay-nonce addendum 2026-06-15, v0.59.3-alpha; doc-vs-code gap closure 2026-06-16, v0.59.4-alpha -->
 <!-- 性質: Agent OS 憲章／時間膠囊核心文件。本文每一個工程宣稱都可在 TENETS_FULFILLMENT.md 與測試套件中查證；理據層引用之設計文件各自標注驗證時戳。 -->
 
 # 致未來的信 (Letter to the Future)
@@ -88,7 +88,7 @@
 
 ## 七、未竟清單
 
-完整清單見 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md) §給接手者的未竟清單。擇要：跨主機阿賴耶傳播（replay 防護已於 v0.59.3 經正式 Spec Addendum 為 ISeed 加 nonce 並接通驗證，但跨主機 transport 與 nonce 跨重啟持久化仍未做）；N>2 的 gossip 拓撲；klesha 權重的實證調參（至今仍標 HYPOTHESIS——我們拒絕假裝調過參）；CLI 模式對話歷史落盤。
+完整清單見 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md) §給接手者的未竟清單。擇要：跨主機阿賴耶傳播（replay 防護已於 v0.59.3 經正式 Spec Addendum 為 ISeed 加 nonce 並接通驗證，但跨主機 transport 與 nonce 跨重啟持久化仍未做）；N>2 的 gossip 拓撲；klesha 權重的實證調參（至今仍標 HYPOTHESIS——我們拒絕假裝調過參）。（v0.59.4 已補上 CLI 模式對話歷史落盤與運行中自主生子工具 `agent.spawnChild`，故從本清單移除。）
 
 這些不是 roadmap 承諾，是誠實的邊界標記。你接手時，請先跑 `pnpm build && pnpm test` 與 purity check，以 SDK 型別檔（`packages/sdk/src/`）為 API 最高權威、測試套件為行為權威——**任何文件與 SDK 衝突，SDK 贏**。本文件庫中 Technical_Specifications 01-07 描述的是一個未曾建造的系統，已掛隔離標記，請勿當作規格使用。
 
@@ -102,4 +102,4 @@
 
 ---
 
-*2026-06-12 撰，2026-06-15 補（v0.59.3-alpha：replay-nonce addendum）。本文不單獨重複工程證據細節；一切宣稱以 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md)、測試套件與 SDK 型別檔為準。*
+*2026-06-12 撰，2026-06-15 補（v0.59.3-alpha：replay-nonce addendum），2026-06-16 補（v0.59.4-alpha：doc-vs-code 缺口清理——CLI 歷史落盤、自主生子工具、四個接死碼安全零件）。本文不單獨重複工程證據細節；一切宣稱以 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md)、測試套件與 SDK 型別檔為準。*
