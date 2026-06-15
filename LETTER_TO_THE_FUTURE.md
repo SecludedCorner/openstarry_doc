@@ -1,5 +1,5 @@
 <!-- Status: CURRENT -->
-<!-- Written: 2026-06-12, v0.59.2-alpha 收官期 -->
+<!-- Written: 2026-06-12, v0.59.2-alpha; replay-nonce addendum 2026-06-15, v0.59.3-alpha -->
 <!-- 性質: Agent OS 憲章／時間膠囊核心文件。本文每一個工程宣稱都可在 TENETS_FULFILLMENT.md 與測試套件中查證；理據層引用之設計文件各自標注驗證時戳。 -->
 
 # 致未來的信 (Letter to the Future)
@@ -102,4 +102,4 @@
 
 ---
 
-*2026-06-12，v0.59.2-alpha 收官期。本文不單獨重複工程證據細節；一切宣稱以 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md)、測試套件與 SDK 型別檔為準。*
+*2026-06-12 撰，2026-06-15 補（v0.59.3-alpha：replay-nonce addendum）。本文不單獨重複工程證據細節；一切宣稱以 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md)、測試套件與 SDK 型別檔為準。*

@@ -1,12 +1,12 @@
 <!-- Status: CURRENT -->
-<!-- Applies to: v0.59.2-alpha -->
-<!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day); on-prem provider hardening pass 2026-06-12 (v0.59.2) -->
+<!-- Applies to: v0.59.3-alpha -->
+<!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day); on-prem provider hardening pass 2026-06-12 (v0.59.2); ledger-vs-code re-verification + ISeed replay-nonce addendum 2026-06-15 (v0.59.3) -->
 
 # 十大宣言兌現帳本 (The Ten Tenets — Fulfillment Ledger)
 
 > 這份文件是寫給未來的。
 >
-> 十大宣言（canonical：[README §十大核心宣言](./README.md#-十大核心宣言-the-ten-tenets)）是這個專案對「AI 落地那一天」的預先回答。本帳本逐條記錄每一條宣言在 v0.59.x-alpha（最終驗證 v0.59.2）的**誠實兌現狀態**：哪些已被可運行的 code＋通過的測試證明、哪些只證明到了明確標注的範圍、哪些仍是留給後人的未竟工程。
+> 十大宣言（canonical：[README §十大核心宣言](./README.md#-十大核心宣言-the-ten-tenets)）是這個專案對「AI 落地那一天」的預先回答。本帳本逐條記錄每一條宣言在 v0.59.x-alpha（最終驗證 v0.59.3）的**誠實兌現狀態**：哪些已被可運行的 code＋通過的測試證明、哪些只證明到了明確標注的範圍、哪些仍是留給後人的未竟工程。
 >
 > 撰寫紀律（本專案用 96% 灌水的教訓換來的）：**每一個「已證明」都附證據指標；每一個邊界都明說；寬於實證的措辭一律不寫。** 一封給未來的信，可信度來自自我標注的未完成，而非宣稱的完美。
 
@@ -45,4 +45,4 @@
 
 ---
 
-*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12。最新驗證快照：294 test files / 3155 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3（機制同構，任意有限深度無已知障礙）。*
+*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12；v0.59.3-alpha 帳本對代碼重驗＋ISeed replay-nonce Spec Addendum，2026-06-15。最新驗證快照：296 test files / 3163 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3（機制同構，任意有限深度無已知障礙）。*
