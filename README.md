@@ -8,6 +8,24 @@
 
 ---
 
+## 🧭 導讀 (Start Here)
+
+**這個文件庫是一個 Agent OS 參考架構的時間膠囊**：十大宣言是「AI 落地那一天」的預先答案，姊妹 repo 的五萬行代碼與 3155 個通過測試是可建造性的證明，而過程的失敗數據（87.5% spec-vs-merged gap、96% closure 灌水——自家稽核實測）原樣公開。
+
+**第一次來，照這個順序讀：**
+
+1. ✉️ **[致未來的信](./LETTER_TO_THE_FUTURE.md)** — 整個專案的自述：是什麼、為什麼、證明了什麼、哪裡失敗
+2. 🔍 **[Retrospective](./RETROSPECTIVE.md)** — 一個多智能體開發系統如何灌水、被抓到、然後誠實起來（數據逐項附出處）
+3. 🌟 **十大核心宣言**（本頁下方）＋ 📒 **[兌現帳本](./TENETS_FULFILLMENT.md)** — 每條宣言被代碼證明到什麼程度，逐條附證據與明確邊界
+4. 🛠️ **[GETTING_STARTED](./GETTING_STARTED.md)** — 10 分鐘把 Agent 跑起來（代碼在 [openstarry](https://github.com/SecludedCorner/openstarry) ＋ [openstarry_plugin](https://github.com/SecludedCorner/openstarry_plugin)，Apache-2.0）
+
+**想深入架構，從這六份開始：**
+[微內核純化理據](./Architecture_Documentation/50_Microkernel_Purification_Rationale.md) ・ [設計決策與被否決的方案](./Architecture_Documentation/41_Design_Decisions_and_Rationale.md) ・ [五蘊哲學映射](./Agent_Core_Components_Deep_Dive/14_Agent_Core_Philosophy_Five_Aggregates.md) ・ [IGearArbiter 規格](./Architecture_Documentation/42_IGearArbiter_Interface_Spec.md) ・ [IVolition 審議模式](./Architecture_Documentation/38_IVolition_Deliberation_Pattern.md) ・ [五蘊 OOP 架構](./Architecture_Documentation/45_Five_Skandha_OOP_Architecture.md)
+
+**全庫地圖與閱讀紀律**：[DISTILLATION_LIST.md](./DISTILLATION_LIST.md) 把全庫文件逐一分類（可發表／需修訂／已隔離／過程紀錄）；治理時代的過程紀錄集中於 [archive/](./archive/)，是 Retrospective 數據的原始證據層。**任何文件與 SDK 型別檔（`packages/sdk/src/`）衝突時，SDK 贏**；掛有 ⚠ 隔離標記的文件描述的是未曾建造的系統，請勿作為規格使用。
+
+---
+
 ## 🏗️ 系統宏觀架構 (Macro-System Architecture)
 
 OpenStarry 採用三層遞進的架構設計，模擬生物與其生存環境的共生關係：
@@ -211,7 +229,6 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * [48_十二因緣時間分類學 (Twelve Nidanas Temporal Taxonomy)](./Architecture_Documentation/48_Twelve_Nidanas_Temporal_Taxonomy.md) `[Cycle 02-8 新增]`
 * [49_蘊歸屬軟約束 (Skandha Soft Constraints)](./Architecture_Documentation/49_Skandha_Soft_Constraints.md) `[Cycle 02-8 新增]`
 * [50_微內核純化理據 (Microkernel Purification Rationale)](./Architecture_Documentation/50_Microkernel_Purification_Rationale.md) `[Cycle 02-9 新增 / cycle 03-29 H-2 renumbered]`
-* [51_Codex 審閱回應報告 (Codex Review Response)](./Architecture_Documentation/51_Codex_Review_Response.md) `[Cycle 02-10 新增 / cycle 03-29 H-2 renumbered]`
 * [52_阿賴耶識部分映射 (Alaya Partial Mapping)](./Architecture_Documentation/52_Alaya_Partial_Mapping.md) `[Cycle 02-11 新增 / cycle 03-29 H-2 renumbered]`
 * [53_多代理通訊介面規格 (Multi-Agent Communication Interface Spec)](./Architecture_Documentation/53_Multi_Agent_Communication_Interface_Spec.md) `[Cycle 03-1 新增 / cycle 03-29 H-2 renumbered]`
 * [54_多代理安全模型 (Multi-Agent Security Model)](./Architecture_Documentation/54_Multi_Agent_Security_Model.md) `[Cycle 03-2 新增 / cycle 03-29 H-2 renumbered]`
@@ -219,26 +236,14 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * [56_Audit Path B 修正差異 (Audit Path B Modified Delta)](./Architecture_Documentation/56_Audit_Path_B_Modified_Delta.md) `[Cycle 03-29 H-2 renumbered]`
 * [57_註冊表橋接 IPC (Registry Bridge IPC)](./Architecture_Documentation/57_Registry_Bridge_IPC.md) `[Cycle 03-29 H-2 renumbered]`
 * [58_類型化服務註冊表設計 (Typed Service Registry Design)](./Architecture_Documentation/58_Typed_Service_Registry_Design.md) `[Cycle 03-29 H-2 renumbered]`
-* [59_V4 規格與訊號理論分析 (V4 Spec Signal Theory Analysis)](./Architecture_Documentation/59_V4_Spec_Signal_Theory_Analysis.md) `[Cycle 03-29 H-6 added]`
-* [60_校準收斂模型 (Calibration Convergence Model)](./Architecture_Documentation/60_Calibration_Convergence_Model.md) `[Cycle 03-29 H-6 added]`
-* [61_ENG-FAB Checklist 設計理據 (ENG-FAB Checklist Design Rationale)](./Architecture_Documentation/61_ENG_FAB_Checklist_Design_Rationale.md) `[Cycle 03-29 H-6 added]`
 * [62_ISeedKeyProvider 抽象分析 (ISeedKeyProvider Abstraction Analysis)](./Architecture_Documentation/62_ISeedKeyProvider_Abstraction_Analysis.md) `[Cycle 03-29 H-6 added]`
-* [63_W2 Phase 2 校準架構 (W2 Phase 2 Calibration Architecture)](./Architecture_Documentation/63_W2_Phase2_Calibration_Architecture.md) `[Cycle 03-29 H-6 added]`
-* [64_製造模式五循環 (Fabrication Pattern Five Cycle)](./Architecture_Documentation/64_Fabrication_Pattern_Five_Cycle.md) `[Cycle 03-29 H-6 added]`
 * [65_齒輪仲裁者動態唯識映射 (Gear Arbiter Dynamic Buddhist Mapping)](./Architecture_Documentation/65_Gear_Arbiter_Dynamic_Buddhist_Mapping.md) `[Cycle 03-29 H-6 added]`
 * [66_Shadow Counting 控制理論 (Shadow Counting Control Theory)](./Architecture_Documentation/66_Shadow_Counting_Control_Theory.md) `[Cycle 03-29 H-6 added]`
 * [67_ServiceKey 幽靈型別理論 (ServiceKey Phantom Type Theory)](./Architecture_Documentation/67_ServiceKey_Phantom_Type_Theory.md) `[Cycle 03-29 H-6 added]`
-* [68_MR-11 十大宣言作為架構選擇 (MR-11 Tenets As Architectural Choice)](./Architecture_Documentation/68_MR11_Tenets_As_Architectural_Choice.md) `[Cycle 03-29 H-6 added]`
-* [69_Rule #63 L4 Config 啟動 (Rule #63 L4 Config Activates)](./Architecture_Documentation/69_Rule63_L4_Config_Activates.md) `[Cycle 03-29 H-6 added]`
-* [70_Rules #64-#68 重跑策略修正揭露 (Rules 64-68 Rerun Policy Fix Disclosure)](./Architecture_Documentation/70_Rules_64_to_68_Rerun_Policy_Fix_Disclosure.md) `[Cycle 03-29 H-6 added]`
 * [71_雙路徑 Config 傳播 (Two Path Config Propagation)](./Architecture_Documentation/71_Two_Path_Config_Propagation.md) `[Cycle 03-29 H-6 added]`
 * [72_WIENER L2/L3 安全框架 (WIENER L2/L3 Safety Framework)](./Architecture_Documentation/72_WIENER_L2_L3_Safety_Framework.md) `[Cycle 03-29 H-6 added]`
 * [73_Plan46 工具過濾 + Checkpoint Hook (Plan46 Tool Filtering & Checkpoint Hook)](./Architecture_Documentation/73_Plan46_Tool_Filtering_And_Checkpoint_Hook.md) `[Cycle 03-10 新增]`
 * [74_Plan47 K-3 Wire-In (Plan47 K-3 Wire-In)](./Architecture_Documentation/74_Plan47_K3_Wire_In.md) `[Cycle 03-11 新增]`
-* [75_Rules #71-#72 FR1/FR2 修正 (Rules 71/72 FR1/FR2 Amendments)](./Architecture_Documentation/75_Rules_71_72_FR1_FR2_Amendments.md) `[Cycle 03-29 H-6 added]`
-* [76_合規框架 9.0.1 + 零容忍 (Compliance Framework 9.0.1 & Zero Tolerance)](./Architecture_Documentation/76_Compliance_Framework_9_0_1_And_Zero_Tolerance.md) `[Cycle 03-29 H-6 added]`
-* [77_Tenet 10 Phase 6 路線圖 (Tenet 10 Phase 6 Roadmap)](./Architecture_Documentation/77_Tenet_10_Phase_6_Roadmap.md) `[Cycle 03-29 H-6 added]`
-* [78_Rule #74 L1' Prime 代碼-文件同步 (Rule #74 L1' Prime Code-Doc Sync)](./Architecture_Documentation/78_Rule_74_L1_Prime_Code_Doc_Sync.md) `[Cycle 03-29 H-6 added]`
 * [79_插件齒輪仲裁者 (Plugin Gear Arbiters)](./Architecture_Documentation/79_Plugin_Gear_Arbiters.md) `[Cycle 03-29 H-6 added]`
 
 ### 2. 核心組件深潛 (Agent Core Components Deep Dive)
@@ -263,7 +268,6 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 
 ### 3. 專案結構與規範 (Project Structure and Conventions)
 *定義物理佈局、源碼組織、開發流程與安裝規範。*
-* [00_路線圖與里程碑 (Roadmap & Milestones)](./Project_Structure_and_Conventions/00_Roadmap_and_Milestones.md)
 * [01_Monorepo 頂層結構 (Monorepo Top Level Structure)](./Project_Structure_and_Conventions/01_Monorepo_Top_Level_Structure.md)
 * [02_核心源碼結構 (Core Source Code Structure)](./Project_Structure_and_Conventions/02_Core_Source_Code_Structure.md)
 * [03_共享組件與 SDK 結構 (Shared & SDK Structure)](./Project_Structure_and_Conventions/03_Shared_and_SDK_Structure.md)
@@ -282,7 +286,6 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * [16_插件註冊與發佈 (Plugin Registry & Distribution)](./Project_Structure_and_Conventions/16_Plugin_Registry_and_Distribution.md)
 * [17_開發者體驗與工具 (Developer Experience & Tooling)](./Project_Structure_and_Conventions/17_Developer_Experience_and_Tooling.md)
 * [18_代理運行時配置 (Agent Runtime Configuration)](./Project_Structure_and_Conventions/18_Agent_Runtime_Configuration.md)
-* [測試指南 (Testing Guide)](./Project_Structure_and_Conventions/Testing_Guide.md)
 
 ### 4. 插件基礎設施範例 (Plugin System Architecture)
 *插件系統的具體應用、概念與規範。*
@@ -311,16 +314,7 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * [擬人化痛覺機制範例 (Pain Mechanism Demo)](./Implementation_Examples/Pain_Mechanism_Demo.md)
 
 ### 6. 實作計畫 (Implementation Plans)
-*工程實作的分波規格。*
-* [Plan28_IVolition v1 + Safety Hardening](./Implementation_Plans/Plan28_IVolition_v1_Safety_Hardening.md)
-* [Plan29_ILoopQualityMonitor + IConfidenceAuditor](./Implementation_Plans/Plan29_ILoopQualityMonitor_IConfidenceAuditor_SEC029.md)
-* [Plan30_LoopQualityMonitor Layer 3](./Implementation_Plans/Plan30_LoopQualityMonitor_Layer3.md)
-* [Plan31_AuditContext + ThresholdAuditor + Audit Trail](./Implementation_Plans/Plan31_AuditContext_ThresholdAuditor_AuditTrail.md)
-* [Plan32_Tenet #7 絕對純淨 + Tenet #9 (Tenet7 Absolute Purity)](./Implementation_Plans/Plan32_Tenet7_Absolute_Purity.md) `[Cycle 02-8 新增]`
-* [Plan34_.openstarry/ 專案級配置 (Project-Level Config)](./Implementation_Plans/Plan34_Project_Level_Config.md) `[Cycle 02-10 新增]`
-* [Plan35_Context Summary + VedanaFn Wiring](./Implementation_Plans/Plan35_Context_Summary_VedanaFn.md) `[Cycle 02-11 新增]`
-* [Plan46_Tool Filtering + K-3 SDK Framework Hook](./Implementation_Plans/Plan46_Implementation_Plan.md) `[Cycle 03-10 新增]` — v0.46.0-alpha
-* [Plan47_K-3 Wire-In 5 MUST + HMAC Sync + MR-6](./Implementation_Plans/Plan47_Implementation_Plan.md) `[Cycle 03-11 新增]` — v0.47.0-alpha
+*工程實作的分波規格。已完結的歷史計畫（Plan01-47）於 2026-06-12 蒸餾移至 [archive/Implementation_Plans/](./archive/Implementation_Plans/)。*
 * [Doc 73 Plan46 架構決策](./Architecture_Documentation/73_Plan46_Tool_Filtering_And_Checkpoint_Hook.md) `[Cycle 03-10 新增]`
 * [Doc 74 Plan47 K-3 Wire-In 架構決策](./Architecture_Documentation/74_Plan47_K3_Wire_In.md) `[Cycle 03-11 新增]`
 
@@ -339,13 +333,11 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * [11_分段授權轉移架構 (Phased Authority Transfer Architecture)](./Technical_Specifications/11_Phased_Authority_Transfer_Architecture.md)
 * [12_金鑰輪替設計理據 (Key Rotation Design Rationale)](./Technical_Specifications/12_Key_Rotation_Design_Rationale.md)
 * [13_M4a 雙軌設計 (M4a Dual Track Design)](./Technical_Specifications/13_M4a_Dual_Track_Design.md)
-* [14_Plan43 COND2 StateTracker 規格修正 (Plan43 COND2 StateTracker Spec Amendment)](./Technical_Specifications/14_Plan43_COND2_StateTracker_Spec_Amendment.md)
 * [15_Phase 3 Shadow M4a 實作 (Phase 3 Shadow M4a Implementation)](./Technical_Specifications/15_Phase3_Shadow_M4a_Implementation.md)
 * [16_HMAC 合規 (HMAC Compliance)](./Technical_Specifications/16_HMAC_Compliance.md)
 * [17_HMAC 金鑰輪替架構 (HMAC Key Rotation Architecture)](./Technical_Specifications/17_HMAC_Key_Rotation_Architecture.md)
 * [18_結構化日誌 (Structured Log)](./Technical_Specifications/18_Structured_Log.md)
 * [19_Schema Drift 策略 (Schema Drift Policy)](./Technical_Specifications/19_Schema_Drift_Policy.md)
-* [Plan49 MR-6 條件閘 (Plan49 MR-6 Conditional Gates)](./Technical_Specifications/Plan49_MR6_Conditional_Gates.md) `[Cycle 03-29 H-6 added]`
 * [Plan50 Sigma Regime Binding](./Technical_Specifications/Plan50_Sigma_Regime_Binding.md) `[Cycle 03-29 H-6 added]`
 * [Plan50 pushInput CP4 Invariant](./Technical_Specifications/Plan50_pushInput_CP4_Invariant.md) `[Cycle 03-29 H-6 added]`
 * [Plan51 Zod Gate Binding](./Technical_Specifications/Plan51_Zod_Gate_Binding.md) (TW: [`.tw.md`](./Technical_Specifications/Plan51_Zod_Gate_Binding.tw.md)) `[Cycle 03-29 H-6 added]`
@@ -356,7 +348,7 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * [Plan58 Mesh Binding](./Technical_Specifications/Plan58_Mesh_Binding.md) (TW: [`.tw.md`](./Technical_Specifications/Plan58_Mesh_Binding.tw.md)) `[Cycle 03-29 H-6 added]`
 * [Plan59 API Runtime Binding](./Technical_Specifications/Plan59_API_Runtime_Binding.md) (TW: [`.tw.md`](./Technical_Specifications/Plan59_API_Runtime_Binding.tw.md)) `[Cycle 03-29 H-6 added]`
 * [Plan60 Blackboard Alaya Binding](./Technical_Specifications/Plan60_Blackboard_Alaya_Binding.md) (TW: [`.tw.md`](./Technical_Specifications/Plan60_Blackboard_Alaya_Binding.tw.md)) `[Cycle 03-29 H-6 added]`
-* Plan53 / Plan55 sunset: 見 [`Technical_Specifications/_archive/`](./Technical_Specifications/_archive/) (Plan53 cycle 03-25 sunset; Plan55 cycle 03-21 R3 binary final sunset — archive doc created cycle 03-29 H-5)
+* Plan53 / Plan55 sunset: 見 [`archive/Technical_Specifications/_archive/`](./archive/Technical_Specifications/_archive/) (Plan53 cycle 03-25 sunset; Plan55 cycle 03-21 R3 binary final sunset；2026-06-12 蒸餾隨層搬移)
 
 ### 8. 實作參照 (Implementation Reference) `[Cycle 03-29 H-6 added]`
 *Implementation Reference 平行 EN/TW 雙語匯整（cycle 03-26 結構搬遷至 canonical 單一 source-of-truth；12+12 sibling pair 全部以 Rule #78 §78.7 codified）。*
@@ -368,6 +360,6 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 
 ## 🛠️ 快速開始
 
-**新手推薦**：**[GETTING_STARTED.md](./GETTING_STARTED.md)** — 10 分鐘上手，從配置到寫出第一個 Plugin `[Cycle 02-10 新增]` | 版本: v0.57.5-alpha (cycle 03-28 doc-only) / v0.57.6-alpha (cycle 03-29 hygiene; this) `[Cycle 03-29 H-7 footer refresh]` | 測試: 3093 passed, 3 skipped (cycle 03-27 v0.57.4 post task #191 Phase 0 baseline) | 合規: cycle 03-26 起 canonical 單一 source-of-truth (Master directive 2026-05-08) + ε-surface Δ=0 9-cycle preservation streak (cycle 03-21 → 03-29; longest on record) + §75.X 21st consecutive (reconciled basis)
+**新手推薦**：**[GETTING_STARTED.md](./GETTING_STARTED.md)** — 10 分鐘上手，從配置到寫出第一個 Plugin（2026-06-11 對照真實 CLI 全文重寫驗證）。
 
-進階參考：**[Developer_Guide_Standalone_Execution.md](./Implementation_Examples/Developer_Guide_Standalone_Execution.md)** 運行您的第一個 Agent。
+對應代碼版本：**v0.59.2-alpha** ｜ 測試：**294 files / 3155 passed / 0 failed / 4 skipped** ｜ 微內核純度檢查：PASS（`scripts/check-purity.sh` 機器強制）。

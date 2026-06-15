@@ -1,3 +1,7 @@
+<!-- QUARANTINE NOTICE 2026-06-12 -->
+> **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
+> 判定理由（掃描原文）：Full lifecycle narrative (openstarry-daemon start, Master Agent with AgentManagerTool/AgentDesignerTool, MCP inter-agent collaboration) of a system that never existed; no banner.
+
 # OpenStarry 系統：完整啟動與任務流程
 
 本文件詳細闡述了 OpenStarry 系統從「零啟動」到「完成一個複雜多代理人協作任務」的完整生命週期和工作流程。

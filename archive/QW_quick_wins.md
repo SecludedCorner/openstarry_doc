@@ -78,7 +78,7 @@
 
 ## QW-3：GETTING_STARTED.md（~150 行，獨立新檔 Layer 1）
 
-**狀態**：✅ 完整版已交付 → [`GETTING_STARTED.md`](./GETTING_STARTED.md)
+**狀態**：✅ 完整版已交付 → [`GETTING_STARTED.md`](../GETTING_STARTED.md)
 
 **內容**：五步驟教學（Create Config → Start Agent → Write Plugin → Register → Next Steps），包含完整 TypeScript 程式碼範例、agent config JSON 範例、plugin factory 模式、工具定義與 zod schema、plugin 解析順序說明、預建 plugin 列表。
 

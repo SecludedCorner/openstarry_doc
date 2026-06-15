@@ -1,3 +1,7 @@
+<!-- QUARANTINE NOTICE 2026-06-12 -->
+> **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
+> 判定理由（掃描原文）：Presented as 實作範例 but describes a never-built stack: std-hardware-listener plugin, System Agent gatekeeper, Orchestrator Daemon, agent:validate_manifest/agent:spawn/agent:kill tools — none exist (real agent spawning is the v0.59.1 processTree/agent-ask path, entirely different); compelling vision content that must carry a banner.
+
 # 實作範例：USB 即插即用代理人 (USB Plug-and-Play Agent)
 
 本範例展示了 OpenStarry 架構的極致靈活性：將一個完整的 Agent 封裝在 USB 隨身碟中。當 USB 插入主機時，系統自動感知並喚醒該 Agent 執行特定任務（如自動備份、系統診斷），並在任務結束後允許安全移除。

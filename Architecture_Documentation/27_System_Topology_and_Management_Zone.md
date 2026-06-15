@@ -1,3 +1,7 @@
+<!-- QUARANTINE NOTICE 2026-06-12 -->
+> **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
+> 判定理由（掃描原文）：Grand topology (WASM sandboxes, causality-chain scheduler, quota policy layer, HAL feeding PiKVM/Jetson sensor streams) presented as the system's defined operating logic — none of it built; no banner.
+
 # 27. 系統拓樸與管理層架構 (System Topology & Management Zone)
 
 本文件定義了 OpenStarry 的宏觀運作邏輯：它是一個由「管理層」提供土壤與養分，並讓「核心層」透過「插件」實現物種多樣性的現代 AI 作業系統。

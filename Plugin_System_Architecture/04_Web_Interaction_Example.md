@@ -1,3 +1,7 @@
+<!-- QUARANTINE NOTICE 2026-06-12 -->
+> **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
+> 判定理由（掃描原文）：Webhook-Listener via plugin.json config and a Puppeteer/Playwright Browser-Control-Suite were never built (no such plugin among the 44); manifest model and eventQueue.push API are fictional relative to the shipped factory-pattern SDK.
+
 # 插件範例：Web 交互 (Web Interaction)
 
 本文件闡述了與 Web 進行交互的插件設計，包括 Webhook 和瀏覽器控制。

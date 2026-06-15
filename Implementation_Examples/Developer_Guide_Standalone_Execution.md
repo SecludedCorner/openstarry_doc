@@ -1,3 +1,7 @@
+<!-- QUARANTINE NOTICE 2026-06-12 -->
+> **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
+> 判定理由（掃描原文）：Premised on never-built Orchestrator Daemon / Design Layer / database production stack; entire code uses phantom APIs (AgentCore, InMemoryStateManager, coreApi.on('onNewMessage'), submitUserInput, provideConfirmation — zero hits in packages/sdk/src); real standalone path is apps/runner bin.js with a JSON config.
+
 # 開發者指南：單機運行與調試 (Standalone Execution)
 
 本指南旨在幫助開發者在不啟動完整 `Orchestrator Daemon` 和複雜基礎設施的情況下，快速啟動一個輕量級的 `Agent Core` 實例進行插件開發、調試和測試。

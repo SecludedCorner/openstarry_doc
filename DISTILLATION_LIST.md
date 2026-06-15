@@ -4,7 +4,9 @@
 
 # openstarry_doc 蒸餾清單 (Distillation List)
 
-掃描日期：2026-06-12（v0.59.1-alpha 收官期）。方法：每目錄一個分類 agent（16 組並行），讀 header 狀態戳＋結構掃描，曖昧時深讀；判準見各節定義。**本清單本身不動任何檔案**——它是後續蒸餾工作的派工底稿。
+掃描日期：2026-06-12（v0.59.1-alpha 收官期）。方法：每目錄一個分類 agent（16 組並行），讀 header 狀態戳＋結構掃描，曖昧時深讀；判準見各節定義。
+
+> **蒸餾第一波已執行（2026-06-12 同日）**：下方標 archive 的檔案已實際移入 [archive/](./archive/) 子目錄（原路徑 `X/Y.md` → `archive/X/Y.md`，本清單保留原路徑作為判定紀錄）；缺誠實標記的 18 個 quarantine 檔已補掛 ⚠ 隔離牌；門面 README 加入導讀層。例外：`ZENODO_DEPOSIT_RUNBOOK.md` 判 archive 但 DOI 存繳未完成，仍留原位現役。
 
 ## 總帳
 

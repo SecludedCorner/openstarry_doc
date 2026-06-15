@@ -60,7 +60,7 @@
 
 - 兌現帳本與化石清單：[TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md)
 - 稽核紀錄：coordinator memory `project_cycle03-41_close.md`、`project_cycle03-42_close.md`（含完整 X/Y/Z 分解、投票記錄、LEIBNIZ 異議全文出處）
-- 治理時代過程殘留：本文件庫 Reference/、Research_Methodology/、Calibration_Reports/ 的 cycle-stamped 文件（蒸餾清單中標 archive 者）
+- 治理時代過程殘留：本文件庫 [archive/](./archive/) 目錄（2026-06-12 蒸餾第一波依清單判定集中移入；原 Reference/、Research_Methodology/、Calibration_Reports/ 等之 cycle-stamped 文件，相對結構保留）
 - 修復衝刺交付報告：`share/engineering_delivery/20260611_repair-sprint_v0.58.0-alpha/`、`20260612_local-provider-hardening/`
 
 ---

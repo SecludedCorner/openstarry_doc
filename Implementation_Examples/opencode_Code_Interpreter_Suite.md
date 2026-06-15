@@ -1,3 +1,7 @@
+<!-- QUARANTINE NOTICE 2026-06-12 -->
+> **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
+> 判定理由（掃描原文）：Entire doc designs around a shared backend Sandbox Manager (Docker lifecycle, sandbox_fs:* tools, python:execute via sandbox) that was never built — same fiction layer as Tool_CodeInterpreter_Example and the Daemon infrastructure in Tech Specs 01-07.
+
 # 實現思路：opencode - 代碼解釋器工具套件
 
 本文件詳細描述了為實現 `opencode` 功能而設計的「代碼解釋器工具套件」的內部組件和工作流程。
