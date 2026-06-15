@@ -133,7 +133,7 @@ OpenStarry 的強大在於其聲明式的配置。以下是一個具備「痛覺
 
 ## 🌟 十大核心宣言 (The Ten Tenets)
 
-> 📒 各宣言的誠實兌現狀態（已證明／已證至 N=2／明確不宣稱）見 **[十大宣言兌現帳本 (TENETS_FULFILLMENT.md)](./TENETS_FULFILLMENT.md)**（v0.59.4-alpha，每項主張附證據指標）。
+> 📒 各宣言的誠實兌現狀態（已證明／已證至 N=2／明確不宣稱）見 **[十大宣言兌現帳本 (TENETS_FULFILLMENT.md)](./TENETS_FULFILLMENT.md)**（v0.59.5-alpha，每項主張附證據指標）。
 >
 > ✉️ 本專案作為 Agent OS 時間膠囊的完整自述——微內核與五蘊的理據、決策如何被否決出來、誠實過程數據（87.5% spec-vs-merged gap／96% closure 灌水）與未竟清單——見 **[致未來的信 (LETTER_TO_THE_FUTURE.md)](./LETTER_TO_THE_FUTURE.md)**。
 
@@ -373,7 +373,7 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 
 **新手推薦**：**[GETTING_STARTED.md](./GETTING_STARTED.md)** — 10 分鐘上手，從配置到寫出第一個 Plugin（2026-06-11 對照真實 CLI 全文重寫驗證）。
 
-對應代碼版本：**v0.59.4-alpha** ｜ 測試：**300 files / 3179 passed / 0 failed / 4 skipped** ｜ 微內核純度檢查：PASS（`scripts/check-purity.sh` 機器強制）。
+對應代碼版本：**v0.59.5-alpha** ｜ 測試：**300 files / 3179 passed / 0 failed / 4 skipped** ｜ 微內核純度檢查：PASS（`scripts/check-purity.sh` 機器強制）。
 
 授權：本文件庫 **CC-BY-4.0**（[LICENSE](./LICENSE)）；代碼 repo Apache-2.0。
 

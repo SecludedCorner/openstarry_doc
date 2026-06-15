@@ -136,8 +136,8 @@ node apps/runner/dist/bin.js start --config ./my-agent.json --resume
 sessions are saved automatically at graceful shutdown (`/quit` or SIGINT) into the
 same `FileSessionPersistence` store the daemon uses; `--resume` reloads the default
 CLI session before the control loop starts. (Added v0.59.4-alpha; wired in
-`apps/runner/src/commands/start.ts`, backed by `utils/cli-session-persistence.ts`.)
-*Note: the runner's `--help` does not yet list `--resume`.*
+`apps/runner/src/commands/start.ts`, backed by `utils/cli-session-persistence.ts`;
+listed in `--help` since v0.59.5-alpha.)
 
 ### Plugin Resolution Order (actual resolver behavior)
 

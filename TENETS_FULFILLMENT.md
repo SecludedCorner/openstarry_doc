@@ -1,5 +1,5 @@
 <!-- Status: CURRENT -->
-<!-- Applies to: v0.59.4-alpha -->
+<!-- Applies to: v0.59.5-alpha -->
 <!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day); on-prem provider hardening pass 2026-06-12 (v0.59.2); ledger-vs-code re-verification + ISeed replay-nonce addendum 2026-06-15 (v0.59.3); doc-vs-code gap closure (CLI persistence #9, agent.spawnChild #10, dead-code wirings) 2026-06-16 (v0.59.4) -->
 
 # 十大宣言兌現帳本 (The Ten Tenets — Fulfillment Ledger)
@@ -41,8 +41,8 @@
 2. 分形：~~agent 於運行中**自主決定**生子的工具面（LLM 可呼叫的 spawn 工具）~~ ✅ v0.59.4-alpha 已做（`agent-spawn` 插件＋daemon DAEMON_SPAWN service）；**仍未竟**：LLM-initiated 生子的端到端真進程 e2e、depth>3 鏈實測。
 3. klesha：權重與 L2/L3 值的實證調參（Rule #72 N≥10 校準門從未達到，仍為 HYPOTHESIS）。
 4. ~~地端關鍵路徑：provider-lmstudio（0 測試）與 provider-local-llama 打磨＋Ollama e2e。~~ ✅ 2026-06-12 已清：兩 provider 純函數抽取＋75 個單元測試（36＋39，wire 行為逐位元保留）；Ollama 真實 e2e 為 skipIf 門控——**本開發機無 Ollama 故從未實跑**，留給裝有 Ollama 的環境驗證。
-5. ~~CLI 模式對話歷史落盤（現僅 daemon 模式）。~~ ✅ v0.59.4-alpha 已做（關機存檔＋`--resume` 還原，沿用 daemon 的 `FileSessionPersistence` store，`apps/runner/src/utils/cli-session-persistence.ts`＋`start.ts`，`cli-session-persistence.test.ts` 4 測試）。**仍未竟**：CLI `--help` 尚未列 `--resume`（細項）。
+5. ~~CLI 模式對話歷史落盤（現僅 daemon 模式）。~~ ✅ v0.59.4-alpha 已做（關機存檔＋`--resume` 還原，沿用 daemon 的 `FileSessionPersistence` store，`apps/runner/src/utils/cli-session-persistence.ts`＋`start.ts`，`cli-session-persistence.test.ts` 4 測試；`--help` 自 v0.59.5-alpha 已列 `--resume`）。
 
 ---
 
-*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12；v0.59.3-alpha 帳本對代碼重驗＋ISeed replay-nonce Spec Addendum，2026-06-15；v0.59.4-alpha doc-vs-code 缺口清理（CLI 歷史落盤 #9、agent.spawnChild 自主生子 #10、四個接死碼安全零件），2026-06-16。最新驗證快照：300 test files / 3179 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3＋運行中自主生子工具（機制同構，任意有限深度無已知障礙）。*
+*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12；v0.59.3-alpha 帳本對代碼重驗＋ISeed replay-nonce Spec Addendum，2026-06-15；v0.59.4-alpha doc-vs-code 缺口清理（CLI 歷史落盤 #9、agent.spawnChild 自主生子 #10、四個接死碼安全零件），2026-06-16；v0.59.5-alpha 發佈後 drift 稽核一致性修補（虛構層 doc 56/57 補隔離牌、計數與版本戳對齊、`--help` 補 `--resume`），2026-06-16。最新驗證快照：300 test files / 3179 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3＋運行中自主生子工具（機制同構，任意有限深度無已知障礙）。*
