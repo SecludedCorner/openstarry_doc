@@ -1,6 +1,13 @@
+> ⚠️ **[漂移更正 — v0.59.4-alpha drift 稽核 2026-06-16]** Registry Bridge **本身已落地**（`apps/channel/src/registry-bridge.ts`，22 個測試於 `apps/channel/__tests__/registry-bridge.test.ts`），**但本文 §4／§7 描述的程式面與威脅模型與實作不符，請以代碼為準**：
+> - **§4 的 `spawnChildAgent()`／`verifyIpcCaller()`／`pidToAgentIdMap`／`notifyDaemonReady()`／`waitForChildReady()` 等 fork()＋PID 模型不存在**（已 grep，0 hits）。實際模型：Channel 是 fork 的**目標**；`RegistryBridge` 訂閱 daemon `RegistryEventBus` 的四個事件（`agent:spawned/terminated/registered/health_changed`），在 write lock 下套用到唯讀副本 `AgentRegistry`——**daemon-attested-event 模型，非 PID 驗證**。
+> - **§7 的 AT-7 向量與實作不同**。實際：**AT-7a = Ghost Agent**（無 daemon 認證的 `agent:spawned` 事件即拒絕註冊）、**AT-7b = Shadow Agent**（write lock 下拒絕重複 agentId，SEC-001 TOCTOU 修復）、**AT-7c = Identity Split**（先除名後重生的事件排序），見 `registry-bridge.ts:10-13, 89, 131-176`。
+> - §8.3 引用的 `registry-event-bus.test.ts（12 測試）`不存在；真實測試為 `registry-bridge.test.ts`（22 it/test）。
+>
+> 以下原文保留供考古。
+
 # 61. 註冊表橋接與 IPC (Registry Bridge & IPC)
 
-**Status**: Cycle 20260404_cycle03-3 PASS  
+**Status**: PARTIALLY IMPLEMENTED — bridge 已落地，但本文 §4/§7 程式面/威脅模型描述與代碼不符（見頂部更正；原標 Cycle 20260404_cycle03-3 PASS）  
 **Version**: v0.39.0-alpha  
 **Plan**: Plan39 Engineering Specification  
 **Author**: architect  

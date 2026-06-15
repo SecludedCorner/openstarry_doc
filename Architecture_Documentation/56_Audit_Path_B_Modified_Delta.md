@@ -1,6 +1,8 @@
+> ⚠️ **[隔離標記 — v0.59.4-alpha drift 稽核 2026-06-16]** 本文件描述的 B-Modified Delta 注入機制為**未落地的設計提案（design only, NOT IMPLEMENTED）**。截至 v0.59.4-alpha，code 中**不存在** `packages/core/src/confidence/` 目錄、`audit-trail-service.ts` 的 `B_MODIFIED_DELTA_MAP`／`getBModifiedDelta()`、`per-cycle-clamp-reset.ts`／`performPerCycleClampReset()`、`recordToolAudit()`，亦無 `stability-edge-cases.test.ts`（已對代碼 grep 驗證，0 hits）。文中「PASS／6 測試通過／2263 baseline」不對應任何已實作代碼（當前 baseline 為 3179）。唯一相關的真實產物是 SDK 介面 `IConfidenceAuditor`（`packages/sdk/src/types/confidence-auditor.ts`），無對應具體實作。保留供考古；勿當作規格使用。
+
 # 60. 審計路徑 B-Modified Delta 注入機制 (Audit Path B-Modified Delta)
 
-**Status**: Cycle 20260404_cycle03-3 PASS  
+**Status**: NOT IMPLEMENTED — design proposal only（v0.39.0-alpha-era spec，從未落地；原標 Cycle 20260404_cycle03-3 PASS 不對應代碼）  
 **Version**: v0.39.0-alpha  
 **Plan**: Plan39 Engineering Specification  
 **Author**: architect  

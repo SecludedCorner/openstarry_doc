@@ -1,7 +1,7 @@
 <!-- Status: CURRENT -->
 <!-- Layer: 1-Engineering -->
-<!-- Applies to: v0.58.0-alpha -->
-<!-- Last verified: 2026-06-11 (rewritten against actual CLI + resolver source; the previous v0.35-era guide had an unfollowable quickstart: wrong flag, npm-install path that does not exist, and a minimal config missing two mandatory plugins) -->
+<!-- Applies to: v0.59.4-alpha -->
+<!-- Last verified: 2026-06-16 (re-stamped for v0.59.4; added --resume + agent-spawn; corrected init file list and plugin count. Originally rewritten 2026-06-11 against actual CLI + resolver source, replacing a v0.35-era guide with an unfollowable quickstart.) -->
 
 > **Audience**: External developers, first-time plugin authors
 > **Prerequisite**: Node.js basics, TypeScript familiarity
@@ -126,6 +126,19 @@ Type a message and press Enter. `/help` lists commands; `/quit` exits.
 > will still get a REPL — the error surfaces on your first message. Watch the
 > `[plugin]` startup lines.
 
+### Resuming a previous conversation (`--resume`)
+
+```bash
+node apps/runner/dist/bin.js start --config ./my-agent.json --resume
+```
+
+`--resume` restores the previous CLI session's conversation history. Non-empty
+sessions are saved automatically at graceful shutdown (`/quit` or SIGINT) into the
+same `FileSessionPersistence` store the daemon uses; `--resume` reloads the default
+CLI session before the control loop starts. (Added v0.59.4-alpha; wired in
+`apps/runner/src/commands/start.ts`, backed by `utils/cli-session-persistence.ts`.)
+*Note: the runner's `--help` does not yet list `--resume`.*
+
 ### Plugin Resolution Order (actual resolver behavior)
 
 For each `plugins[]` entry the runner tries, in order:
@@ -238,13 +251,18 @@ For per-project agent customization, create a `.openstarry/` directory:
 node apps/runner/dist/bin.js init --project
 ```
 
-This generates three config files in `.openstarry/`:
+This generates three files in `.openstarry/`:
 
 | File | Purpose |
 |------|---------|
 | `config.json` | Identity, cognition, memory overrides |
 | `permissions.json` | Security restrictions (paths, tools, limits) |
-| `plugins.json` | Plugin list override |
+| `README.md` | Generated notes describing the directory |
+
+> **Note**: `init --project` does **not** generate `plugins.json` — an empty
+> plugins array would fail `ProjectPluginsSchema.min(1)` validation, so absence
+> means "no override" (`init.ts`). Create `plugins.json` manually only when you
+> want to replace the agent's plugin list entirely.
 
 Project config uses a **restrict-only model** — it can narrow capabilities but never expand them. Skip with `--no-project-dir`.
 
@@ -321,7 +339,7 @@ Opt-in, env-driven — zero behavior change when unset:
 | Understand the system | [Ten Tenets (README §十大核心宣言)](./README.md#-十大核心宣言-the-ten-tenets) |
 | Authoritative API contracts | `packages/sdk/src/` type files — **the SDK types are the spec**; where any doc disagrees with them, the SDK wins |
 
-### Pre-built Plugins (selection — 43 in the plugin workspace)
+### Pre-built Plugins (selection — 44 loadable plugins in the plugin workspace, +1 `mcp-common` shared types lib = 45 packages)
 
 | Plugin | Type | Description |
 |--------|------|-------------|
@@ -336,6 +354,7 @@ Opt-in, env-driven — zero behavior change when unset:
 | `@openstarry-plugin/mcp-client` | Bridge | Connect external MCP servers (stdio + HTTP/OAuth) |
 | `@openstarry-plugin/mcp-server` | Bridge | Expose the agent AS an MCP server |
 | `@openstarry-plugin/workflow-engine` | Tool | Declarative YAML workflows (loop steps + persistence since v0.58) |
+| `@openstarry-plugin/agent-spawn` | Tool | Lets an agent spawn child agents at runtime via the daemon's `agent.spawnChild` tool (Tenet #10; daemon mode required) |
 | `@openstarry-plugin/web-ui` / `tui-dashboard` | UI | Browser / terminal dashboards |
 
 > There is **no built-in shell-exec tool** — by design. Wire one via an MCP

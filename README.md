@@ -362,9 +362,9 @@ Agent Core 採用嚴格的**微內核架構 (Microkernel Architecture)**。
 * Plan53 / Plan55 sunset: 見 [`archive/Technical_Specifications/_archive/`](./archive/Technical_Specifications/_archive/) (Plan53 cycle 03-25 sunset; Plan55 cycle 03-21 R3 binary final sunset；2026-06-12 蒸餾隨層搬移)
 
 ### 8. 實作參照 (Implementation Reference) `[Cycle 03-29 H-6 added]`
-*Implementation Reference 平行 EN/TW 雙語匯整（cycle 03-26 結構搬遷至 canonical 單一 source-of-truth；12+12 sibling pair 全部以 Rule #78 §78.7 codified）。*
-* EN corpus: [`Implementation_Reference/EN/`](./Implementation_Reference/EN/) — 12 sibling-paired English markdown files
-* TW corpus: [`Implementation_Reference/TW/`](./Implementation_Reference/TW/) — 12 sibling-paired Traditional Chinese markdown files
+*Implementation Reference 平行 EN/TW 雙語匯整（cycle 03-26 結構搬遷至 canonical 單一 source-of-truth；Rule #78 §78.7 sibling-naming 機制檢查）。目前 **11 EN + 12 TW**：`wiener-thresholds.md` 為 TW-only orphan（EN sibling 待補；`sibling-naming-check.mjs` 實跑回報 `[LOW] TW_ORPHAN`）。*
+* EN corpus: [`Implementation_Reference/EN/`](./Implementation_Reference/EN/) — 11 sibling-paired English markdown files
+* TW corpus: [`Implementation_Reference/TW/`](./Implementation_Reference/TW/) — 12 Traditional Chinese markdown files（11 paired + 1 TW-only: `wiener-thresholds.md`）
 * Sibling-naming 機制驗證工具: `agent_dev/openstarry/tools/sibling-naming-check.mjs` (retargeted cycle 03-28 task #191 至 canonical 單一目錄)
 
 ---

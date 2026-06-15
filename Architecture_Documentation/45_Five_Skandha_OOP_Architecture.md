@@ -740,6 +740,8 @@ const volitionDeps = pluginVolition ? {
 ```
 [程式碼: packages/core/src/agents/agent-core.ts#start, lines 352-361]
 
+> **[2026-06-11 更正]** 上述全零 `KleshaSignalBundle`／upekkha 預設值僅為 **v0.28.0-alpha** 的 adapter 行為。自 **v0.58.0-alpha（FIX-2026-06-11）** 起，adapter 直接接線唯一的 live `kleshaSignalFn`（`agent-core.ts:647`，由 `createKleshaSignalFn` 建構，對每次 deliberation 取樣 vedana aggregate 並運行四個 Plan26 感知器），`getVedanaAssessment` 同樣接 live `vedanaFn`（`agent-core.ts:648`）。全零 bundle 現僅作為 `createKleshaSignalFn` 內部的 **cold-start／無歷史 fallback**，由感知器覆寫，已非 adapter 預設值。詳見 Doc 37〈Klesha 增益排程〉之 [2026-06-11 修復稽核更正＋接線] 註記。上方 v0.28 程式碼塊保留作歷史示意，已被取代。
+
 ### 3.6 事件驅動佈線 (EventBus Wiring)
 
 除了 DI 的直接引用佈線外，EventBus 提供鬆耦合的事件驅動佈線：

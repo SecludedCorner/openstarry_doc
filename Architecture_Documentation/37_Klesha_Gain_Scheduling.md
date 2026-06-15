@@ -104,6 +104,8 @@ interface KleshaSignalBundle {
 }
 ```
 
+> ⚠️ **[設計層，未接線 — v0.59.4-alpha drift 稽核 2026-06-16]** 上方 `KleshaSignalBundle`（雙層 Beta 分布 + 4×4 相關矩陣 + timestamp）為**未實現的設計願景**。runtime 的 `KleshaSignalBundle`（`packages/sdk/src/types/klesha.ts:31-36`）是**扁平四數值 record `{moha, drishti, mana, sneha}: number`**——無 `correlationMatrix`、無 `timestamp`、未組合 `KleshaDistribution`。`KleshaDistribution` 介面存在（`klesha.ts:42`）但未組進 wired bundle。下方 §5 的 θ(t) clamp 公式與參數（θ₀=0.6、w_sneha=−0.15、w_mana=+0.15、floor 0.3、ceiling 0.9）則與代碼一致，為已接線部分。
+
 > [程式碼: deliver/02_type_system_changes.md#3.2 KleshaDistribution]
 
 ---
@@ -137,7 +139,9 @@ $$\theta(t) = \text{clamp}\left(\theta_0 + \sum_{i} w_i \cdot \mu_i(t), \; \thet
  * 高 mana  → 閾值↑ → 更積極 (更常升級到 IProvider/LLM)
  */
 interface KleshaModulatedDispatcher {
-  getConfidenceThreshold(kleshaBundle: KleshaSignalBundle): number;
+  // 實作方法名為 computeThreshold(signals)（packages/core/src/vijnana/klesha.ts:266）；
+  // 舊名 getConfidenceThreshold 已不存在於代碼。
+  computeThreshold(signals: KleshaSignalBundle): number;
 }
 
 /**
