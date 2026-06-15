@@ -88,7 +88,7 @@
 
 ## 七、未竟清單
 
-完整清單見 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md) §給接手者的未竟清單。擇要：跨主機阿賴耶傳播與 replay 防護（ISeed 凍結介面加 nonce 需正式 Spec Addendum）；N>2 的 gossip 拓撲；代理人運行中自主生子的工具面；klesha 權重的實證調參（至今仍標 HYPOTHESIS——我們拒絕假裝調過參）；CLI 模式對話歷史落盤。
+完整清單見 [TENETS_FULFILLMENT.md](./TENETS_FULFILLMENT.md) §給接手者的未竟清單。擇要：跨主機阿賴耶傳播（replay 防護已於 v0.59.3 經正式 Spec Addendum 為 ISeed 加 nonce 並接通驗證，但跨主機 transport 與 nonce 跨重啟持久化仍未做）；N>2 的 gossip 拓撲；代理人運行中自主生子的工具面；klesha 權重的實證調參（至今仍標 HYPOTHESIS——我們拒絕假裝調過參）；CLI 模式對話歷史落盤。
 
 這些不是 roadmap 承諾，是誠實的邊界標記。你接手時，請先跑 `pnpm build && pnpm test` 與 purity check，以 SDK 型別檔（`packages/sdk/src/`）為 API 最高權威、測試套件為行為權威——**任何文件與 SDK 衝突，SDK 贏**。本文件庫中 Technical_Specifications 01-07 描述的是一個未曾建造的系統，已掛隔離標記，請勿當作規格使用。
 
