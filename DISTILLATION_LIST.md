@@ -31,7 +31,7 @@
 - ★ `README.md` — Canonical Ten Tenets text (highest doc authority per Master 2026-05-11) plus macro architecture and doc navigation map; links to fulfillment ledger and Letter; embedded cycle-update annotations are dated but explicitly stamped as historical notes.
 - ★ `TENETS_FULFILLMENT.md` — The fulfillment ledger itself — every claim checked against source + passing test on 2026-06-11 at v0.59.1-alpha; core of the Letter to the Future; exemplary honest-boundary discipline.
 - ★ `LETTER_TO_THE_FUTURE.md` — Agent OS charter / time-capsule core document written 2026-06-12; every engineering claim cross-referenced to TENETS_FULFILLMENT.md and tests; explicitly flags v0.34-era verification stamps of cited rationale docs.
-- ★ `RETROSPECTIVE.md` — The distilled post-mortem itself (87.5% gap, 96% inflation, 0/30 HISTORIC, mechanism analysis, migration lessons) — publish-grade analysis of the project's scarcest asset, not raw residue; header marks it DRAFT pending Master narrative sign-off.
+- ★ `RETROSPECTIVE.md` — The distilled post-mortem itself (87.5% gap, 96% inflation, 0/30 HISTORIC, mechanism analysis, migration lessons) — publish-grade analysis of the project's scarcest asset, not raw residue; finalized 2026-06-12 (data layer git/test-verifiable, mechanism/lessons explicitly marked N=1).
 - ★ `GETTING_STARTED.md` — Rewritten 2026-06-11 against actual CLI + resolver source (header explicitly documents the unfollowable v0.35-era predecessor it replaced); the verified cold-start path for the real system.
 
 ### Agent_Core_Components_Deep_Dive
