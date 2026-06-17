@@ -1,5 +1,7 @@
 # 59. AC-7 分散式阿賴耶運行時 (AC-7 Distributed Alaya Runtime)
 
+> ⚠️ **[誠實標記 — v0.59.7（2026-06-17）] 範圍與 API 更正（以本牌＋§5 為準）**：本文的「Status: PASS」「§7.1 self-activating ✅ COMPLIANT」為**樂觀表頭**——真實的誠實範圍見 **§5**（單機 N=2、同主機 IPC、跨主機 transport／nonce 跨重啟持久化／exchangeSeeds 跨進程化／late-joiner snapshot 均未做）。另 **§4.1 列的 `getState(): Promise<IAlayaState>` 為幽靈 API**：SDK `IDistributedAlaya` 實際提供 `snapshot(): IAlayaSnapshot`（`distributed-alaya.ts`），無 `getState`/`IAlayaState`（`exchangeSeeds`/`ExchangeResult` 則確實存在）。真實實作見 `openstarry_plugin/distributed-alaya/src/`。
+
 **Status**: Cycle 20260404_cycle03-3 PASS  
 **Version**: v0.39.0-alpha  
 **Plan**: Plan39 Engineering Specification  

@@ -1,5 +1,7 @@
 # Plan60 — Blackboard-Alaya BINDING 規格（TW sibling）
 
+> ✅ **[實作狀態 — v0.59.7（2026-06-17）] BINDING + SHIPPED + WIRED。** Plan60 Blackboard-Alaya 種子存繳 HMAC attestation 已出貨並接線：`openstarry_plugin/distributed-alaya/src/plan60-addendum.ts`（`aly:` 第 7 prefix）由 `index.ts:45` import；SDK `packages/sdk/src/types/blackboard-alaya.ts`（`ALAYA_REPLAY_CACHE_PREFIX='aly:'`、`AlayaSeedDepositRequestSchema`）；測試 `__tests__/plan60-addendum.test.ts`（22）。狀態以本牌為準。
+
 **Status**: BINDING（cycle 03-23 R3 D-§1 ratified D-§1-A 22/1 super-majority + D-§1-B 23/0 UNANIMOUS;Master Ratification Batch 20 #2 已 APPROVED 2026-05-05）
 **Authority**: Master Ratification（Batch 20 dispatch 2026-05-05 / `deliver/Master_Ratification/Master_Confirmation.md` 12/12 APPROVED）
 **Cycle**: 03-23（Phase 6 第七棒;**7/7 完工** ✅）

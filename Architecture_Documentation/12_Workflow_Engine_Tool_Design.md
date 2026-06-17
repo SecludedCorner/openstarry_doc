@@ -1,9 +1,10 @@
 # 11. 能力插件設計：工作流引擎 (WorkflowEngineTool)
 
 > ⚠️ **[2026-06-11 實作狀態標記 — v0.58.0-alpha 修復稽核]** 本文件與實際出貨的 workflow-engine plugin 有顯著差異：
-> - **從未建造**：`workflow:status` 工具、async execution_id 模式、ApiCall/Database/Code/Agent 四種 node executor、`plugin.json` manifest 格式（系統中不存在此格式）
-> - **實際實作**：YAML＋Zod schema＋Mustache 插值；step 類型為 `tool`/`service`/`llm`/`command`(stub)/`inference`；唯一工具為 `workflow:execute`
+> - **從未建造**：ApiCall/Database/Code/Agent 四種 node executor、`plugin.json` manifest 格式（系統中不存在此格式）；`workflow:execute` 的「立即返回 id 再輪詢」非同步模型（實際為同步完成、id 隨結果返回）
+> - **實際實作**：YAML＋Zod schema＋Mustache 插值；step 類型為 `tool`/`service`/`llm`/`command`(stub)/`inference`
 > - **v0.58.0-alpha 新增**：`loop` step（foreach/while＋強制 maxIterations 上限）與 opt-in 執行狀態落盤（`OPENSTARRY_WORKFLOW_STATE_DIR`，`getStatus` 跨進程存活）——補上了 MVP 的 loop/state 缺口
+> - **v0.59.7 新增**：`workflow:status(executionId)` 工具已落地（`src/tool/workflow-status-tool.ts`，4 測試）——agent 可用 `workflow:execute` 回傳的 `executionId` 事後查該次執行的狀態/輸出/錯誤（設 `OPENSTARRY_WORKFLOW_STATE_DIR` 時跨重啟仍可查）。現存工具＝`workflow:execute` ＋ `workflow:status`。
 > 權威規格＝plugin source（`openstarry_plugin/workflow-engine/src/`）及其 1800+ 行測試。
 
 本文件描述了將宏觀、多步驟的任務編排能力，封裝成一個強大的 `Tool` 插件的設計。

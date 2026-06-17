@@ -51,7 +51,7 @@
 | Sub-type | Description | Current Defense | Coverage |
 |----------|-------------|----------------|----------|
 | AT-1a | Source Spoofing — 偽造 sender identity | SEC-002 PID-to-agentId (Plan38 W0) | PARTIAL → FULL (Plan38) |
-| AT-1b | Replay Attack — 重放有效訊息 | 無（Plan39 scope: nonce/timestamp） | NONE |
+| AT-1b | Replay Attack — 重放有效訊息 | MessageRouter id-dedup + timestamp 新鮮度窗（`MAX_MESSAGE_AGE_MS`/`MAX_CLOCK_SKEW_MS`，v0.59.6 `message-router.ts` `checkReplay`） | FULL |
 | AT-1c | EventBridge Injection — 注入惡意事件 | EventBridge sender validation | PARTIAL |
 
 ### AT-2: Capability Escalation（能力提升）
@@ -84,7 +84,7 @@
 
 | Sub-type | Description | Current Defense | Coverage |
 |----------|-------------|----------------|----------|
-| AT-5a | Message Replay — 重放有效訊息 | 無（Plan39: nonce + timestamp window） | NONE |
+| AT-5a | Message Replay — 重放有效訊息 | MessageRouter 訊息 id 去重 + timestamp 新鮮度窗（已接受的 id 入快取、過窗剪除；重放/陳舊/未來時戳 fail-closed 拒收，v0.59.6 `checkReplay`，`message-router.test.ts` 25 測試） | FULL |
 | AT-5b | Credential Replay — 重放認證資訊 | Session-bound registration | PARTIAL |
 
 ### AT-6: Observation Interference（觀測干擾）
@@ -165,9 +165,11 @@ Predicted post-Plan38: **11/21 FULL** (52.4%), meeting the >= 50% target.
 
 > Lead: LINNAEUS (#13) + DARWIN (#6)
 
+> ⚠️ **[v0.59.6 更新]** 此表 §5 覆蓋矩陣的 `Current 5/21 (v0.37.0-alpha)` 為**陳舊基線**——多數 Plan38 防禦（SEC-002/005/008、MessageRouter 鏈、DualRateLimiter、PermissionLattice、SpawnValidator）其實已落地接線（見各 §AT 表 `→ FULL` 列＋對應測試）。「Message replay prevention（AT-1b/5a）」已於 v0.59.6 由 MessageRouter `checkReplay` 補上（id 去重＋timestamp 新鮮度窗），不再屬未竟。其餘列（IPC 加密 AT-4a、credential rotation AT-5b、event signing AT-1c）仍為誠實未竟。
+
 | Gap | Attack Type | Target Plan | Approach |
 |-----|-----------|-------------|----------|
-| Message replay prevention | AT-1b, AT-5a | Plan39 | Nonce + timestamp window |
+| ~~Message replay prevention~~ ✅ 已做 (v0.59.6) | AT-1b, AT-5a | ~~Plan39~~ | MessageRouter id-dedup + timestamp window (`checkReplay`) |
 | EventBridge injection hardening | AT-1c | Plan39 | Event source signing |
 | Runtime capability expansion | AT-2b | Plan38 W3 (F-5) | Permission lattice runtime enforcement |
 | Audit overhead rate limiting | AT-6a | Plan39 | Sampled auditing under high load |
@@ -200,6 +202,20 @@ Predicted post-Plan38: **11/21 FULL** (52.4%), meeting the >= 50% target.
 | Rotation size/period | Policy |
 | Sampling threshold | Policy |
 | fire-and-forget pattern | Mechanism |
+
+### 7.5 拒絕審計（denial audit，v0.59.7-alpha LANDED）
+
+上述 fail-closed 防禦（AT-3a/3b rate limiting、SEC-001 drain-evasion、SEC-003 path traversal、capability/depth/budget/ceiling lattice）在拒絕一個請求時，**過去只回 RPC 錯誤、不留審計軌跡**——攻擊者的探測在守護行程側不可見。v0.59.7 起，守護行程把每次拒絕經 Plan48 audit-sink 落成一筆 `agent_request_denied` 事件（與 §7 的信心度 audit hash-chain 是不同機制；此處是安全拒絕可見性）：
+
+| 拒絕來源 | `reason` | `detail` 範例 |
+|---|---|---|
+| `agent.input` 超速（AT-3a/3b，-32005） | `rate_limited` | `per_agent:sessionId` |
+| `agent.spawnChild` 被拒（SEC-001/003、capability、depth/budget/ceiling） | `spawn_constraint` | `DRAINING`／`PATH_TRAVERSAL`／`CEILING_EXCEEDED`… |
+
+- opt-in（`OPENSTARRY_AUDIT=1`／`AUDIT_SINK_PATH`，env 未設＝no-op，零行為變更）；經 `(timestamp, event_hash)` 去重；關機 flush 落盤。
+- 實作：`apps/runner/src/daemon/daemon-entry.ts`（rate-limit catch + `handleSpawnChild` 各拒絕點 `obs.publishAgentRequestDenied`）、事件型別 `apps/runner/src/audit-sink/audit-bus.ts`。
+- e2e（真實 daemon）：`apps/runner/__tests__/e2e/daemon-observability.e2e.test.ts`；生命週期記錄見 [Tech Spec 18](../Technical_Specifications/18_Structured_Log.md)。
+- **AT-4c（Audit Log Access）維持 PARTIAL**：審計檔仍僅靠檔案系統權限保護，未加密／未簽章——不誇大。
 
 ---
 

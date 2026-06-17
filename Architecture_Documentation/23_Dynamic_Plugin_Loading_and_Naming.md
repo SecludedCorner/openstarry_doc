@@ -6,10 +6,15 @@
 
 ## 1. 設計原則
 
+> ⚠️ **[漂移更正 — v0.59.6（2026-06-16）] 下方原文第一條「`package.json` 不依賴任何 `@openstarry-plugin/*` 套件」為 FALSE。**
+> 實測 `apps/runner/package.json`（`agent_dev/openstarry/apps/runner/package.json:22-59`）**確實聲明 38 個 `@openstarry-plugin/*` workspace 依賴**（`"workspace:*"`，含 provider/standard-function/transport/mcp/guide 等）。這些依賴存在的目的是讓 pnpm workspace 把官方插件連結進 `node_modules`，使 Strategy 2（套件名動態載入）在生產與開發環境都能解析到——**不是**靜態 import。
+> 其餘兩條為真且保留：(a) Runner 原始碼**不靜態 import** 任何插件模組（已驗：`apps/runner/src/**` 無 `import ... from "@openstarry-plugin/..."`；該字串僅以設定/目錄資料/名稱比對形式出現，如 `bootstrap.ts`、`data/plugin-catalog.json`、`daemon/daemon-entry.ts`）；(b) 新增插件不需改 Runner 程式碼。§3 的兩層動態載入器（`apps/runner/src/utils/plugin-resolver.ts` 的 `resolvePlugins()`）為真實實作，敘述不變。
+> 正確說法：Runner **不在程式碼中靜態 import 任何插件**，但 `package.json` **會宣告官方插件為 workspace 依賴**以支撐動態解析。以下原文保留作歷史記錄。
+
 Runner（`apps/runner`）是一個**純啟動器**，不認識任何具體插件。所有插件——包括 Provider、Tool、Listener、Guide——都透過 `agent.json` 配置並在運行時動態載入。
 
 這意味著：
-- Runner 的 `package.json` **不依賴**任何 `@openstarry-plugin/*` 套件
+- ~~Runner 的 `package.json` **不依賴**任何 `@openstarry-plugin/*` 套件~~ ← **更正：見上方 banner；實際宣告 38 個 workspace 依賴以支撐動態解析，但程式碼層仍不靜態 import**
 - Runner 的原始碼**不 import** 任何插件模組
 - 新增插件不需要修改 Runner 的任何程式碼
 

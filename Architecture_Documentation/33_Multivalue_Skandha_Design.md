@@ -116,6 +116,21 @@ function inferSkandha(hooks: PluginHooks): Skandha[] {
 
 ## 4. 22 個 Plugin 的 skandha 值
 
+> ✅ **[實作狀態 — v0.59.6]** 本設計已完整落地（mechanism shipped）。`PluginManifest.skandha?: Skandha | readonly Skandha[]` 支援單值或多值（`packages/sdk/src/types/plugin.ts:79`）；`hasSkandha()` 同時處理字串與陣列形式（`packages/sdk/src/types/aggregates.ts:116-123`）；載入期一致性檢查由 `checkSkandhaCorrespondence()` 實作 18 條 sigma 約束（sigma-1..17 加 sigma-9b，`packages/core/src/infrastructure/skandha-check.ts:18`），並有 `aggregates.test.ts` / `skandha-check.test.ts` 測試覆蓋。下方的「22 個 Plugin 清單」與「目前僅 standard-function-skill 為多值」已**陳舊**，更正見下方漂移牌；原表保留作歷史快照。
+
+> ⚠️ **[漂移更正 — v0.59.6 — 清單陳舊]** 下表的 22-plugin 盤點是設計期快照，現已不符實況：
+> - **數量**：插件目錄現為 **47 個**，其中 **46 個可載入**（`mcp-common` = `@openstarry-plugin/mcp-common` 為共用程式庫，無 plugin factory/manifest/skandha，不計入可載入插件）。
+> - **多值不只一個**：「目前僅 standard-function-skill 為多值」**為假**。實際已有至少 **4 個跨蘊（多值）插件**：
+>   - `standard-function-skill` → `['samskara', 'vijnana']`（`openstarry_plugin/standard-function-skill/src/index.ts:128`）
+>   - `gear-arbiter-static` → `['samjna', 'vijnana']`（`openstarry_plugin/gear-arbiter-static/src/index.ts:88`）
+>   - `gear-arbiter-dynamic` → `['samskara', 'vijnana']`（`openstarry_plugin/gear-arbiter-dynamic/src/index.ts:57`）
+>   - `distributed-alaya` → `['samskara', 'vijnana']`（`openstarry_plugin/distributed-alaya/src/index.ts:87`）
+>
+>   （另：`spc-monitor` 用陣列形式 `['vijnana']`，但語意上仍是單值。）多值已是常態，不再是孤例。
+> - **欄位非必填**：實作中 `skandha` 為 optional（`skandha?: ...`，plugin.ts:79），§1 引文「型別系統會拒絕沒有 skandha 欄位的 Plugin」不反映現行型別——未宣告 skandha 但有 hook 會觸發 sigma-15 WARN（軟約束），而非編譯期拒絕。
+
+> 以下原表＝設計期（22-plugin）歷史快照，未逐一重新核對；保留供考古，勿視為現行 inventory。
+
 | # | Plugin | 現行 | 更新後 | 多值? |
 |---|--------|------|--------|-------|
 | 1 | devtools | samskara | `['samskara']` | |
@@ -141,7 +156,7 @@ function inferSkandha(hooks: PluginHooks): Skandha[] {
 | 21 | workflow-engine | samskara | `['samskara']` | |
 | 22 | marketplace | samskara | `['samskara']` | |
 
-> 目前僅 **standard-function-skill** 為多值（同時提供 Tool + Guide）。
+> ~~目前僅 **standard-function-skill** 為多值（同時提供 Tool + Guide）。~~ ← **已過時**：見 §4 開頭漂移牌，現至少 4 個多值插件。
 > 未來 VedanaPlugin 可能為 `['vedana', 'samjna']`（受蘊感測 + 想蘊觀察能力）。
 
 ---
@@ -150,7 +165,9 @@ function inferSkandha(hooks: PluginHooks): Skandha[] {
 
 ### 5.1 Manifest 欄位遷移
 
-所有 22 個 Plugin 的 manifest 需從字串改為陣列：
+> ⚠️ **[漂移更正 — v0.59.6]** 下述「全部改為陣列」的遷移**未採行，且為刻意**：字串形式（`skandha: 'samskara'`）是 type union `Skandha | readonly Skandha[]` 的合法成員，向後相容是設計保證（見 §6）。現行 46 個可載入插件以單值字串為主、4 個跨蘊插件用陣列，兩種形式並存無需統一。下方示例僅說明「如何宣告多值」，不代表需要全面遷移。
+
+~~所有 22 個 Plugin 的 manifest 需從字串改為陣列~~（不需要；字串與陣列皆有效）：
 
 ```typescript
 // 遷移前

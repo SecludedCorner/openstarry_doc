@@ -101,6 +101,10 @@ $$e_{\text{discrete}}(t) \in \{-1, 0, +1\}$$
 
 ### R5.2 VedanaClassificationConfig
 
+> ✅ **[實作狀態 — v0.59.7]** 兩件已落地（PID 控制迴路仍誠實延後，見本文 PID 段）：
+> 1. **Per-Agent 配置**：`IAgentConfig.vedanaClassification?`（`Partial<VedanaClassificationConfig>`）已接線——`agent-core.ts` 以 `Object.freeze({...DEFAULT_VEDANA_CONFIG, ...config.vedanaClassification})` 解析後傳入 `createVedanaFn`（取代先前硬編的 `DEFAULT_VEDANA_CONFIG`），啟動時 `validateVedanaConfig` fail-closed。
+> 2. **管理員硬界（防強制永久 upekkha 的 DoS）**：`validateVedanaConfig`（`packages/sdk/src/types/vedana.ts`）新增固定設計界限 `dukkhaThreshold ≥ -0.5`、`sukhaThreshold ≤ +0.5`（§§下方 GUARDIAN 安全所述；upekkha 帶寬 ≤ 1.0 由此二者隱含）。**這些是固定常數，非校準值**——不依賴 N≥10 實證數據。測試：`vedana-types.test.ts`（界限拒收 3 例）＋`vedana-fn.test.ts`（自訂配置改變分類型別）。
+
 ```typescript
 /**
  * VedanaClassificationConfig -- 衍生分類閾值配置。

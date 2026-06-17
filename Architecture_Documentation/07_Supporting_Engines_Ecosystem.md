@@ -1,3 +1,6 @@
+<!-- QUARANTINE NOTICE 2026-06-17 -->
+> **⚠ 隔離標記（2026-06-17 push 前對齊複審）**：本文描述的三大支撐引擎——**Memory & RAG Engine**（向量化/混合檢索）、**Evaluation & Testing Engine**、**Policy & Guardrails Engine**——**均未建造**（grep `rag/vector/embedding/guardrail/eval` 於 production = 0；`provider-lmstudio` 甚至明確排除 embedding 模型）。本文為**設計論述/未來藍圖**（doc 01 的分類牌已將本文列為「設計論述、非已落地代碼」），非現況規格——**請勿作為規格使用**。
+
 # 06. 支撐引擎生態系統 (Supporting Engines Ecosystem)
 
 在 `代理人核心` (執行交互) 和 `代理協調層` (編排流程) 之外，要構建一個完整的、生產級的代理人系統，還需要一系列獨立的、專業化的「支撐引擎」。

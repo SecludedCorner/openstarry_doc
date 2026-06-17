@@ -1,6 +1,11 @@
 <!-- QUARANTINE NOTICE 2026-06-12 -->
 > **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
-> 判定理由（掃描原文）：AgentManagerTool POSTing to a daemon management API at localhost:5050 — neither the tool nor the daemon exists (LLM child-spawn tool face is still on the unfinished-work ledger).
+> 判定理由（掃描原文）：AgentManagerTool POSTing to a daemon management API at localhost:5050 — **此 REST 管理 API 仍為虛構**（真實 daemon 走 IPC，非 localhost:5050 REST）。
+>
+> **[v0.59.7 更新]** 但本文所述的「in-loop 代理人管理工具面」**已部分落地**，只是機制不同（daemon service ＋ ITool，非 REST POST）：
+> - **生子**：`agent.spawnChild`（`@openstarry-plugin/agent-spawn`，v0.59.4）—— 經 `SERVICE_KEYS.DAEMON_SPAWN`，受 F-5 權限格 ＋ SEC-003。
+> - **自省（agent:list/status）**：`agent.listChildren` / `agent.processTree`（`@openstarry-plugin/agent-introspect`，v0.59.7）—— 經 `SERVICE_KEYS.DAEMON_INTROSPECT`（唯讀）委派 daemon 的 `handleChildAgents`/`handleProcessTree`。
+> 仍未建：本文的 localhost:5050 REST 管理面、以及對任意 agent 的 kill-by-id（需另立授權模型）。
 
 # 10. 能力插件設計：代理人管理器
 

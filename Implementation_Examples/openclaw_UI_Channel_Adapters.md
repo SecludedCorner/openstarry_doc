@@ -1,3 +1,6 @@
+<!-- QUARANTINE NOTICE 2026-06-17 -->
+> **⚠ 隔離標記（2026-06-17 push 前對齊複審）**：本文描述的 WhatsApp / Telegram / Slack UI 適配器插件**均不存在**（grep `whatsapp/telegram/slack` 於 `openstarry_plugin/` = 0）。本文與已隔離的 sibling `openclaw_Coordination_Layer.md` 屬同一「實現思路/未來設想」性質，前次隔離掃描漏掉本檔。**請勿作為規格使用**——真實的 transport/UI 插件見 `transport-websocket` / `transport-http` / `web-ui` 等。
+
 # 實現思路：openclaw - 多渠道 UI 適配器
 
 本文件詳細描述了為實現 `openclaw` 的多渠道接入能力而設計的 `UI` 插件——UI 適配器的實現思路。

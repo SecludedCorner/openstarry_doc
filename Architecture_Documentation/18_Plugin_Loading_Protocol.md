@@ -17,6 +17,35 @@
 
 ### 插件入口規範 (`index.ts`)
 
+> ⚠️ **[漂移更正 — v0.59.6：下方的 `initialize(context)` + `context.register*(...)` 入口協議從未被建造，已被「factory 回傳 hooks」模型取代。]**
+>
+> **實際 SDK 契約**（`packages/sdk/src/types/plugin.ts:375-379`）：
+> ```typescript
+> export interface IPlugin {
+>   manifest: PluginManifest;
+>   factory: (ctx: IPluginContext) => Promise<PluginHooks>;
+> }
+> ```
+> 插件**不導出 `initialize`**，也**不主動呼叫 `register*`**。`IPluginContext`（同檔 `:233-273`）**沒有任何 `register*` 方法**——它只提供 `pushInput`（推輸入事件）＋唯讀存取器（`tools?` / `guides?` / `providers?` / `services?` / `commands?` / `metrics?`）＋ `bus` / `sessions` / `config` 等。插件改為從 `factory(ctx)` **回傳** 一個 `PluginHooks` 物件（同檔 `:275-308`），其中是各蘊的**陣列**（`tools` / `listeners` / `guides` / `providers` / `ui` / `vedanaSensors` …）。Core 由 Loader 接收回傳值後，才將這些 hook 逐一登記到各 registry（見下方 §3 步驟 C 的更正）。
+>
+> 真實插件骨架（節選自 `openstarry_plugin/agent-spawn/src/index.ts:66-82`）：
+> ```typescript
+> import type { IPlugin, IPluginContext, PluginHooks } from '@openstarry/sdk';
+>
+> export function createAgentSpawnPlugin(): IPlugin {
+>   return {
+>     manifest: { name: '@openstarry-plugin/agent-spawn', version: '0.1.0-alpha', skandha: 'samskara' },
+>     async factory(ctx: IPluginContext): Promise<PluginHooks> {
+>       return {
+>         tools: [createSpawnChildTool(ctx)],   // 回傳陣列，不呼叫 register*
+>       };
+>     },
+>   };
+> }
+> export default createAgentSpawnPlugin;
+> ```
+> 命名慣例為 `createXxxPlugin()`（camelCase）回傳 `IPlugin`，而非 `initialize` 默認導出。下方原文（入口規範＋ §3 步驟 B/C 的 `register*` callback）保留作歷史。
+
 每個插件必須導出一個名為 `initialize` 的異步函數，或者是實現了 `IPluginFactory` 介面的默認導出。
 
 ```typescript
@@ -55,6 +84,11 @@ export default async function initialize(context: IPluginContext): Promise<void>
 3.  使用 `import()` (ESM) 或 `require()` (CJS) 動態載入該模組。
 
 ### 步驟 B: 上下文構建 (Context Construction)
+
+> ⚠️ **[漂移更正 — v0.59.6：下方 `IPluginContext` 帶 `registerTool/registerListener/registerProvider/registerGuide` callback 的構建從未被建造。]**
+>
+> 真實 `IPluginContext`（`packages/sdk/src/types/plugin.ts:233-273`）**沒有任何 `register*` callback**。Loader 構建的 context 提供的是：`bus`（EventBus）、`workingDirectory`、`agentId`、`config`、`pushInput(event)`、`sessions`（ISessionManager），以及一組**唯讀存取器** `tools?` / `guides?` / `providers?` / `commands?` / `metrics?`（供跨插件查詢已登記成分）與 `services?`（IServiceRegistry，跨插件服務注入）。登記方向相反：插件**不推**成分給 context，而是由 `factory(ctx)` **回傳**成分給 Loader（見步驟 C 更正）。原文 callback 形式保留作歷史。
+
 Loader 為該插件創建一個專屬的 `PluginContext` 實例。這個 Context 是插件與外界溝通的唯一管道。
 
 ```typescript
@@ -74,6 +108,11 @@ const context: IPluginContext = {
 ```
 
 ### 步驟 C: 初始化與解構
+
+> ⚠️ **[漂移更正 — v0.59.6：實際機制是 `hooks = await plugin.factory(ctx)`，非 `initialize(context)` + `register*`。]**
+>
+> Loader 對排序後的每個插件呼叫 `await plugin.factory(ctx)`（`packages/core/src/infrastructure/plugin-loader.ts:288`；若啟用沙箱則走 `sandboxManager.loadInSandbox(plugin, ctx)`，同檔 `:286`），取得回傳的 `PluginHooks`。隨後 Loader **遍歷 hooks 的各陣列**（`hooks.tools`、`hooks.providers`、`hooks.listeners` …）並逐一 `register(...)` 到對應的 registry（同檔 `:311` 起）。也就是說「歸檔到管理器」這件事**由 Loader 在收到回傳值後執行**，不是插件主動呼叫 `register*`。原文保留作歷史。
+
 呼叫插件的 `initialize(context)`。
 *   此時，插件內部的邏輯開始執行，並透過 `register*` 方法將其五蘊成分「交出」。
 *   Core 接收到這些成分後，將其分別歸檔到對應的管理器中。
@@ -111,7 +150,7 @@ const context: IPluginContext = {
 1.  **循環偵測 (Cycle Detection):** 檢查圖中是否存在循環依賴 (A -> B -> A)。若發現，立即拋出 `FatalDependencyError` 並終止啟動。
 2.  **拓撲排序 (Topological Sort):** 使用 Kahn 演算法或 DFS 計算出線性的加載順序。
     *   *Result:* `['@openstarry-plugin/skill', '@openstarry-plugin/gemini', '@openstarry-plugin/workflow']`
-3.  **依序初始化:** 按照排序後的清單，依次呼叫 `initialize(context)`。
+3.  **依序初始化:** 按照排序後的清單，依次呼叫 `plugin.factory(ctx)`（v0.59.6 更正：原文寫 `initialize(context)`；真實機制見 §3 步驟 C 更正＋ `plugin-loader.ts:288`／拓撲排序 `:443`）。
     *   這確保了當 `workflow` 初始化時，`skill` 已經準備好並將 Parser 注入到了系統中。
 
 ### 依賴注入的時機

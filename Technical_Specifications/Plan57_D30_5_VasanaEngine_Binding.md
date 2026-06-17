@@ -1,6 +1,15 @@
 # Plan57 — D-30-5 VasanaEngine BINDING Specification
 
-**Status**: BINDING (cycle 03-19 R3 D-§1 ratified 22/1 super-majority; pending Master Ratification Batch 16 #1)
+> ✅ **[實作狀態 — v0.59.6]** 本規格 **Track 1（deposit-only）已完整出貨並上線**，非「pending」。下方 header/footer 的「pending Master Ratification Batch 16」為 cycle 03-19 撰寫當下的歷史狀態，現以本牌更正：
+> - **plugin 已建**：`openstarry_plugin/vasana-engine/src/engine.ts`（§2.3 四方法 SICP API：`deposit`/`verify_chain`/`count`/`latest_hash`，見 `engine.ts:51-57` 介面 + `engine.ts:146-151` 實作）、`hash-chain.ts`（SHA-256 entry-hash `hash-chain.ts:32-34` + HMAC-SHA256 簽章 `hash-chain.ts:37-48` + `verifyChain` chain-walk `hash-chain.ts:56-100`）、`plugin.ts:34`（`createVasanaEnginePlugin`，`skandha: 'samskara'` 行蘊）。
+> - **SDK 型別已建**：`packages/sdk/src/types/vasana-engine.ts`（`VasanaDepositEntry/Request/Result` schema、§5 replay prefix `VASANA_REPLAY_CACHE_PREFIX = 'vsn:'` `vasana-engine.ts:97`、genesis sentinel `vasana-engine.ts:94`、§6 七類別 sensitivity map `vasana-engine.ts:21-37`）。
+> - **測試已建並通過**：`vasana-engine/__tests__/engine.test.ts`（27 cases）+ `hash-chain.test.ts`（8 cases）= 35 tests（隨主測試套件全綠）。
+> - **README 已上線連結**：`openstarry_plugin/README.md` 第 83 行 `vasana-engine | Habit-energy (習氣) engine`。
+> - **Track 2（read-API `peek`/`iterate`/`query_by_volition_id`）仍誠實 DEFERRED**：見 §2.2 + §2.3，code 註解亦標明（`engine.ts:5`、`plugin.ts:56-57`、`vasana-engine.ts:6-7`），保留未建狀態。
+>
+> 結論：**Status = BINDING + SHIPPED（Track 1）**；Track 2 deferred 不變。原文（含 Batch 16 字樣）以下保留為歷史。
+
+**Status**: BINDING + SHIPPED (Track 1 deposit-only 已出貨；plugin `vasana-engine/` + SDK `types/vasana-engine.ts` + 35 tests + README 上線；Track 2 read-API 仍 DEFERRED) — *歷史撰寫狀態：cycle 03-19 R3 D-§1 ratified 22/1 super-majority; pending Master Ratification Batch 16 #1（已被上方 v0.59.6 實作狀態牌更正）*
 **Authority**: Master Ratification (Batch 16 dispatch 2026-05-01)
 **Cycle**: 03-19 (Phase 6 第四棒; 4/7 functional landing target)
 **Release**: v0.54.0-alpha minor-bump
@@ -230,6 +239,6 @@ All preserved per MR-11 UNCONDITIONAL.
 ---
 
 *Plan57 D-30-5 VasanaEngine BINDING Specification — cycle 03-19 R3 D-§1 ratified 22/1 — 2026-05-01*
-*Master Ratification Batch 16 #1 dispatch ready*
+*~~Master Ratification Batch 16 #1 dispatch ready~~ → 已實作出貨（見頁首 v0.59.6 實作狀態牌）*
 *Inheritance: Plan52 → Plan54 → Plan56 → Plan57 (4/7 Phase 6 functional)*
-*Status: BINDING; pending Master Ratification*
+*Status: **BINDING + SHIPPED**（Track 1 deposit-only 已出貨：`vasana-engine/` plugin + SDK 型別 + 35 tests + README 上線；Track 2 read-API 仍 DEFERRED）— ~~pending Master Ratification~~ 更正 v0.59.6*

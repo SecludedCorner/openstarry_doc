@@ -66,5 +66,20 @@ Plan47 `snapshot-hmac.ts` 未倚賴結構化日誌模組。
 > - plugin-install flow 接線**未實作**（保留為未來工作）
 > - hmac-cleanup（C48-M3）**仍為 library-only**，見該模組 README 誠實標記
 
+> **[v0.59.7-alpha 擴展 — 守護行程生命週期 + denial 審計]** 在此之前
+> observability 只在**前景 `start` 指令**接線；背景守護行程
+> （`apps/runner/src/daemon/daemon-entry.ts`）完全沒有 observability——
+> 生命週期僅 `console.error`，且 rate-limit／spawn-constraint 兩條 fail-closed
+> 安全拒絕路徑**毫無審計軌跡**。現在 daemon 於開機建一個 `createObservability()`
+> （opt-in，env 未設＝no-op），記錄守護行程生命週期：
+> - `daemon:started`（完成初始化）／`agent:registered`（root 自註冊 + 每次
+>   `spawnChild`）／`agent:deregistered`（關機 cascade 終止子代理）／
+>   `daemon:shutdown`（收到訊號），經 `obs.log` 寫入 `OPENSTARRY_LOG_PATH`。
+> - 關機時 `obs.flush()` 排空緩衝（structured-log 200 → audit-sink 300），
+>   生命週期 + denial 記錄於 `process.exit` 前落盤。
+>
+> 對應 denial 審計（`agent_request_denied` 事件）見 [Architecture_Documentation/54 §7.5](../Architecture_Documentation/54_Multi_Agent_Security_Model.md)。
+> e2e 驗證（真實 daemon）：`apps/runner/__tests__/e2e/daemon-observability.e2e.test.ts`。
+
 既有 callers（例：checkpoint 指令）仍以 `console.*` 做 human-facing
 CLI 輸出，不強制轉用 structured log。

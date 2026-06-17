@@ -1,5 +1,8 @@
 <!-- Layer: 1-Engineering -->
 
+<!-- QUARANTINE NOTICE 2026-06-17 (部分隔離) -->
+> **⚠ 隔離標記（2026-06-17 push 前對齊複審）— 本文為混合，部分為虛構**：聚合體模式（五蘊映射）＋**兩層插件載入**（ref.path / import(ref.name) / 系統目錄＋monorepo sibling 掃描）為真，見 `apps/runner/src/utils/plugin-resolver.ts`。但本文描述的 **「Global Plugin Registry / PluginRegistryService」**（daemon 開機掃描 `~/.openstarry/plugins/` 建索引、回答「誰有 `send_message` 能力？」的能力解析查詢）**從未建造**——code 中唯一的 `findByCapability` 屬 `ICommChannelRegistry`（找通訊頻道，非 agent/plugin 能力）。`~/.openstarry/plugins/installed/` 屬 `plugin install` CLI 的落盤目錄，非 runtime 索引服務。API 最高權威＝SDK 型別檔。
+
 # 04. 插件基礎設施 (Plugin Infrastructure)
 
 本文件定義了 OpenStarry 的插件系統架構。我們採用 **聚合體模式 (Aggregate Pattern)**，允許一個插件包同時提供多種能力。

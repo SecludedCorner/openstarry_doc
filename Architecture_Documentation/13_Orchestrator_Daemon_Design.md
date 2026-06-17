@@ -1,6 +1,8 @@
 <!-- QUARANTINE NOTICE 2026-06-12 -->
 > **⚠ 隔離標記（2026-06-12 蒸餾掃描）**：本文所述與現行實作不符，或描述未曾建造的系統——**請勿作為規格使用**。API 最高權威＝SDK 型別檔（`packages/sdk/src/`），行為權威＝測試套件。分類依據見 [DISTILLATION_LIST.md](../DISTILLATION_LIST.md)。
-> 判定理由（掃描原文）：337 lines specifying the systemd-like daemon (process supervision, infra-plugin hosting, management API) that was never built; no banner; apps/ contains only runner and channel.
+> 判定理由（掃描原文）：337 lines specifying the systemd-like daemon (process supervision, infra-plugin hosting, management API) that was never built; apps/ contains only runner and channel.
+>
+> **[v0.59.7 更新 — 混合文件，部分已落地]** 本文為**混合**：systemd 式管理 daemon（process supervision、infra-plugin hosting、REST 管理 API）**仍為虛構**；但下方 **Plan37 Process Tree 一節所述機制已落地且有 e2e 證明**——`agent.spawnChild`／`agent.processTree`／父子樹邊／SEC-003 拒絕／父亡子收（`apps/runner/__tests__/e2e/daemon-process-tree.e2e.test.ts`），CLI `openstarry ps --tree`（v0.59.7，唯讀走既有 RPC，見本節「CLI 觀測」小節）。讀此文時：Process Tree + ps --tree 為真，其餘編排器/管理面仍依隔離牌處理。
 
 # 12. 運行時核心：編排器守護進程 (Orchestrator Daemon)
 
@@ -186,6 +188,22 @@ type AgentProcessState = 'RUNNING' | 'DRAINING' | 'TERMINATED';
 - Child ⊆ Parent: 子代理能力不超過父代理
 - Capability checking = mechanism; permission rules = policy
 
+#### CLI 觀測：`openstarry ps --tree`（v0.59.7-alpha LANDED）
+
+進程樹現可由 CLI 直接觀測——`ps --tree` 對每個 running daemon（`pidManager.listRunningAgents`）開 IPC、呼叫既有的 `agent.processTree` RPC，把回傳的 `ProcessTreeNode[]` 依層級縮排渲染（每層 2 空格，附 `agentId`／`pid`／`status`／`depth`）：
+
+```
+$ openstarry ps --tree
+PROCESS TREE
+root-agent (pid 100) [running] depth=0
+  child-a (pid 200) [running] depth=1
+    grandchild (pid 300) [draining] depth=2
+
+1 daemon(s) queried
+```
+
+唯讀（不 spawn/kill）；因每個被 spawn 的子代理本身是獨立 daemon、會在自己的 registry 自報為 root，CLI 以 `collectChildIds` 把這類節點折疊到其父節點下，避免重複列印。實作：`apps/runner/src/commands/ps.ts`（`PsCommand.printTree` + 純函數 `toRenderTreeNodes`／`collectChildIds`／`renderProcessTreeLines`），測試 `apps/runner/__tests__/commands/ps-tree.test.ts`（7 測試）。
+
 ### Graceful Shutdown Protocol
 
 Plan37 引入三態 Graceful Shutdown 協議：
@@ -338,4 +356,4 @@ openstarry-channel 暴露 6 個 L1 工具（Orchestrator Daemon 可調用）：
 7. **重試**：心跳恢復後（若 Agent 重啟）可重新加入
 
 ---
-
+

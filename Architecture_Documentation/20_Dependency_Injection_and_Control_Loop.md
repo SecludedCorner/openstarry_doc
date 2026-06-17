@@ -1,7 +1,7 @@
 <!-- Status: CURRENT -->
 <!-- Layer: 2-Philosophy -->
-<!-- Applies to: v0.34.0-alpha -->
-<!-- Last verified: 2026-03-16 -->
+<!-- Applies to: v0.59.6-alpha -->
+<!-- Last verified: 2026-06-16 (§4 broken-loop diagnostics implemented; paralysis case honestly deferred) -->
 
 # 20. 依賴編織與控制迴路 (Dependency Wiring & Control Loop)
 
@@ -89,6 +89,10 @@ graph TD
 *   **有 Listener 沒 Provider:** 這是「植物人」狀態（能聽不能想），發出警告。
 *   **有 Provider 沒 Listener:** 這是「缸中之腦」狀態（能想但沒輸入），除非是純任務型 Agent，否則視為配置錯誤。
 *   **Tool 需要 Config 但注入為空:** 這是「癱瘓」狀態，啟動失敗。
+
+> **[實作狀態 — v0.59.6]** 前兩項（植物人／缸中之腦）已落地：`packages/core/src/infrastructure/loop-integrity-check.ts` 的純函數 `checkLoopIntegrity({ providerCount, listenerCount, taskOnly })`，於 `agent-core.ts` `start()` 以 `logLoopIntegrity` 對註冊表（`providerRegistry`/`listenerRegistry`）取數後**非致命**地發出警告（`taskOnly` 抑制缸中之腦）；測試見 `loop-integrity-check.test.ts`（8 例）。
+>
+> 第三項（**癱瘓**＝tool 需要 config 但為空 → 啟動失敗）**尚未實作**：`PluginManifest` 目前**沒有** `requiredConfig` 之類的必填設定宣告欄位，無從精確判定「需要但為空」；新增該欄位屬**凍結介面變更，需 Spec Addendum**，故誠實延後。在此之前本項維持設計意圖，非已實作行為。
 
 ## 5. 總結
 

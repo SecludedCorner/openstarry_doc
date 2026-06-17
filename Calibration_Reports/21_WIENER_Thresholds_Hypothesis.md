@@ -1,8 +1,15 @@
 # WIENER L2 + L3 Thresholds — HYPOTHESIS status & re-calibration schedule
 
-**Status**: Plan49 C49-M5a / C49-M5c / C49-M5g — preparation delivery.
-**Effective from**: v0.49.0-alpha (2026-04-24).
-**Module**: `apps/runner/src/wiener/thresholds.ts`.
+> ⚠️ **[漂移更正 — v0.59.6 / 模組已截肢]** 本文 §1/§3/§5/§7 描述的集中化模組 `apps/runner/src/wiener/thresholds.ts`（含 `L2_THRESHOLD`/`L3_THRESHOLD` 常數與其測試）**在當前代碼樹中不存在**。Plan49 的「集中化」交付已於後續被**截肢（AMPUTATED）**：
+> - 該目錄不存在：`apps/runner/src/wiener/`（驗：`ls apps/runner/src/` 無 `wiener/`；`Glob **/thresholds.ts` → 0）。
+> - `L2_THRESHOLD`/`L3_THRESHOLD` 不在任何 source；僅見於歷史 CHANGELOG 條目（`CHANGELOG.md:1604`，描述當初 v0.49.0-alpha 交付物）。
+> - 截肢理由（權威）：`openstarry/CHANGELOG.md:306-308`「**Plan49 wiener thresholds (79 LOC): "centralization" was architecturally impossible** (its consumer spc-monitor is a separate package that cannot import runner internals); event-contract ownership moved to its emitter.」
+>
+> 換言之：跨 package 集中化在架構上不可能（消費者 `spc-monitor` 是獨立 package，不得 import runner 內部），事件契約（`wiener_threshold_hit` 等）的擁有權改由其 emitter 持有。**HYPOTHESIS 免責聲明（§2）談的是「閾值『數值』未經再校準」，與「模組是否存在」無關——本文原先把『模組已建、測試已過』與『數值仍是 HYPOTHESIS』混為一談，前者已被代碼推翻，故下方逐項更正。** 以下原文保留作為歷史交付紀錄。
+
+**Status**: Plan49 C49-M5a / C49-M5c / C49-M5g — preparation delivery. **(模組已於後續截肢，見上方更正牌)**
+**Effective from**: v0.49.0-alpha (2026-04-24)。
+**Module**: ~~`apps/runner/src/wiener/thresholds.ts`~~ — **AMPUTATED（不存在於當前代碼樹；見上方更正牌）**。
 
 ## 1. Scope
 
@@ -52,13 +59,15 @@ Plan49 consumes this annotation as **read-only metadata** (via doc + comments on
 
 ## 7. Rule #74 L1' sub-checks
 
-| # | Sub-check | Evidence |
-|---|-----------|----------|
-| i | Code file exists | `apps/runner/src/wiener/thresholds.ts` |
-| ii | Test file exists | `apps/runner/__tests__/wiener/thresholds.test.ts` |
-| iii | Doc exists | This file + `docs/TW/wiener-thresholds.md` |
-| iv | CHANGELOG references it | `CHANGELOG.md` v0.49.0-alpha entry under Plan49 C49-M5 |
-| v | Cross-refs bidirectional | `thresholds.ts` JSDoc references this doc; this doc cross-refs `thresholds.ts`, Plan50 spec, Rule #72 |
+> ⚠️ **[漂移更正 — v0.59.6]** 下表原為 v0.49.0-alpha 交付時的 PASS 斷言。模組已截肢後，i 與 ii 不再成立——更正為 **AMPUTATED**，並標明驗證命令。原斷言以刪除線保留。
+
+| # | Sub-check | 原始斷言（v0.49.0-alpha） | 現況（v0.59.6 對代碼驗證） |
+|---|-----------|---------------------------|----------------------------|
+| i | Code file exists | ~~`apps/runner/src/wiener/thresholds.ts`~~ | **AMPUTATED** — 目錄不存在（`ls apps/runner/src/` 無 `wiener/`；`Glob **/thresholds.ts` → 0）。`CHANGELOG.md:306-308` 記為架構不可能而截肢。 |
+| ii | Test file exists | ~~`apps/runner/__tests__/wiener/thresholds.test.ts`~~ | **AMPUTATED** — 測試檔隨模組一併不存在（同上驗證；`L2_THRESHOLD`/`L3_THRESHOLD` 不在任何 source）。 |
+| iii | Doc exists | This file + `docs/TW/wiener-thresholds.md` | 本文仍在（已掛更正牌）。 |
+| iv | CHANGELOG references it | `CHANGELOG.md` v0.49.0-alpha entry under Plan49 C49-M5 | 歷史交付條目仍在；另見 `CHANGELOG.md:306-308` 截肢紀錄。 |
+| v | Cross-refs bidirectional | ~~`thresholds.ts` JSDoc references this doc~~；this doc cross-refs Plan50 spec, Rule #72 | `thresholds.ts` 已不存在，JSDoc 反向交叉引用作廢；本文對外交叉引用仍保留作歷史。 |
 
 ## 8. Dissent preserved (MR-11, D-13 3/20)
 

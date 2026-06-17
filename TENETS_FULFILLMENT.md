@@ -1,6 +1,6 @@
 <!-- Status: CURRENT -->
-<!-- Applies to: v0.59.5-alpha -->
-<!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day); on-prem provider hardening pass 2026-06-12 (v0.59.2); ledger-vs-code re-verification + ISeed replay-nonce addendum 2026-06-15 (v0.59.3); doc-vs-code gap closure (CLI persistence #9, agent.spawnChild #10, dead-code wirings) 2026-06-16 (v0.59.4) -->
+<!-- Applies to: v0.59.7-alpha -->
+<!-- Last verified: 2026-06-11 (every claim below checked against source + a passing test on this date; gap-fill pass v0.59.1 same day); on-prem provider hardening pass 2026-06-12 (v0.59.2); ledger-vs-code re-verification + ISeed replay-nonce addendum 2026-06-15 (v0.59.3); doc-vs-code gap closure (CLI persistence #9, agent.spawnChild #10, dead-code wirings) 2026-06-16 (v0.59.4); buildable_now batch (workflow:status / context-keyword-retrieval / agent-introspect / vedana-config / ps --tree / session list / daemon denial-audit+lifecycle-log) + pre-push honesty audit (5 silent-fiction banners, default-context-manager bugfix, tests for 6 untested plugins) 2026-06-16..17 (v0.59.7) — 314 files / 3290 passed / 0 failed / 4 skipped -->
 
 # 十大宣言兌現帳本 (The Ten Tenets — Fulfillment Ledger)
 
@@ -15,7 +15,7 @@
 | # | 宣言 | 狀態 | 證據與誠實邊界 |
 |---|---|---|---|
 | 1 | 代理人即操作系統進程 | ✅ **已證明** | daemon 生命週期（PID 檔、named pipe/UDS IPC、attach/detach、session 落盤）全活：`apps/runner/src/daemon/` ＋ 18 個 daemon 測試檔實跑真進程。 |
-| 2 | 一切皆插件 | ✅ **已證明** | 44 個可載入插件（另 1 個共享型別庫 mcp-common，無 manifest 不入 loader；計 45 套件）；連 context manager 都強制走插件（core 缺之即 throw）。purity check（`scripts/check-purity.sh`）機器強制「core 不含插件 code」。 |
+| 2 | 一切皆插件 | ✅ **已證明** | 46 個可載入插件（另 1 個共享型別庫 mcp-common，無 manifest 不入 loader；計 47 套件）；連 context manager 都強制走插件（core 缺之即 throw）。purity check（`scripts/check-purity.sh`）機器強制「core 不含插件 code」。 |
 | 3 | 五蘊聚合架構 | ✅ **已證明** | 五種插件 hook 全部有活的實作與消費者：色（stdio/web UI＋listeners）、受（vedana-sensor-core→`createVedanaFn`）、想（8 個 provider）、行（tools）、識（guide-character-init）。Core 無自性＝缺五蘊插件時依三級關鍵性降級：optional-degraded（受蘊空 registry→中性值）已入測；required→throw（context manager 缺即 throw）為 production 行為（source 無條件存在，未獨立斷言）；optional-no-effect 無專屬行為測試。**邊界**：criticality 目前為宣告式 metadata，三級行為由各子系統各自硬編碼，非單一受 criticality 欄位驅動的 runtime 機制。 |
 | 4 | 目錄結構即協議 | ✅ **已證明** | 插件解析三策略（path→package→系統目錄掃描＋monorepo sibling 內建路徑，v0.58 修復）；`~/.openstarry` 佈局＋`.openstarry/` 專案目錄自動偵測。 |
 | 5 | 目錄結構即權限 | ✅ **已證明** | 專案層 restrict-only 權限模型（`permissions.json`，只縮不放）＋path jail（allowedPaths＋safeRealpath）＋manifest capabilities 的 runtime 工具過濾（Plan46，audit 事件實測）。 |
@@ -45,4 +45,4 @@
 
 ---
 
-*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12；v0.59.3-alpha 帳本對代碼重驗＋ISeed replay-nonce Spec Addendum，2026-06-15；v0.59.4-alpha doc-vs-code 缺口清理（CLI 歷史落盤 #9、agent.spawnChild 自主生子 #10、四個接死碼安全零件），2026-06-16；v0.59.5-alpha 發佈後 drift 稽核一致性修補（虛構層 doc 56/57 補隔離牌、計數與版本戳對齊、`--help` 補 `--resume`），2026-06-16。最新驗證快照：300 test files / 3179 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3＋運行中自主生子工具（機制同構，任意有限深度無已知障礙）。*
+*v0.59.0-alpha「Tenet Completion」＋ v0.59.1-alpha 缺口清理，2026-06-11；v0.59.2-alpha 地端 provider 硬化，2026-06-12；v0.59.3-alpha 帳本對代碼重驗＋ISeed replay-nonce Spec Addendum，2026-06-15；v0.59.4-alpha doc-vs-code 缺口清理（CLI 歷史落盤 #9、agent.spawnChild 自主生子 #10、四個接死碼安全零件），2026-06-16；v0.59.5-alpha 發佈後 drift 稽核一致性修補（虛構層 doc 56/57 補隔離牌、計數與版本戳對齊、`--help` 補 `--resume`），2026-06-16；v0.59.6-alpha partial→landed（建 MessageRouter 防重放 AT-1b/5a＋loop 完整性自檢＋CompositeChannel；11 漂移＋14 doc-stale 誠實對齊；DeepDive 07 七步崩潰誠實標記不造死碼），2026-06-16；v0.59.7-alpha buildable_now 批次（建 `ps --tree` CLI、`/session list`＋`agent.list-sessions` RPC、daemon denial-audit＋生命週期 structured-log；含前 4 個 buildable_now：workflow:status／context-keyword-retrieval／agent-introspect／per-agent VedanaClassificationConfig），2026-06-16。最新驗證快照：314 test files / 3290 passed / 0 failed / 4 skipped（第 4 個 skip＝Ollama e2e 於無 Ollama 的機器誠實跳過；含 push 前誠實稽核補的 6 插件測試 +43）；microkernel purity PASS。最終帳不變：8 條完全證明、#6 已證至 N=2（明確標界）、#10 已證至 depth=3＋運行中自主生子工具（機制同構，任意有限深度無已知障礙）。*

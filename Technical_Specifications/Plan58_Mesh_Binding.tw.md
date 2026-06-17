@@ -1,6 +1,14 @@
 # Plan58 — Mesh BINDING 規格（TW sibling）
 
-**Status**: BINDING（cycle 03-21 R3 D-§1 ratified 22/1 super-majority；Master Ratification Batch 18 #2 已 APPROVED 2026-05-02）
+> ✅ **[實作狀態 — v0.59.6]** 本規格**已落地出貨**。mesh plugin 為真實 `@openstarry-plugin/mesh`（package.json `version` 0.1.0-alpha），活在生產路徑：
+> - `openstarry_plugin/mesh/src/plugin.ts:12` `createMeshPlugin()` → `IPlugin`（manifest `skandha: 'rupa'` 色蘊通訊基質）
+> - `openstarry_plugin/mesh/src/broker.ts:84` `createMeshBroker()`：HMAC-SHA256 verify（`verifyMessageHmac` broker.ts:69）+ nonce 重放防禦（`msh:` 前綴 `MESH_REPLAY_CACHE_PREFIX` broker.ts:113）+ fan-out 投遞（broker.ts:124-131，**僅 fan-out**符合 §6 D-§1-R2-E）
+> - `openstarry_plugin/mesh/src/routing.ts:38` `compileRoutingTable()`：boot 階段編譯 + Kahn 拓撲排序循環偵測（routing.ts:90-109）；`computeManifestIntegrityHash()`（routing.ts:119）= §2.4 verification 7 的 SHA-256 manifest attestation
+>
+> 測試覆蓋 **23 例**（真跑 broker/routing，非樁）：`__tests__/routing.test.ts`（12）+ `__tests__/broker.test.ts`（11）。
+> 下方 §5 LOC「indicative」、§6「本輪僅 fan-out / in-process single-host」與 §8 合規表為 cycle 03-21 規劃期快照；fan-out-only 與 in-process 約束在已出貨代碼中仍成立（cross-process / aggregation 仍為 Phase 7 未建，誠實標記為大未來）。原 BINDING 規劃文字保留於下供歷史對照。
+
+**Status**: BINDING + SHIPPED（cycle 03-21 R3 D-§1 ratified 22/1 super-majority；Master Ratification Batch 18 #2 已 APPROVED 2026-05-02；代碼於 `@openstarry-plugin/mesh` 出貨，broker.ts/routing.ts/plugin.ts + 23 測試——狀態於 v0.59.6 文件對代碼複審回填）
 **Authority**: Master Ratification（Batch 18 dispatch 2026-05-02 / `deliver/Master_Ratification/Master_Confirmation.md` 10/10 APPROVED）
 **Cycle**: 03-21（Phase 6 第五棒；5/7 functional landing）
 **Release**: v0.55.0-alpha minor-bump

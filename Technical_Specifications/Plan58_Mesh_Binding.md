@@ -1,6 +1,16 @@
 # Plan58 — Mesh BINDING Specification
 
-**Status**: BINDING (cycle 03-21 R3 D-§1 ratified 22/1 super-majority; pending Master Ratification Batch 18 #2)
+> ✅ **[實作狀態 — v0.59.6] Mesh plugin 已完整實作並掛載（SHIPPED）。** 本規格的核心面已落地為實際代碼，不再是「pending Batch 18」的待批准 spec：
+> - **集中式 hub broker**：`openstarry_plugin/mesh/src/broker.ts` `createMeshBroker()`（HMAC-SHA256 驗證 `verifyMessageHmac` L69-82；`msh:` nonce replay cache L113-116；fan-out 投遞 L124-131，源插件不回送 L128）。
+> - **路由表 boot-time 編譯 + 環檢測**：`openstarry_plugin/mesh/src/routing.ts` `compileRoutingTable()` 用 Kahn topological sort 偵測環（L90-109）＋ self-cycle 拒絕（L79-81）＋ SHA-256 manifest integrity attestation `computeManifestIntegrityHash()`（L119-133，Plan58 §2.4 verification 7）。
+> - **plugin factory**：`openstarry_plugin/mesh/src/plugin.ts` `createMeshPlugin()`（skandha `rupa`；FIX-2026-06-11 boot 硬化 L21-46）。
+> - **SDK 型別**（API 權威）：`packages/sdk/src/types/mesh.ts`（`MeshRoutingRuleSchema`/`MeshMessageSchema`/`MeshPublishResultSchema`/`MESH_REPLAY_CACHE_PREFIX = 'msh:'`），經 `packages/sdk/src/index.ts` L221-224 匯出。
+> - **23 個測試**：`__tests__/broker.test.ts`（11）＋ `__tests__/routing.test.ts`（12）。
+> - **掛載活線**：`@openstarry-plugin/mesh` 依賴 `@openstarry/sdk: workspace:*`，隨 workspace 一次 build/test 涵蓋。
+>
+> §6 forward constraints（fan-out only、in-process single-host）為**誠實且仍生效的範圍界線**——與代碼一致（broker.ts L8-12 + L124），保留。下文 §1-§8 原文為 cycle 03-21 R3 設計時的歷史紀錄，狀態行已就地更正。
+
+**Status**: BINDING + SHIPPED（cycle 03-21 R3 D-§1 ratified 22/1 super-majority；~~pending Master Ratification Batch 18 #2~~ → **已實作落地並掛載活線，見上方 v0.59.6 實作狀態牌**）
 **Authority**: Master Ratification (Batch 18 dispatch 2026-05-02)
 **Cycle**: 03-21 (Phase 6 第五棒; 5/7 functional landing)
 **Release**: v0.55.0-alpha minor-bump
@@ -105,5 +115,5 @@ TANENBAUM (Plan-spec authority) + KERNEL (Core surface) + GUARDIAN (security; Pl
 ---
 
 *Plan58 Mesh BINDING Specification — cycle 03-21 R3 D-§1 ratified 22/1 super-majority — 2026-05-02*
-*Master Ratification Batch 18 #2 dispatch ready*
+*~~Master Ratification Batch 18 #2 dispatch ready~~ → SHIPPED：mesh plugin 已實作落地並掛載活線（broker/routing/plugin + SDK types + 23 tests）；見頂部 v0.59.6 實作狀態牌 — 2026-06-16*
 *Inheritance: Plan52 → Plan54 → Plan56 → Plan57 → Plan58 (5/7 Phase 6 functional)*

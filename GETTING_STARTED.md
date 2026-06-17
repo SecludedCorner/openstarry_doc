@@ -139,6 +139,21 @@ CLI session before the control loop starts. (Added v0.59.4-alpha; wired in
 `apps/runner/src/commands/start.ts`, backed by `utils/cli-session-persistence.ts`;
 listed in `--help` since v0.59.5-alpha.)
 
+### Listing running agents (`ps`, `ps --tree`)
+
+When agents run in background daemon mode (`daemon start`), `ps` lists them:
+
+```bash
+node apps/runner/dist/bin.js ps            # AGENT ID / PID / STATUS / UPTIME / LOG
+node apps/runner/dist/bin.js ps --verbose  # per-agent detail (config / socket)
+node apps/runner/dist/bin.js ps --tree     # parent → child process hierarchy
+```
+
+`--tree` (Doc 13) queries each daemon's `agent.processTree` RPC and renders the
+spawn hierarchy indented by depth (`agentId (pid N) [status] depth=D`). Children
+spawned via `agent.spawnChild` are folded under their parent so each agent prints
+once. Read-only. (Added v0.59.7-alpha; `apps/runner/src/commands/ps.ts`.)
+
 ### Plugin Resolution Order (actual resolver behavior)
 
 For each `plugins[]` entry the runner tries, in order:
@@ -339,7 +354,7 @@ Opt-in, env-driven — zero behavior change when unset:
 | Understand the system | [Ten Tenets (README §十大核心宣言)](./README.md#-十大核心宣言-the-ten-tenets) |
 | Authoritative API contracts | `packages/sdk/src/` type files — **the SDK types are the spec**; where any doc disagrees with them, the SDK wins |
 
-### Pre-built Plugins (selection — 44 loadable plugins in the plugin workspace, +1 `mcp-common` shared types lib = 45 packages)
+### Pre-built Plugins (selection — 46 loadable plugins in the plugin workspace, +1 `mcp-common` shared types lib = 47 packages)
 
 | Plugin | Type | Description |
 |--------|------|-------------|

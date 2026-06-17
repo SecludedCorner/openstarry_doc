@@ -1,5 +1,16 @@
 # 實作範例：Provider - Gemini API
 
+> ⚠️ **[漂移更正 — v0.59.6 — 虛構介面契約]** 本範例描述的介面契約是**虛構的，已被取代**。下方所有 `LLMProvider` / `init()` / `generate()` / `@openstarry/core/interfaces` 內容**與真實代碼不符**，僅保留作歷史草稿：
+>
+> - **真實介面**：`IProvider extends ISamjna`，唯一方法是串流式 `chat(request: ChatRequest): AsyncIterable<ProviderStreamEvent>`（`packages/sdk/src/types/provider.ts:40`，`chat()` 簽章在 `:44`）。**沒有** `init()`、**沒有** `generate()`、**沒有** `Promise<LLMResponse>` 一次性回傳。
+> - **匯入來源虛構**：`@openstarry/core/interfaces` 這個模組**不存在**。真實型別（`IProvider`、`IPlugin`、`ChatRequest`、`ProviderStreamEvent`、`Message`、`ModelInfo` 等）一律從 `@openstarry/sdk` 匯入。
+> - **真實的 provider-gemini 實作**：`openstarry_plugin/provider-gemini/src/index.ts`。它走「工廠模式」匯出 `createGeminiPlugin(): IPlugin`（`:447`），由 `factory(ctx)` 在 `PluginHooks.providers` 內回傳 `createGeminiAdapter(keyManager): IProvider`（`:382`）；adapter 以 `async *chat(request: ChatRequest): AsyncGenerator<ProviderStreamEvent>`（`:394`）串流產出 `text_delta` / `tool_call_start|delta|end` / `finish` / `error` 事件，呼叫 `streamGenerateContent?alt=sse` 端點（`callGeminiStream`，`:122`）。API key 經 `SecureStore`（AES-256-GCM）加密落地，登入由 `/provider login gemini <API_KEY>` slash command 管理。
+> - **沒有 `init(context)`/依賴注入 logger 的接口**：上下文是透過 `factory(ctx: IPluginContext)` 取得（`:456`），logger 由 `createLogger("gemini")`（`@openstarry/shared`）建立，而非 `pluginContext.logger`。
+>
+> 真實參考：介面 `packages/sdk/src/types/provider.ts`；實作 `openstarry_plugin/provider-gemini/src/index.ts`。以下原文為早期設計草稿，**請勿照抄**。
+
+---
+
 本文件提供一個遵循「一切皆插件」原則的 Gemini API Provider 實作範例。
 
 ## 核心介面契約

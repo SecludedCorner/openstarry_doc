@@ -1,3 +1,6 @@
+<!-- QUARANTINE NOTICE 2026-06-17 -->
+> **⚠ 隔離標記（2026-06-17 push 前對齊複審）**：本文描述的 CLI 與實際出貨的**大幅不符**。**不存在**：全域 `openstarry` binary（GETTING_STARTED 明示無全域指令，實際走 `node apps/runner/dist/bin.js`）、以及指令 `design`（五蘊組裝 TUI）／`run-tool`／`clean`／`register`／`plugin refresh`／`system start`／`start -d`／裸 `openstarry` 啟動儀表板 console。**真實指令集**：`start` / `daemon start|stop` / `attach` / `ps`（含 `--tree`）/ `init` / `create-plugin` / `plugin install|uninstall|list|search|info|sync` / `version` / `checkpoint`（見 `apps/runner/src/bin.ts` 與 Implementation_Reference/{EN,TW}/cli.md，後者為正確的工程層 CLI 參考）。本文為早期設計稿，**請勿作為規格使用**。
+
 # 09. CLI 設計與管理指令 (CLI Design & Management Commands)
 
 OpenStarry CLI (`openstarry`) 是用戶與 Agent 系統互動的統一入口。它具備上下文感知能力，能根據執行位置自動切換「專案模式」與「系統模式」。

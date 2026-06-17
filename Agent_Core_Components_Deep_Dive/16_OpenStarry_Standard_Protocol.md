@@ -1,5 +1,18 @@
 # 16. OpenStarry 標準協議 (OpenStarry Standard Protocol)
 
+> ⚠️ **[漂移更正 — v0.59.6 / Provider 協議已被串流契約取代]**
+> 本文件下方所有「Provider 協議」型別與介面（§2 轉譯、§3 類型定義、IProvider/IAgentContext/ToolCall/ProviderResponse/ContentSegment）**描述的是早期設計稿，與已出貨的 SDK 不符**。實際權威以 SDK 型別檔為準（`packages/sdk/src/` 為 API 最高權威）。以下為對照表：
+>
+> | 本文舊稿（虛構/陳舊） | 實際已出貨 SDK | 出處 |
+> | :--- | :--- | :--- |
+> | `IProvider.generate(prompt: string, context: IAgentContext): Promise<ProviderResponse>` | `IProvider.chat(request: ChatRequest): AsyncIterable<ProviderStreamEvent>`（串流，非緩衝） | `packages/sdk/src/types/provider.ts:40-49` |
+> | 一次性回傳 `ProviderResponse { segments: ContentSegment[] }` | 串流事件聯合型別 `ProviderStreamEvent`（`text_delta` / `tool_call_start` / `tool_call_delta` / `tool_call_end` / `finish` / `error`） | `packages/sdk/src/types/message.ts:38-45` |
+> | `ToolCall { id?; name; args: any }` | `ToolCallRequest { id: string; name: string; arguments: Record<string, unknown> }`（欄位名 `arguments`，非 `args`；`id` 必填） | `packages/sdk/src/types/message.ts:8-12` |
+> | `IAgentContext { tools: Map<string, ITool> }`（工具經 context 暴露） | `IAgentContext { agentId: string; workingDirectory: string }`；工具改由 `ChatRequest.tools?: ToolJsonSchema[]` 隨請求傳入 | `packages/sdk/src/types/provider.ts:23, 52-55` |
+> | 型別「位於 `@openstarry/sdk` 的 `interfaces.ts`」 | **無 `interfaces.ts`**；型別散落於 `packages/sdk/src/types/`（`provider.ts`、`message.ts`、`tool.ts` 等，逐關注點分檔） | 目錄實況：`packages/sdk/src/types/` |
+>
+> 真實串流契約：Provider 實作 `async *chat(request: ChatRequest)`，逐事件 `yield`（見 `provider-gemini` / `provider-chatgpt` / `provider-claude-cli` / `provider-lmstudio` / `provider-local-llama` 的 `src/index.ts`）。§1（斜線指令 vs 自主行為）、§4（大規模工具管理）、§5（錯誤處理）的**概念與策略仍然有效**，但其中提到的具體型別名稱（`ProviderResponse`、`toolCall.args` 等）請以上表為準。下方原文保留作歷史設計稿。
+
 本文件定義了 OpenStarry 生態系中，Agent Core 與外部插件（特別是 Provider 與 Tools）溝通的技術標準。所有官方與第三方插件都必須遵守此協議，以確保跨組件的互操作性。
 
 ---

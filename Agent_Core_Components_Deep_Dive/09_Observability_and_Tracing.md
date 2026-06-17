@@ -1,3 +1,6 @@
+<!-- QUARANTINE NOTICE 2026-06-17 -->
+> **⚠ 隔離標記（2026-06-17 push 前對齊複審）**：本文描述的可觀測性堆疊大部分**未建造**——`ConsoleLoggerPlugin`／`FileLoggerPlugin`／`OpenTelemetryPlugin` 三個插件**不存在**，`cost_usd`／`total_tokens_used` 成本指標層、OpenTelemetry→Jaeger/Grafana 匯出**皆無**（無 OTel/Prometheus 依賴）。**真實實作**＝`apps/runner/src/structured-log/` + `apps/runner/src/audit-sink/`，由 `apps/runner/src/observability.ts` 經 env（`OPENSTARRY_LOG_PATH`／`OPENSTARRY_AUDIT`）opt-in 啟用、落 JSONL（見 Technical_Specifications/18 + Architecture_Documentation/54 §7.5）。`trace_id` 僅部分存在於 `loop.ts`。本文鏈路追蹤協議/指標/插件三件為設想，非現況——**請勿作為規格使用**。
+
 # 09. 可觀測性與鏈路追蹤 (Observability & Tracing)
 
 本文件定義了 OpenStarry 系統中，如何實現標準化日誌 (Logging)、指標 (Metrics) 與鏈路追蹤 (Tracing)，這對於除錯多代理人協作系統至關重要。

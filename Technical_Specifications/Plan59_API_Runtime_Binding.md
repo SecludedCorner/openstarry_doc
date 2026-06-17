@@ -1,6 +1,18 @@
 # Plan59 — API Runtime BINDING Specification
 
-**Status**: BINDING (cycle 03-22 R3 D-§1 ratified 23/0 UNANIMOUS plugin upfront + 20/3 super-majority replay cache 6-extend; pending Master Ratification Batch 19 #2)
+> ✅ **[實作狀態 — v0.59.6（2026-06-16）] BINDING + SHIPPED。** 本規格不再是「pending」設計稿——api-runtime 插件已完整出貨並接線上線，與下方規格逐條相符：
+> - **插件源碼**：`openstarry_plugin/api-runtime/src/{index,runtime,observe,invoke,state}.ts`。
+>   - 唯讀 `observe`（`observe.ts:34-61` `createObserve`；冪等、無 replay 證據，符 §6.1）；
+>   - 變動 `invoke`（`invoke.ts:95-149` `createInvoke`；HMAC-SHA256 驗章 `invoke.ts:49-60` + `apr:` replay cache `invoke.ts:122-126` + `INTERVENTION_KINDS` allow-list 守門 `invoke.ts:106-111`）；
+>   - 雙路徑由 `runtime.ts:23-30` `IRuntime` 組合（`observe`/`invoke`/`register`/`replayCacheSize`），boundary invariant §6.2 成立（兩 method 簽名皆不引用 ε-surface envelope 欄位）。
+> - **3 個可變狀態欄位**（log_level / debug_flag / soft_tracing）：`state.ts:20-24` `PluginRuntimeRecord` + `state.ts:73-80` `mutate()`；預設 info/false/false（`state.ts:26-30`）。replay_cache_size 為 introspection-only（非可變），符 §6.3「3 active + 1 negative-scope sentinel」。
+> - **SDK 型別**：`packages/sdk/src/types/api-runtime.ts`（自 `packages/sdk/src/index.ts:239-240` re-export）——`API_RUNTIME_REPLAY_CACHE_PREFIX = 'apr:'`（`api-runtime.ts:30`，符 §4 第 6 contributor）+ `INTERVENTION_KINDS = [log_level, debug_flag, soft_tracing]`（`api-runtime.ts:33-37`）+ invoke/observe request/result schemas。
+> - **測試**：`openstarry_plugin/api-runtime/__tests__/{invoke,observe,plugin,state}.test.ts` 共 **42 個 it()/test()**（16+8+11+7）。
+> - **接線上線**：`configs/phase6-agent.json:30` 載入 `@openstarry-plugin/api-runtime`（2026-06-11 修復衝刺加入，冷啟動 smoke 有可證明的 activation path）；亦見 `assertion-coverage.json` 4 條測試檔登錄。
+>
+> 下方原規格（含「pending Master Ratification Batch 19 #2」等發佈前措辭）保留作歷史設計敘述；實作狀態以本牌為準。
+
+**Status**: BINDING + **SHIPPED（v0.59.x）** — 插件已出貨並接線（見上方實作狀態牌）。〔原文：cycle 03-22 R3 D-§1 ratified 23/0 UNANIMOUS plugin upfront + 20/3 super-majority replay cache 6-extend; pending Master Ratification Batch 19 #2 — 此 pending 措辭已過時。〕
 **Authority**: Master Ratification (Batch 19 dispatch 2026-05-04)
 **Cycle**: 03-22 (Phase 6 第六棒; 6/7 functional landing)
 **Release**: v0.56.0-alpha minor-bump
@@ -93,7 +105,7 @@ API Runtime enables runtime observability + bounded intervention within OpenStar
 6. Replay cache prefix scheme structured (`apr:` no collision)
 7. Plugin-internal introspection schema **strictly OUT** of ε-surface boundary
 
-**Design-stage**: 6/7 + 1 resolved at D-§1-B → 7/7 PASS. **Runtime-stage**: pending Dev (ci_check at `implementation_locus = 'openstarry_plugin/api-runtime/'`; delivery_report appendix references log path + entry hash)。
+**Design-stage**: 6/7 + 1 resolved at D-§1-B → 7/7 PASS. **Runtime-stage**: ✅ **SHIPPED**（v0.59.x）——`implementation_locus = 'openstarry_plugin/api-runtime/'` 已落地；7-sub-check 的 ε-surface 0-delta 由 `packages/sdk/src/types/api-runtime.ts` 不含任何 envelope 欄位確認，`apr:` 無碰撞由 `API_RUNTIME_REPLAY_CACHE_PREFIX`（`api-runtime.ts:30`）+ 6-contributor `__tests__` 覆蓋。〔原文：「pending Dev」已過時。〕
 
 ### §5.3 Tri-party MR-6 AND-condition (R3 D-§1-R2-B 23/0)
 
@@ -188,5 +200,5 @@ DSS-CY21-§1-A (LEIBNIZ Gossip B'), DSS-CY21-§1-B (KERNEL N=8 hex), DSS-CY21-§
 ---
 
 *Plan59 API Runtime BINDING Specification — cycle 03-22 R3 D-§1 ratified 23/0 UNANIMOUS plugin upfront + 20/3 super-majority replay cache 6-extend — 2026-05-04*
-*Master Ratification Batch 19 #2 dispatch ready / v0.56.0-alpha minor-bump release trigger*
+*✅ SHIPPED（v0.59.x）：插件已出貨並接線（`openstarry_plugin/api-runtime/`、SDK `types/api-runtime.ts`、42 測試、`configs/phase6-agent.json` 載入）。〔原文「Master Ratification Batch 19 #2 dispatch ready / v0.56.0-alpha minor-bump release trigger」為發佈前措辭，已過時。〕*
 *Inheritance: Plan52 → Plan54 → Plan56 → Plan57 (+ amendment) → Plan58 → **Plan59 (6/7 Phase 6 functional landing; 識蘊 Vijnana)***

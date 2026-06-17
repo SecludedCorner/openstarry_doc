@@ -1,5 +1,12 @@
 # 插件範例：數據驗證 (Zod)
 
+> ⚠️ **[漂移更正 — v0.59.6 設計示意，非實作對照]** 本文件混雜「概念正確但 API 已漂移」與「整段虛構層」兩類問題，已逐處插牌；原文保留為歷史設計敘述。
+>
+> 1. **§1 工具參數欄位名稱已漂移**：真實 `ITool` 介面（`packages/sdk/src/types/tool.ts:53-57`）的 schema 欄位叫 **`parameters: z.ZodType<TInput>`**，不是 `args`；且工具是 plain object（`id` / `description` / `parameters` / `execute(input, ctx)`），不是本文示範的 `class MyTool { name; args; execute(args) }`。`Zod` 仍確實是驗證機制——只是欄位名與形狀請以 SDK 型別為準。
+> 2. **§2「MCP 消息總線」整段為虛構層**：核心程式碼**不存在**「消息總線引擎」或 `MCP_Packet_Schema`（全 `packages/` 0 grep 命中）。此段與本資料夾已隔離的 doc 01/02 屬同一虛構家族，請勿據此實作。
+>
+> 權威鏈：SDK 型別檔（`packages/sdk/src/types/tool.ts`）＝ API 最高權威；任何 doc 與 SDK 衝突，SDK 贏。
+
 本文件闡述了像 `Zod` 這樣的數據驗證庫，如何在我們的架構中發揮作用。
 
 ## 定位：庫/依賴，而非插件
@@ -18,7 +25,28 @@
 
 *   **目標：** 確保 LLM 生成的工具調用參數，在傳遞給 `execute` 方法之前是類型安全且符合預期的。
 *   **實現思路：**
-    1.  在 `Tool` 插件的定義中，`args` 字段可以直接是一個 `Zod` schema 對象。
+    1.  在 `Tool` 插件的定義中，schema 欄位可以直接是一個 `Zod` schema 對象。
+
+        > ⚠️ **[漂移更正 — v0.59.6]** 下方原始示例的欄位名（`args`）與形狀（`class MyTool`）已過時。真實 `ITool`（`packages/sdk/src/types/tool.ts:53-57`）長這樣：
+        > ```typescript
+        > import { z } from 'zod';
+        >
+        > const createUser: ITool = {
+        >   id: 'create_user',
+        >   description: 'Creates a new user in the system.',
+        >   parameters: z.object({        // ← 欄位叫 parameters，不是 args
+        >     username: z.string().min(3),
+        >     email: z.string().email(),
+        >     age: z.number().optional(),
+        >   }),
+        >   async execute(input, ctx) {    // ← (input, ctx)，input 已通過 Zod 驗證
+        >     // ...
+        >     return 'ok';
+        >   },
+        > };
+        > ```
+
+        以下為原始（已漂移）敘述，保留作歷史：
         ```javascript
         import { z } from 'zod';
 
@@ -38,12 +66,14 @@
           }
         }
         ```
-    2.  在「代理人核心」的「執行循環」中，當它準備調用一個工具時，它會先從 `ToolRegistry` 獲取工具的 `args` schema。
+    2.  在「代理人核心」的「執行循環」中，當它準備調用一個工具時，它會先從 `ToolRegistry` 獲取工具的 schema（真實欄位 `parameters`）。
     3.  然後，它使用 `schema.safeParse(llm_generated_args)` 來驗證 LLM 提供的參數。
     4.  如果驗證失敗，它會將 `Zod` 生成的詳細錯誤信息作為「工具執行失敗」的結果，反饋給 LLM，讓 LLM 自我糾正並生成正確的參數。
     5.  如果驗證成功，才調用工具的 `execute` 方法，並傳入經過 `Zod` 清洗和類型轉換後的參數。
 
 ### 2. 在 `MCP` 消息總線中
+
+> ⚠️ **[虛構層 — v0.59.6]** 本節描述的「消息總線引擎」與 `MCP_Packet_Schema` **在核心程式碼中不存在**（`packages/` 全域 0 grep 命中），屬與本資料夾 doc 01/02 同一虛構家族。請勿據此實作；MCP 整合的真實路徑請參考實際出貨的 `transport-*` / `mcp-*` 插件。以下原文僅保留為歷史設計示意。
 
 *   **目標：** 確保在「消息總線」上流動的所有消息封包都符合預定義的格式。
 *   **實現思路：**

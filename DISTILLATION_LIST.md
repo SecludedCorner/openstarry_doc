@@ -267,7 +267,7 @@
 - `Architecture_Documentation/03_Agent_Design_and_Template_Service.md` — Runtime REST template service (POST /templates, PUT .../plugins) never built — real system uses static agent.json configs; presented as CURRENT fact with no banner.
 - `Architecture_Documentation/10_Bootstrapping_And_Plugin_Loading.md` — Daemon-first three-stage boot (opennexus-daemon start → Master Agent → workers) describes a never-built system, stamped CURRENT with no banner; real boot is runner + agent.json.
 - `Architecture_Documentation/11_Agent_Manager_Tool_Design.md` — AgentManagerTool POSTing to a daemon management API at localhost:5050 — neither the tool nor the daemon exists (LLM child-spawn tool face is still on the unfinished-work ledger).
-- `Architecture_Documentation/13_Orchestrator_Daemon_Design.md` — 337 lines specifying the systemd-like daemon (process supervision, infra-plugin hosting, management API) that was never built; no banner; apps/ contains only runner and channel.
+- `Architecture_Documentation/13_Orchestrator_Daemon_Design.md` — MIXED (isolation banner added 2026-06-12 + v0.59.7 reconciliation note): the systemd-like daemon (process supervision, infra-plugin hosting, REST management API) was never built; apps/ contains only runner and channel. BUT the Plan37 Process Tree section IS real and e2e-tested (agent.spawnChild / agent.processTree / SEC-003 / orphan reap — daemon-process-tree.e2e.test.ts) and the `ps --tree` CLI landed v0.59.7 — those parts are not fiction.
 - `Architecture_Documentation/14_System_Boot_Sequence.md` — Boot chain Daemon Layer → Design Layer API → Master Agent bootstrap describes the never-built daemon/template-service stack as current operating logic; no banner.
 - `Architecture_Documentation/15_System_Startup_and_Task_Flow.md` — Full lifecycle narrative (openstarry-daemon start, Master Agent with AgentManagerTool/AgentDesignerTool, MCP inter-agent collaboration) of a system that never existed; no banner.
 - `Architecture_Documentation/27_System_Topology_and_Management_Zone.md` — Grand topology (WASM sandboxes, causality-chain scheduler, quota policy layer, HAL feeding PiKVM/Jetson sensor streams) presented as the system's defined operating logic — none of it built; no banner.
@@ -408,7 +408,7 @@
 ### Project_Structure_and_Conventions
 
 - `Project_Structure_and_Conventions/00_Roadmap_and_Milestones.md` — Cycle-stamped milestone/status ledger (v0.1.0–v0.32.0, Feb-Mar 2026) with per-cycle test counts and completion checkmarks; pure progress record, post-mortem data only — not design content.
-- `Project_Structure_and_Conventions/Testing_Guide.md` — Release-stamped manual verification checklist frozen at v0.20.1-beta (15 plugins / 1339 tests vs today's ~46 plugins / 3083+), ending in a blank test-results recording table; superseded by the rewritten GETTING_STARTED.md and current verification SOP.
+- `Project_Structure_and_Conventions/Testing_Guide.md` — Release-stamped manual verification checklist frozen at v0.20.1-beta (15 plugins / 1339 tests vs today's 46 loadable plugins / 3247 passed at v0.59.7), ending in a blank test-results recording table; superseded by the rewritten GETTING_STARTED.md and current verification SOP.
 
 ### Reference 01-22
 

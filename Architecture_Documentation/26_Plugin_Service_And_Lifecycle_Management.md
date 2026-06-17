@@ -1,5 +1,17 @@
 # 26. 插件服務與生命週期管理 (Plugin Service & Lifecycle Management)
 
+> ✅ **[實作狀態 — v0.59.6] 服務註冊機制（ServiceRegistry）已實作落地**，但本文 §2 / §5.2 的 API 簽章為**陳舊草稿**，與已出貨代碼不符——真實形態見下方更正牌。
+> - 真實的服務註冊器介面 `IServiceRegistry`：`packages/sdk/src/types/service.ts:62-100`（方法 `register` / `get` / `has` / `list` / `unregister`）。
+> - 真實實作 `ServiceRegistry`：`packages/core/src/infrastructure/service-registry.ts:16-83`（`createServiceRegistry()` 工廠 :81）。
+> - 真實的型別安全 key 機制 `ServiceKey<T>` + `SERVICE_KEYS`：`packages/sdk/src/types/service.ts:32-53`（已註冊 `cognition-config` / `distributed-alaya` / `daemon-spawn` 三 key）。
+> - 插件取用入口是 **`ctx.services`**（`IServiceRegistry`），**不是** `ctx.registerService` / `ctx.getService`：`packages/sdk/src/types/plugin.ts:264`（`services?: IServiceRegistry`）＋ manifest 註記 `:54`（「plugin must still call ctx.services.register」）。
+> - 測試覆蓋：`packages/core/__tests__/infrastructure/service-registry.test.ts`、`.../e2e/service-injection.test.ts`、`.../e2e/typed-registry-consumer.test.ts`。
+>
+> ⚠️ **[漂移更正 — v0.59.6] §1.2 動態發現／§3 IPluginManager（discover / load / unload / reload / hot-swap / 狀態監聽）＝未建造的設計，不在微內核價值路徑上。**
+> 全 repo（`agent_dev/openstarry`）grep `IPluginManager` 與 `pluginManager` **零命中**——此介面、`PluginDescriptor`、`PluginStatus`、§3.2 拓撲排序、§5「特權插件 `pluginManager`」、§6 路線圖 Phase 3–6 皆**從未實作**。
+> 動態 hot-reload/unload 同時是 **攻擊面**（執行期任意載入/卸載＝權限提升風險），刻意不建。以下 §1.2、§3、§5、§6 中段相關段落保留為**歷史設計草稿**，不代表現行行為。
+> 已實作的真實插件載入路徑是**啟動期靜態載入**（PluginLoader），非執行期動態管理。
+
 本文件定義了插件之間的**服務共享機制**與**動態生命週期管理**，為複雜的多插件協作場景提供架構基礎。
 
 ---
@@ -46,6 +58,38 @@ Agent (VM 環境)
 
 ### 2.1 擴展 IPluginContext
 
+> ⚠️ **[漂移更正 — v0.59.6] 下方為陳舊草稿。** 真實的 `IPluginContext` **沒有** `registerService` / `getService` 方法，也**沒有** `pluginManager` 欄位。服務取用走單一欄位 `services?: IServiceRegistry`（`packages/sdk/src/types/plugin.ts:264`），插件呼叫 `ctx.services.register(svc)` / `ctx.services.get(SERVICE_KEYS.XXX)`。請以下方「真實簽章」區塊為準。
+
+**真實簽章（v0.59.x 出貨代碼，`packages/sdk/src/types/`）：**
+
+```typescript
+// 服務取用透過單一注入欄位（plugin.ts:264）
+export interface IPluginContext {
+  // ...現有欄位（bus / config / pushInput 等）...
+
+  /** 跨插件服務注入器（可選）。NEW v0.17.0-beta（Plan19）。 */
+  services?: IServiceRegistry;
+}
+
+// IServiceRegistry：以 ServiceKey<T> 取得型別安全（service.ts:62-100）
+export interface IServiceRegistry {
+  register<T extends IPluginService>(service: T): void;        // service 自帶 .name，無獨立 id 參數
+  get<T extends IPluginService>(key: ServiceKey<T>): T | undefined;
+  has(key: ServiceKey<IPluginService>): boolean;
+  list(): IPluginService[];
+  unregister(key: ServiceKey<IPluginService>): boolean;
+}
+
+// 型別安全 key（service.ts:32-53）；新服務 MUST 在此註冊一把 key
+export const SERVICE_KEYS = {
+  COGNITION_CONFIG: new ServiceKey<ICognitionConfigService>("cognition-config"),
+  DISTRIBUTED_ALAYA: new ServiceKey<IDistributedAlaya & IPluginService>("distributed-alaya"),
+  DAEMON_SPAWN:      new ServiceKey<IDaemonSpawnService>("daemon-spawn"),
+} as const;
+```
+
+<details><summary>歷史草稿（已被上方真實簽章取代，僅供考古）</summary>
+
 ```typescript
 export interface IPluginContext {
   // 現有欄位
@@ -78,6 +122,8 @@ export interface IPluginContext {
   pluginManager?: IPluginManager;
 }
 ```
+
+</details>
 
 ### 2.2 服務提供者範例
 
@@ -332,6 +378,28 @@ interface AgentEvent {
 }
 ```
 
+### 4.5 跨會話列舉：`/session list`（CLI，v0.59.7-alpha LANDED）
+
+一個 daemon 在持久層保存多個 session（`$OPENSTARRY_HOME/sessions/{agentId}/`）。attach REPL 的 `/session list` 現可列舉它們——先前是 `not yet implemented` 佔位字串，現已接通：
+
+```
+> /session list
+  SESSION ID                        MESSAGES  UPDATED
+* default                           7         2026-06-16T13:40:11.000Z
+  session-2026-06-15                3         2026-06-15T09:02:55.000Z
+
+2 session(s). '*' = current.
+```
+
+接線（read-only）：
+
+- RPC：daemon `agent.list-sessions` → `ctx.persistence.listSessions(ctx.agentId)`（producer `FileSessionPersistence.listSessions`，缺索引時由目錄掃描重建）。`apps/runner/src/daemon/daemon-entry.ts`（`case "agent.list-sessions"`）。
+- 介面完整性：`IDaemonControlPlane.listSessions` + `_controlPlane` 物件補齊，由 `tsc` 編譯期強制（`apps/runner/src/daemon/types.ts`）。
+- REPL：`AttachCommand.listSessions` 呼叫 `agent.list-sessions`、依 `updatedAt` 新→舊排序、標記目前 session（`*`）。`apps/runner/src/commands/attach.ts`。
+- 測試：`apps/runner/__tests__/commands/session-list.test.ts`（5；IPC 往返真實 producer + REPL 渲染）。
+
+`/session switch`／`/session new` 仍為佔位（需 daemon 端 session 生命週期控制，未在此輪建造——維持誠實 stub）。
+
 ---
 
 ## 5. 權限控制
@@ -355,6 +423,25 @@ interface AgentEvent {
 
 ### 5.2 Core 實作
 
+> ⚠️ **[漂移更正 — v0.59.6] 下方為陳舊草稿。** 真實的 context 組裝**不**逐一展開 `registerService` / `getService`，而是直接注入 `services: serviceRegistry`（一個 `IServiceRegistry`）。`pluginManager` 與 `isPrivileged` 分支從未實作（§3 IPluginManager 未建造）。
+
+```typescript
+// 真實形態（概念）：services 為單一 IServiceRegistry 注入欄位
+function getPluginContext(pluginRef: PluginRef): IPluginContext {
+  return {
+    bus,
+    workingDirectory: process.cwd(),
+    agentId: config.identity.id,
+    config: pluginRef.config ?? {},
+    pushInput: (event) => core.pushInput(event),
+    services: serviceRegistry,   // IServiceRegistry（createServiceRegistry()）
+    // pluginManager / 特權分支：未實作（hot-reload 設計未建，且為攻擊面）
+  };
+}
+```
+
+<details><summary>歷史草稿（已被上方取代，僅供考古）</summary>
+
 ```typescript
 function getPluginContext(
   pluginRef: PluginRef,
@@ -372,6 +459,8 @@ function getPluginContext(
   };
 }
 ```
+
+</details>
 
 ---
 

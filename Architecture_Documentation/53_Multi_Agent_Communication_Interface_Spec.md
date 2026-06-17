@@ -1,7 +1,7 @@
 # 57. Multi-Agent Communication Interface Specification
 
 **Version**: v1.0 (Cycle 03-1 Research Draft)
-**Status**: Research Team Draft -- pending engineering team formal spec
+**Status**: IMPLEMENTED + FROZEN (v0.59.6 honest re-verification). `ICommChannel` and its companion types are FROZEN in `packages/sdk/src/types/comm-channel.ts`; reference implementations exist and are tested: `PipelineChannel` (`apps/runner/src/daemon/pipeline-channel.ts`), the `comm-pipeline` plugin, and `CompositeChannel` (§11, `apps/runner/src/daemon/composite-channel.ts`, 16 tests). The `commChannels[]` hook is wired in `plugin-loader.ts`. **Remaining sub-gap**: §10 transport-plugin dual-registration (see §10 note).
 **Basis**: D2-R2, D2-R5, D2-R6
 **Category**: NEW document (Technical Specification)
 
@@ -351,6 +351,8 @@ Per Baseline Rule #21 (PROC-SPEC-3), `IAgentConfig.communication` MUST be reflec
 
 ## 10. Migration Path for Existing Transport Plugins
 
+> ⚠️ **[實作狀態 — v0.59.6] 尚未實作（誠實標記）。** `transport-http` / `transport-websocket` 目前**仍只註冊為 `listeners`**（已對 plugin 原始碼 grep 確認：兩者 src 皆無 `commChannels` 參照）。下列「雙註冊」遷移為**設計路徑、非已落地行為**。這是 §11 CompositeChannel 之外、doc 53 唯一未竟的機械性子項；屬可選後續，與本文其餘已落地部分（FROZEN 介面＋PipelineChannel／comm-pipeline／CompositeChannel）分開計。
+
 Existing transport plugins (`transport-http`, `transport-websocket`) currently register as `listeners` in PluginHooks. To participate in multi-agent communication:
 
 Migration steps: (1) Wrap existing transport logic in `ICommChannel`. (2) Declare capabilities (e.g., `transport-websocket` -> `['messaging', 'streaming']`). (3) Register via `hooks.commChannels`. (4) Retain backward compatibility by providing BOTH `listeners` (legacy) and `commChannels` (multi-agent) in PluginHooks.
@@ -374,6 +376,8 @@ Constraints:
 - **Capability intersection**: CompositeChannel capabilities = intersection of all child capabilities.
 - **Only composable channels**: Channels must declare `composable` to participate.
 - **Strategy types**: `fallback` (primary + secondary), `broadcast` (send to all), `pipeline` (chain sequentially).
+
+> ✅ **[實作狀態 — v0.59.6] 已落地。** `apps/runner/src/daemon/composite-channel.ts` 實作 `CompositeChannel implements ICommChannel`：三策略（fallback 首個成功者勝／broadcast best-effort 全發／pipeline 逐段必成）、capabilities＝子通道交集、僅接受 `composable` 子通道、`MAX_COMPOSITION_DEPTH=3` 巢狀上限、lifecycle 委派全子通道、`onMessage` 扇入。測試 `composite-channel.test.ts`（16 例）。與 `PipelineChannel` 同為凍結 `ICommChannel` 的 reference 實作。
 
 ---
 

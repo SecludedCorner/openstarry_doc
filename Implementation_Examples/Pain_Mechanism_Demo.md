@@ -1,5 +1,16 @@
 # 實作範例：三受反饋機制 (Vedana Feedback Demo)
 
+> ⚠️ **[漂移更正 — v0.59.6 — 插件 API 為示意，與已出貨 SDK 不符]**
+> 本範例 §2 的「插件實作」是 **概念示意 (illustrative pseudo-code)**，使用的 API 從未存在於已出貨的 SDK，請勿照抄。以下三處與真實型別不符（權威來源＝SDK 型別檔，最高權威見根 CLAUDE.md 文件權威鏈）：
+> 1. **`class ... implements IPlugin` + `id`/`version`/`async initialize(context)`/`async shutdown()` 不存在。** 真實 `IPlugin` 是**工廠物件**，非 class：`interface IPlugin { manifest: PluginManifest; factory: (ctx: IPluginContext) => Promise<PluginHooks>; }`（`packages/sdk/src/types/plugin.ts:376-379`）。慣例是 `export function createXxxPlugin(): IPlugin`。
+> 2. **`context.registerGuide(...)` 與 `context.logger` 不存在於 `IPluginContext`。** 真實 `IPluginContext`（`plugin.ts:234-273`）只有 `bus` / `workingDirectory` / `agentId` / `config` / `pushInput` / `sessions` / 唯讀 `tools?` / `guides?.list()` / `providers?` / `services?` / `commands?` / `metrics?`——沒有 `registerGuide`，也沒有 `logger`。Guide 是經 `factory` 回傳 `PluginHooks.guides: IGuide[]` 註冊，不是命令式 `registerGuide`。（`registerGuide(...)` 只出現在**測試用** `MockHost`，`packages/sdk/src/testing/mock-host.ts:230`，非生產 context。）
+> 3. **`interpretPain` / `getSystemInstructions` / `shouldReflect` 不存在於 `IGuide`。** 真實 `IGuide`（`packages/sdk/src/types/guide.ts:8-12`）只有 `{ skandha, id, name, getSystemPrompt(): string | Promise<string> }`。沒有任何「痛覺詮釋」方法面。
+>
+> ✅ **[實作狀態 — v0.59.6 — 受蘊系統本身是真的]**
+> 本範例描述的**「受蘊 (Vedana) 反饋」核心機制確實已出貨**，只是接線方式與 §2 偽碼不同：插件 `@openstarry-plugin/vedana-sensor-core`（`agent_dev/openstarry_plugin/vedana-sensor-core/`，4 測試檔）透過 `factory` 回傳 `PluginHooks.vedanaSensors`（`index.ts:23-46`），其中 `ToolOutcomeSensor`（`tool-outcome-sensor.ts`）**訂閱 `bus` 的 `AgentEventType.TOOL_RESULT` / `TOOL_ERROR`**，把工具成敗映射成連續的 valence/intensity 信號（業果受 karma-phala），另含 `SafetyCheckSensor`（怖畏 bhaya）、`ConfidenceGapSensor`（疑惑 vimati）。因此下方 §1 的「三受概念」與 §4 的運行場景（錯誤 → 苦受信號 → 策略調整）在精神上成立；只有 §2 把信號**詮釋成 prompt** 的那層被畫成了不存在的 Guide API。真實對應寫法可參照 `guide-character-init`（`guide-character-init/src/index.ts:31-57`：`createGuideCharacterInitPlugin()` → `factory` → 回傳 `{ guides: [{ skandha, id, name, getSystemPrompt }] }`）。
+>
+> 以下原文（§2 偽碼含上述虛構 API）保留作歷史，僅供說明設計意圖，**不可作為可編譯範例**。
+
 本範例展示如何利用 OpenStarry 的「識蘊 (Guide)」插件與核心的「受蘊 (Sensation System)」協同工作，實現擬人化的**三受反饋機制**——苦受 (Dukkha)、樂受 (Sukha)、捨受 (Upekkha)。
 
 ---
@@ -19,6 +30,8 @@
 ---
 
 ## 2. 插件實作範例：`PainAware_Guide`
+
+> ⚠️ **概念示意，非可編譯範例。** 此區塊用的 `class implements IPlugin` / `initialize(context)` / `context.registerGuide` / `context.logger` / `IGuide.interpretPain` 皆為虛構 API，與已出貨 SDK 不符——詳見本檔頂部漂移更正牌。真實寫法見 `vedana-sensor-core`（受蘊信號）＋ `guide-character-init`（Guide 經 `factory` 回傳）。
 
 此插件作為 Agent 我執框架的一部分，定義了它如何詮釋三受信號（此處以苦受為例）。
 
