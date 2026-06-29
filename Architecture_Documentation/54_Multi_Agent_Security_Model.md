@@ -50,9 +50,9 @@
 
 | Sub-type | Description | Current Defense | Coverage |
 |----------|-------------|----------------|----------|
-| AT-1a | Source Spoofing — 偽造 sender identity | SEC-002 PID-to-agentId (Plan38 W0) | PARTIAL → FULL (Plan38) |
+| AT-1a | Source Spoofing — 偽造 sender identity | SEC-002 PID-to-agentId (Plan38 W0)；v0.59.8 跨 daemon 訊息 `source` 以 cluster key HMAC 簽章不可偽（C/T1，`source` 為 capability 判斷依據，`comm-signature.ts`） | PARTIAL → FULL (Plan38 + C/T1) |
 | AT-1b | Replay Attack — 重放有效訊息 | MessageRouter id-dedup + timestamp 新鮮度窗（`MAX_MESSAGE_AGE_MS`/`MAX_CLOCK_SKEW_MS`，v0.59.6 `message-router.ts` `checkReplay`） | FULL |
-| AT-1c | EventBridge Injection — 注入惡意事件 | EventBridge sender validation | PARTIAL |
+| AT-1c | EventBridge Injection — 注入惡意事件 | EventBridge sender validation；v0.59.8 跨 daemon 事件以 cluster key HMAC 簽章（`comm.event`，C/T2）＋訂閱者主動式訂閱閘，偽事件 fail-closed 拒並記 `comm_denied` | PARTIAL → FULL（同主機叢集） |
 
 ### AT-2: Capability Escalation（能力提升）
 
@@ -78,7 +78,7 @@
 | AT-4a | Message Eavesdrop — 竊聽訊息 | IPC isolation (Unix sockets) | PARTIAL |
 | AT-4b | Registry Enumeration — 列舉所有代理 | list_agents: basic only; get_agent_status: capability-gated | PARTIAL |
 | AT-4c | Audit Log Access — 存取審計日誌 | File system permissions | PARTIAL |
-| AT-4d | Service Discovery Leak — 服務發現資訊外洩 | GlobalServiceRegistry capability check | PARTIAL |
+| AT-4d | Service Discovery Leak — 服務發現資訊外洩 | GlobalServiceRegistry capability check；v0.59.8 跨 daemon register/lookup 以 cluster key HMAC 簽章（`comm.register`/`comm.lookup`，C/T3），非叢集成員無法登記或查詢 | PARTIAL → FULL（同主機叢集） |
 
 ### AT-5: Replay Attacks（重放攻擊）
 
@@ -165,12 +165,12 @@ Predicted post-Plan38: **11/21 FULL** (52.4%), meeting the >= 50% target.
 
 > Lead: LINNAEUS (#13) + DARWIN (#6)
 
-> ⚠️ **[v0.59.6 更新]** 此表 §5 覆蓋矩陣的 `Current 5/21 (v0.37.0-alpha)` 為**陳舊基線**——多數 Plan38 防禦（SEC-002/005/008、MessageRouter 鏈、DualRateLimiter、PermissionLattice、SpawnValidator）其實已落地接線（見各 §AT 表 `→ FULL` 列＋對應測試）。「Message replay prevention（AT-1b/5a）」已於 v0.59.6 由 MessageRouter `checkReplay` 補上（id 去重＋timestamp 新鮮度窗），不再屬未竟。其餘列（IPC 加密 AT-4a、credential rotation AT-5b、event signing AT-1c）仍為誠實未竟。
+> ⚠️ **[v0.59.6 更新；v0.59.8 補注]** 此表 §5 覆蓋矩陣的 `Current 5/21 (v0.37.0-alpha)` 為**陳舊基線**——多數 Plan38 防禦（SEC-002/005/008、MessageRouter 鏈、DualRateLimiter、PermissionLattice、SpawnValidator）其實已落地接線（見各 §AT 表 `→ FULL` 列＋對應測試）。「Message replay prevention（AT-1b/5a）」已於 v0.59.6 由 MessageRouter `checkReplay` 補上（id 去重＋timestamp 新鮮度窗），不再屬未竟。**「Event/message source signing（AT-1a/1c）」已於 v0.59.8 由跨 daemon comm 的 cluster key HMAC 簽章補上（C/T1–T3，同主機叢集）。** 其餘列（IPC 加密 AT-4a＝跨主機 transport、credential rotation AT-5b）仍為誠實未竟。
 
 | Gap | Attack Type | Target Plan | Approach |
 |-----|-----------|-------------|----------|
 | ~~Message replay prevention~~ ✅ 已做 (v0.59.6) | AT-1b, AT-5a | ~~Plan39~~ | MessageRouter id-dedup + timestamp window (`checkReplay`) |
-| EventBridge injection hardening | AT-1c | Plan39 | Event source signing |
+| ~~EventBridge / message source signing~~ ✅ 已做 (v0.59.8, C/T1–T3) | AT-1a, AT-1c | ~~Plan39~~ | Cluster key HMAC on cross-daemon comm (`comm-signature.ts`; same-host cluster) |
 | Runtime capability expansion | AT-2b | Plan38 W3 (F-5) | Permission lattice runtime enforcement |
 | Audit overhead rate limiting | AT-6a | Plan39 | Sampled auditing under high load |
 | IPC encryption | AT-4a | Plan40+ | TLS for cross-machine communication |

@@ -196,13 +196,30 @@ type AgentProcessState = 'RUNNING' | 'DRAINING' | 'TERMINATED';
 $ openstarry ps --tree
 PROCESS TREE
 root-agent (pid 100) [running] depth=0
-  child-a (pid 200) [running] depth=1
+  first-worker [root-agent-1] (pid 200) [running] gen=1 depth=1
     grandchild (pid 300) [draining] depth=2
 
 1 daemon(s) queried
 ```
 
-唯讀（不 spawn/kill）；因每個被 spawn 的子代理本身是獨立 daemon、會在自己的 registry 自報為 root，CLI 以 `collectChildIds` 把這類節點折疊到其父節點下，避免重複列印。實作：`apps/runner/src/commands/ps.ts`（`PsCommand.printTree` + 純函數 `toRenderTreeNodes`／`collectChildIds`／`renderProcessTreeLines`），測試 `apps/runner/__tests__/commands/ps-tree.test.ts`（7 測試）。
+唯讀（不 spawn/kill）；因每個被 spawn 的子代理本身是獨立 daemon、會在自己的 registry 自報為 root，CLI 以 `collectChildIds` 把這類節點折疊到其父節點下，避免重複列印。實作：`apps/runner/src/commands/ps.ts`（`PsCommand.printTree` + 純函數 `toRenderTreeNodes`／`collectChildIds`／`renderProcessTreeLines`），測試 `apps/runner/__tests__/commands/ps-tree.test.ts`（10 測試）。
+
+#### Spec Addendum A — agent 命名與世代序號（v0.59.8-alpha LANDED，Fractal Society Phase 1）
+
+凍結型別 `AgentRegistryEntry` / `ChildAgentSpawnConfig` / SDK `DaemonSpawnChildInput`／`DaemonProcessTreeNode`／`DaemonChildAgentInfo` 經 **Spec Addendum A（2026-06-26，Master ratified）** 增量擴充（皆向後相容選填欄）：
+
+- **`generation`（每父世代序號）**：每個父代理各自從 1 計數其子代理（父 A 的孩子＝A 的 #1、#2…），跨重啟持久化（`apps/runner/src/daemon/generation-counter.ts`，per-parent 檔於 `OPENSTARRY_HOME/generation/`，原子寫、fail-open+WARN）。數字小且有意義，避免單一全域計數器無限增大。
+- **`name`（人類好記標籤）**：使用者可為子代理設一個方便的名稱（非唯一、可變、純顯示；省略＝沿用 agentId）。`ps --tree` 顯示為 `name [agentId]`。
+- **`agentId` 可省略**：`spawnChild` 未給 id 時，daemon 自動產唯一 `<parentId>-<generation>`；給了 id 則**碰撞 fail-closed 拒收**——修掉一個現存 bug（`agentRegistry.set` 原本會靜默覆蓋同名子代理）。
+- 接點：`handleSpawnChild`（`daemon-entry.ts`）；工具 `agent.spawnChild`（`@openstarry-plugin/agent-spawn` input 加 `name?`、`agentId` 改選填）。測試：`generation-counter.test.ts`（7）+ ps-tree 渲染（+3）+ 真 daemon e2e `daemon-naming.e2e.test.ts`（2：auto-gen+世代+name 入樹、同名拒收反證）。
+
+> Tenet#10 分形社會結構「好好實現」於 v0.59.8-alpha 大幅落地（見下方各節 + CHANGELOG）：
+> - **Phase 1 命名（Spec Addendum A）**：每父世代序號 + 人類 name + agentId auto-gen + 同名拒收。
+> - **comm 傳輸層（Spec Addendum C）**：C/T1 點對點訊息、C/T2 叢集 pub/sub、C/T3 服務發現閉環、**C/T4 言語行為（request-response/broadcast）＋ pipeline 拓撲（A→B→C 來源路由中繼）**——皆跨 daemon、HMAC 簽章、有兩/三進程 e2e。
+> - **supervisor 重啟策略**：one-for-one/all/rest-for-one，崩潰子代理自動重生（pid 輪詢偵測）。
+> - **fork/branch（Spec Addendum B，2026-06-27 ratify）**：fork＝spawn＋父 session 快照注入子；能力仍 child⊆parent；memory/alaya 不繼承；branch＝同快照 N 子共享 forkOrigin。
+>
+> **仍為誠實未來**：跨主機 transport、N>2 gossip、mesh 全互聯、fork 的 merge/select、depth>3。設計檔：`share/engineering_delivery/20260626_fractal_society_design/`（DESIGN/PLAN/COMM_TRANSPORT/ADDENDUM_B_DRAFT）。
 
 ### Graceful Shutdown Protocol
 
@@ -246,6 +263,8 @@ Daemon 層的 `MessageRouter` 實作 6 層 fail-closed 防禦：
 
 所有 Layer 均為 fail-closed（enforcement, Rule #29）。
 
+**v0.59.8-alpha（C/T1）— MessageRouter 由「驗證層」升為「真實傳輸」**：原本 `validateMessage` 假設收發雙方同 daemon、且無 production caller（驗證層虛構）。在 1-daemon-1-agent 模型下拆為兩半：sender daemon 跑 `validateOutbound`（自身 `canSendTo`），receiver daemon 跑 `validateInbound`（`canReceiveFrom` ＋ replay ＋ freshness ＋ envelope）；遠端 sender 不在本地註冊，身份靠 **HMAC 簽章**認證（cluster key，Spec Addendum C-2）。承載傳輸＝新 `CommTransport`（一般化已 e2e 證明的 alaya `IpcRemotePeer`，runner 內）＋ `comm.deliver`/`comm.send`/`comm.inbox` daemon RPC；拒收記 `comm_denied` 審計。兩進程 e2e：`daemon-comm.e2e.test.ts`。
+
 ### EventBridge
 
 跨代理事件橋接服務（Daemon plugin）：
@@ -253,11 +272,34 @@ Daemon 層的 `MessageRouter` 實作 6 層 fail-closed 防禦：
 - Self-delivery exclusion（代理不收到自己發送的事件）
 - 支援 agent:* 和 system:* 事件命名空間
 
+**v0.59.8-alpha（C/T2）— 補上缺席的投遞層**：原本 `setDeliveryFn` 從未被 production 呼叫＝事件算完即丟（fail-open stub）。現以 `CommTransport.deliverEvent`（簽章 `comm.event` RPC）接真。訂閱為**訂閱者主動式**：訂閱者 daemon 以簽章 `comm.subscribe` 在發布者 daemon 的 EventBridge 註冊自己；發布者 publish 時，deliverFn 跨 daemon 投遞給每個訂閱者。兩進程 e2e（訂閱→發布→收到；未訂類型不送、偽簽/偽訂閱 fail-closed 拒）。
+
 ### GlobalServiceRegistry
 
 跨代理共享服務的全域註冊表（Daemon plugin）：
 - 支援服務註冊、查詢、健康檢查
 - 與 openstarry-channel 的 service discovery 協作
+
+**v0.59.8-alpha（C/T3）— 發現迴圈閉合**：原本有 register/lookup 但無人用查得結果去真的對話（real 控制面、無 consumer 閉環）。新增簽章 `comm.register`/`comm.lookup`（對 registry hub）＋ `comm.registerOn`/`comm.findPeer` 控制面；provider 以服務名登記、consumer 以服務名發現 provider 的 agentId 後用 `comm.send` 對話。三 daemon e2e（hub＋provider＋consumer，無靜態 peer config）。
+
+### C/T4 言語行為與拓撲（v0.59.8-alpha）
+
+在已接真的傳輸上實作凍結型別 `CommPerformative`/`CommTopology`（不改型別）：
+- **request-response**：`comm.request` 送 `performative:'request'` 並以 `correlationId` 在 `pendingRequests` 等相關回覆（逾時拒）；`comm.reply` 回送 `correlationId=請求 id`，receiver 端 commDeliver 解析相關回覆。
+- **broadcast**：`comm.broadcast` 對多目標扇出，逐目標獨立 capability 檢查、單一失敗不中止其餘。
+- **pipeline（A→B→C）**：來源路由中繼——發起者定 hop 序列，每個 daemon 收到 pipeline 訊息後中繼給下一跳（逐跳 capability+簽章；route/trail 走 metadata；traceDepth 上界限制長度）。中段拒收即斷鏈並記審計。
+
+### Supervisor 重啟策略（v0.59.8-alpha）
+
+`SupervisorStrategy` 原為型別+常數、daemon 無實作。現 daemon 監看自己生的子代理（`childSpawnConfigs` 保留重生配置、HMAC key 重啟時重注不落盤）：pid 輪詢偵測到子代理崩潰（process 死但 registry status 仍 `running`，即非優雅停止）→ 依 `selectRestartSet`（one-for-one／one-for-all／rest-for-one）重生，受 `maxRestarts` 上界。`agent.supervise` 工具。誠實邊界：pid 輪詢非健全 OS supervision API。
+
+### Fork / Branch（Spec Addendum B，v0.59.8-alpha）
+
+fork＝spawn 子 + 注入父 session 快照為子初始 session（沿用 `FileSessionPersistence`）。Addendum B 繼承策略：會話快照帶（D4-a）、能力仍 child⊆parent（D4-b，走 `validateSpawnConstraints`／SEC-003 不繞）、memory/alaya **不**帶（D4-c）。branch＝同快照 N 子，共享 `AgentRegistryEntry.forkOrigin`（一個分支組）。`agent.fork`/`agent.branch` 工具。merge/select（選優回填）＝誠實未來。
+
+### ICommChannel 層接真（Doc 53，v0.59.8-alpha）
+
+Doc 53 的 `ICommChannel` 凍結契約其 `commChannelRegistry` 自始由 plugin loader 填充、卻**從無 production 消費者**（send/onMessage 不做實事）。現補上：新插件 `comm-channel-p2p`（色蘊/rupa）提供真 point-to-point ICommChannel（'messaging'），`send` 走真 DAEMON_COMM 傳輸、`onMessage` 收真 inbound。daemon 開機時 `connect()` 所有註冊 channel，並於 `commDeliver` 把每筆 inbound 派發給 registry 內的 channel（`commChannelRegistry.list()` → duck-typed `deliverInbound` → onMessage handlers）——**registry 首次被消費**。控制面 `comm.channelList`/`comm.channelSend`/`comm.channelReceived`；兩進程 e2e。comm-pipeline／comm-proxy／CompositeChannel 維持為 in-process 組合 reference impl（誠實標記，非 cross-process）。
 
 ---
 

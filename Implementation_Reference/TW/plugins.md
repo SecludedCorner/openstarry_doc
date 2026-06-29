@@ -1,8 +1,8 @@
 # 插件一覽
 
-> ⚠️ **[漂移更正 — v0.59.6] 套件數已修正：47 個 package 目錄 = 46 個可載入插件 + 1 個共享函式庫（`mcp-common`）。** 原文「v0.58.0-alpha 共 43 個插件目錄」已陳舊。實測依據：`openstarry_plugin/` 下 `package.json` 共 47 個（`ls -d openstarry_plugin/*/ | wc -l` = 45；pnpm workspace glob `../openstarry_plugin/*` 見 `openstarry/pnpm-workspace.yaml:4` 全數納管）。其中 `mcp-common`（`@openstarry-plugin/mcp-common`，`mcp-common/package.json:1-22`）無 `test` script、不依賴 `@openstarry/sdk`、僅匯出協定 types/constants ＝ 共享函式庫，非可載入 plugin（對照可載入者如 `mcp-server/package.json:17,21` 有 `test` 且依賴 `@openstarry/sdk`）。下方表格為策展精選（非窮舉），其數字與標籤仍正確（`mcp-common` 下方已標「共用庫」）。
+> ⚠️ **[漂移更正 — v0.59.6；v0.59.8 +agent-comm +comm-channel-p2p] 套件數：49 個 package 目錄 = 48 個可載入插件 + 1 個共享函式庫（`mcp-common`）。** 原文「v0.58.0-alpha 共 43 個插件目錄」已陳舊。實測依據：`openstarry_plugin/` 下 `package.json` 共 49 個（`ls -d openstarry_plugin/*/ | wc -l` = 47；pnpm workspace glob `../openstarry_plugin/*` 見 `openstarry/pnpm-workspace.yaml:4` 全數納管）。其中 `mcp-common`（`@openstarry-plugin/mcp-common`，`mcp-common/package.json:1-22`）無 `test` script、不依賴 `@openstarry/sdk`、僅匯出協定 types/constants ＝ 共享函式庫，非可載入 plugin（對照可載入者如 `mcp-server/package.json:17,21` 有 `test` 且依賴 `@openstarry/sdk`）。下方表格為策展精選（非窮舉），其數字與標籤仍正確（`mcp-common` 下方已標「共用庫」）。
 
-OpenStarry 插件工作區於 v0.59.x-alpha 共有 **47 個 package 目錄**——**46 個可載入插件 + 1 個共享函式庫（`mcp-common`）**（計數於 2026-06-16 對齊已發佈代碼；下表為精選清單，非完整列表——完整集合見 `openstarry_plugin/`）。
+OpenStarry 插件工作區於 v0.59.x-alpha 共有 **49 個 package 目錄**——**48 個可載入插件 + 1 個共享函式庫（`mcp-common`）**（計數於 2026-06-27 為 `agent-comm` ＋ `comm-channel-p2p` 更新；下表為精選清單，非完整列表——完整集合見 `openstarry_plugin/`）。
 
 > ⚠️ **[誠實標記 — v0.59.7（2026-06-17）] 「可載入」≠「掛載後提供 agent 能力」。** 46 個皆可被 loader 載入（factory 跑、回傳合法 `PluginHooks`），但其中 **3 個——`api-runtime`（Plan59）、`mesh`（Plan58）、`vasana-engine`（Plan57 Track1）——的 plugin factory 僅做開機驗證後回傳 `{dispose}`，未註冊任何 agent-facing hook/tool/service**（載入時 loader 會發 sigma-4/5/14「Declares skandha but no hook registered」警告，冷啟動 smoke 可見）。它們的真實價值是**被匯入的函式庫**（供其他插件/規格消費、各自有完整 `__tests__/` 測試），而非掛載後 agent 可直接使用的能力。換言之這 3 個是「library 包成 plugin 外殼」，bounded-by-design（見各自 src 註解與 MEMORY 排除清單）。
 

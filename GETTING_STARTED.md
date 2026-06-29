@@ -354,7 +354,7 @@ Opt-in, env-driven — zero behavior change when unset:
 | Understand the system | [Ten Tenets (README §十大核心宣言)](./README.md#-十大核心宣言-the-ten-tenets) |
 | Authoritative API contracts | `packages/sdk/src/` type files — **the SDK types are the spec**; where any doc disagrees with them, the SDK wins |
 
-### Pre-built Plugins (selection — 46 loadable plugins in the plugin workspace, +1 `mcp-common` shared types lib = 47 packages)
+### Pre-built Plugins (selection — 48 loadable plugins in the plugin workspace, +1 `mcp-common` shared types lib = 49 packages)
 
 | Plugin | Type | Description |
 |--------|------|-------------|

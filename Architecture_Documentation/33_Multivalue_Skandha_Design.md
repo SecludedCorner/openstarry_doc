@@ -119,7 +119,7 @@ function inferSkandha(hooks: PluginHooks): Skandha[] {
 > ✅ **[實作狀態 — v0.59.6]** 本設計已完整落地（mechanism shipped）。`PluginManifest.skandha?: Skandha | readonly Skandha[]` 支援單值或多值（`packages/sdk/src/types/plugin.ts:79`）；`hasSkandha()` 同時處理字串與陣列形式（`packages/sdk/src/types/aggregates.ts:116-123`）；載入期一致性檢查由 `checkSkandhaCorrespondence()` 實作 18 條 sigma 約束（sigma-1..17 加 sigma-9b，`packages/core/src/infrastructure/skandha-check.ts:18`），並有 `aggregates.test.ts` / `skandha-check.test.ts` 測試覆蓋。下方的「22 個 Plugin 清單」與「目前僅 standard-function-skill 為多值」已**陳舊**，更正見下方漂移牌；原表保留作歷史快照。
 
 > ⚠️ **[漂移更正 — v0.59.6 — 清單陳舊]** 下表的 22-plugin 盤點是設計期快照，現已不符實況：
-> - **數量**：插件目錄現為 **47 個**，其中 **46 個可載入**（`mcp-common` = `@openstarry-plugin/mcp-common` 為共用程式庫，無 plugin factory/manifest/skandha，不計入可載入插件）。
+> - **數量**：插件目錄現為 **49 個**，其中 **48 個可載入**（`mcp-common` = `@openstarry-plugin/mcp-common` 為共用程式庫，無 plugin factory/manifest/skandha，不計入可載入插件）。
 > - **多值不只一個**：「目前僅 standard-function-skill 為多值」**為假**。實際已有至少 **4 個跨蘊（多值）插件**：
 >   - `standard-function-skill` → `['samskara', 'vijnana']`（`openstarry_plugin/standard-function-skill/src/index.ts:128`）
 >   - `gear-arbiter-static` → `['samjna', 'vijnana']`（`openstarry_plugin/gear-arbiter-static/src/index.ts:88`）
